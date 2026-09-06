@@ -108,8 +108,8 @@ h3 { font-size: 19px; }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { background: var(--accent-2); }
 
-.btn-gold { background: var(--gold); color: #fff; }
-.btn-gold:hover { background: var(--gold-2); }
+.btn-gold { background: var(--gold); color: var(--on-gold); }
+.btn-gold:hover { background: var(--gold-hover); }
 
 .btn-ghost { background: transparent; border-color: var(--line); }
 .btn-ghost:hover { background: var(--surface-2); }
@@ -562,6 +562,21 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   body { padding-bottom: 62px; }
   .searchbar { order: 9; flex-basis: 100%; max-width: none; margin: 0 0 10px; }
   .header-in { flex-wrap: wrap; padding-top: 10px; }
+}
+
+/* Au doigt, les petites cibles deviennent des cibles manquées. Sur écran
+   tactile, on remonte tout ce qui passe sous le seuil confortable — le
+   sélecteur de langue en premier, très sollicité sur un site trilingue. */
+@media (pointer: coarse) {
+  .btn-sm       { min-height: 40px; padding-inline: 16px; }
+  .icon-btn     { width: var(--tap); height: var(--tap); }
+  .langsw       { padding: 4px; }
+  .langsw button { height: 38px; min-width: 44px; font-size: 13.5px; }
+  .langsw button:first-child { font-size: 16px; }
+  .chip         { min-height: 42px; }
+  .suggest button { padding: 12px 10px; }
+  .flanc label  { padding: 9px 0; }
+  details.bloc > summary { padding: 18px 2px; }
 }
 
 @media print {

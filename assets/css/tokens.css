@@ -21,7 +21,7 @@
   /* --- encre --- */
   --ink:         #1B1A17;
   --ink-soft:    #55503F;
-  --ink-faint:   #8B8471;
+  --ink-faint:   #777161;   /* 4,8:1 sur surface — AA pour du petit texte */
 
   /* --- traits --- */
   --line:        #E2D8C6;
@@ -33,8 +33,13 @@
   --accent-wash: #E6EFF6;
   --on-accent:   #FFFDFA;
 
-  --gold:        #A67C34;   /* laiton */
-  --gold-2:      #C29B52;
+  /* L'or sert aux surtitres en petites capitales : il doit tenir 4,5:1 sur
+     fond clair. --gold-2 est sa contrepartie pour les fonds sombres (hero,
+     logo), --gold-hover celle du bouton doré. */
+  --gold:        #88662B;   /* laiton — 4,9:1 sur le fond */
+  --gold-2:      #D5BA87;   /* sur fond sombre — 4,6:1 sur le bleu du hero */
+  --gold-hover:  #6F5222;
+  --on-gold:     #FFFFFF;
   --gold-wash:   #F6EEDD;
 
   --terre:       #8A4B32;   /* cuir tanné */
@@ -89,6 +94,8 @@
     --on-accent:   #10222E;
     --gold:      #D9B267;
     --gold-2:    #E8C98C;
+    --gold-hover: #E8C98C;
+    --on-gold:   #241C0B;   /* l'or est clair ici : le texte doit être sombre */
     --gold-wash: #2E2517;
     --terre:     #C98462;
     --vert:      #6BB394;
@@ -119,6 +126,8 @@
   --on-accent:   #10222E;
   --gold:      #D9B267;
   --gold-2:    #E8C98C;
+  --gold-hover: #E8C98C;
+  --on-gold:   #241C0B;
   --gold-wash: #2E2517;
   --terre:     #C98462;
   --vert:      #6BB394;
