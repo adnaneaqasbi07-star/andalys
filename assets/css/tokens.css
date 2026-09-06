@@ -1,0 +1,137 @@
+/* =====================================================================
+   ESSENCE DE FÈS — jetons de conception
+   ---------------------------------------------------------------------
+   Une seule source pour les couleurs, les espacements et les rythmes.
+   Palette tirée de Fès : le cobalt des zelliges, le laiton des dinandiers,
+   le cuir des tanneries, la chaux du tadelakt.
+
+   Trois états de thème, comme dans l'application de recettes :
+     :root                              → clair (référence)
+     @media dark + :not([data-theme=light]) → sombre automatique
+     :root[data-theme="dark"]           → sombre choisi
+   ===================================================================== */
+
+:root {
+  /* --- fonds --- */
+  --ground:      #FAF7F1;   /* tadelakt */
+  --surface:     #FFFDFA;
+  --surface-2:   #F3EDE2;
+  --surface-3:   #E9E0D1;
+
+  /* --- encre --- */
+  --ink:         #1B1A17;
+  --ink-soft:    #55503F;
+  --ink-faint:   #8B8471;
+
+  /* --- traits --- */
+  --line:        #E2D8C6;
+  --line-soft:   #EDE6DA;
+
+  /* --- accents --- */
+  --accent:      #12507C;   /* bleu de Fès */
+  --accent-2:    #1D6B9F;
+  --accent-wash: #E6EFF6;
+  --on-accent:   #FFFDFA;
+
+  --gold:        #A67C34;   /* laiton */
+  --gold-2:      #C29B52;
+  --gold-wash:   #F6EEDD;
+
+  --terre:       #8A4B32;   /* cuir tanné */
+  --vert:        #2E6B52;   /* zellige vert */
+
+  /* --- états --- */
+  --ok:          #2E6B52;
+  --warn:        #8C6318;
+  --danger:      #A93E26;
+  --danger-wash: #F8E9E3;
+
+  /* --- relief --- */
+  --shadow-1: 0 1px 2px rgba(27,26,23,.06);
+  --shadow-2: 0 2px 6px rgba(27,26,23,.07), 0 12px 28px -18px rgba(27,26,23,.32);
+  --shadow-3: 0 8px 24px -8px rgba(27,26,23,.18), 0 32px 64px -32px rgba(27,26,23,.35);
+
+  /* --- géométrie --- */
+  --r:    12px;
+  --r-s:  8px;
+  --r-l:  20px;
+  --tap:  46px;            /* cible tactile minimale */
+  --page: 1240px;
+  --gut:  20px;
+
+  /* --- typographie --- */
+  --f-display: Marcellus, "Cormorant Garamond", Georgia, serif;
+  --f-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-ar: Amiri, "IBM Plex Sans", serif;
+
+  /* --- mouvement --- */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t:      200ms cubic-bezier(.2,.7,.3,1);
+  --t-slow: 420ms cubic-bezier(.2,.7,.3,1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:    #141310;
+    --surface:   #1C1A16;
+    --surface-2: #24211B;
+    --surface-3: #2E2A22;
+    --ink:       #F2EDE3;
+    --ink-soft:  #BDB4A2;
+    --ink-faint: #8C8474;
+    --line:      #35302A;
+    --line-soft: #29251F;
+    --accent:      #6FB0DC;
+    --accent-2:    #94C6E8;
+    --accent-wash: #16303F;
+    --on-accent:   #10222E;
+    --gold:      #D9B267;
+    --gold-2:    #E8C98C;
+    --gold-wash: #2E2517;
+    --terre:     #C98462;
+    --vert:      #6BB394;
+    --ok:        #6BB394;
+    --warn:      #D9AE5A;
+    --danger:    #E58B6E;
+    --danger-wash: #35201A;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.7);
+    --shadow-3: 0 8px 24px -8px rgba(0,0,0,.5), 0 32px 64px -32px rgba(0,0,0,.8);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:    #141310;
+  --surface:   #1C1A16;
+  --surface-2: #24211B;
+  --surface-3: #2E2A22;
+  --ink:       #F2EDE3;
+  --ink-soft:  #BDB4A2;
+  --ink-faint: #8C8474;
+  --line:      #35302A;
+  --line-soft: #29251F;
+  --accent:      #6FB0DC;
+  --accent-2:    #94C6E8;
+  --accent-wash: #16303F;
+  --on-accent:   #10222E;
+  --gold:      #D9B267;
+  --gold-2:    #E8C98C;
+  --gold-wash: #2E2517;
+  --terre:     #C98462;
+  --vert:      #6BB394;
+  --ok:        #6BB394;
+  --warn:      #D9AE5A;
+  --danger:    #E58B6E;
+  --danger-wash: #35201A;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.7);
+  --shadow-3: 0 8px 24px -8px rgba(0,0,0,.5), 0 32px 64px -32px rgba(0,0,0,.8);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-fast: 1ms; --t: 1ms; --t-slow: 1ms; }
+}

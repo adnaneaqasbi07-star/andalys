@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Essence de Fès · عبق فاس · Essence of Fez</title>
+<meta name="description" content="Parfums traditionnels de Fès, parfums internationaux, pâtisseries marocaines, produits du terroir et artisanat fassi. Livraison à domicile partout au Maroc.">
+
+<meta name="apple-mobile-web-app-title" content="Essence de Fès">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FAF7F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141310" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/img/logo-symbole.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Essence de Fès">
+<meta property="og:description" content="Le meilleur de Fès, directement chez vous.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://gugoqqlxqztcdbdjsqux.supabase.co" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=IBM+Plex+Sans:wght@400;500;600&family=Amiri:wght@400;700&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/app.css">
+
+<script>
+/* Thème et direction posés avant le premier rendu : pas de clignotement
+   blanc en mode sombre, pas de bascule LTR→RTL sous les yeux. */
+(function () {
+  "use strict";
+  try {
+    var th = localStorage.getItem("essencefes.theme");
+    if (th && th !== "auto") document.documentElement.setAttribute("data-theme", th);
+    var lg = localStorage.getItem("essencefes.langue");
+    if (lg === "ar") {
+      document.documentElement.lang = "ar";
+      document.documentElement.dir = "rtl";
+    } else if (lg) {
+      document.documentElement.lang = lg;
+    }
+  } catch (e) { /* navigation privée */ }
+})();
+</script>
+</head>
+<body>
+
+<div id="app">
+  <div style="min-height:70vh;display:grid;place-items:center;color:#8B8471">
+    <div style="text-align:center">
+      <svg viewBox="0 0 64 64" width="52" height="52" aria-hidden="true">
+        <circle cx="32" cy="32" r="31" fill="#12507C"/>
+        <path d="M32 9 38.6 25.4 55 32 38.6 38.6 32 55 25.4 38.6 9 32 25.4 25.4Z"
+              fill="none" stroke="#C29B52" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="32" cy="32" r="5" fill="#C29B52"/>
+      </svg>
+      <p style="font-family:Marcellus,Georgia,serif;font-size:19px;margin:14px 0 0">Essence de Fès</p>
+    </div>
+  </div>
+</div>
+
+<noscript>
+  <div style="padding:40px;text-align:center;font-family:system-ui">
+    Cette boutique a besoin de JavaScript. ·
+    هذا المتجر يحتاج إلى تفعيل جافاسكريبت. ·
+    This shop requires JavaScript.
+  </div>
+</noscript>
+
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
