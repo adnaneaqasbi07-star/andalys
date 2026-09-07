@@ -8,7 +8,7 @@
    depuis le cache des recettes.
    ===================================================================== */
 
-const CACHE = "essence-de-fes-20260906-8041d14b";
+const CACHE = "essence-de-fes-20260907-8041d14b";
 
 const SOCLE = [
   "index.html",
