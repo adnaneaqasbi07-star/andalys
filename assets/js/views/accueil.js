@@ -23,6 +23,10 @@ function hero() {
   const portesOuvertes = catalogue.racines();
 
   return h("section.hero",
+    /* Le dessin de la médina, puis le voile qui garde le texte lisible. */
+    h("img.panorama", { src: "assets/img/vues/medina.svg", alt: "", "aria-hidden": "true",
+                        loading: "eager", decoding: "async" }),
+    h("div.voile-hero", { "aria-hidden": "true" }),
     h("div.wrap",
       h("div.hero-in",
         h("div",

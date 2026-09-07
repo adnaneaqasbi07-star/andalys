@@ -366,8 +366,29 @@ h3 { font-size: 21px; }
     radial-gradient(90% 120% at 50% 0%, #17513E 0%, #0F3B2E 55%, #0A2A21 100%);
   color: #F6F1E4;
 }
+
+/* La médina, dessinée, en fond du hero. Elle est ancrée en bas : c'est là
+   que sont les toits et le rempart, et c'est ce qu'on veut voir quand la
+   bande est basse sur un téléphone. */
+.hero .panorama {
+  position: absolute; inset-inline: 0; bottom: 0; z-index: 0;
+  width: 100%; height: auto; min-height: 62%;
+  object-fit: cover; object-position: bottom center;
+  opacity: .5; pointer-events: none;
+}
+/* Un voile pour que le texte reste lisible par-dessus le dessin. */
+.hero .voile-hero {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(10,42,33,.94) 0%, rgba(10,42,33,.80) 42%, rgba(10,42,33,.28) 100%);
+}
+[dir="rtl"] .hero .voile-hero {
+  background: linear-gradient(-100deg,
+    rgba(10,42,33,.94) 0%, rgba(10,42,33,.80) 42%, rgba(10,42,33,.28) 100%);
+}
+
 .hero::after {
-  content: ""; position: absolute; inset: 0; opacity: .55; pointer-events: none;
+  content: ""; position: absolute; inset: 0; opacity: .28; pointer-events: none;
   background-image: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'>\
 <g fill='none' stroke='%23D4AF37' stroke-width='.9' stroke-opacity='.22'>\
@@ -397,7 +418,7 @@ h3 { font-size: 21px; }
 
 /* La grande arche du fond de boutique, avec le blason de la maison. */
 .hero-arche {
-  position: relative;
+  position: relative; z-index: 1;
   aspect-ratio: 4 / 4.4; max-width: 380px; margin-inline: auto; width: 100%;
   border: 2px solid rgba(212,175,55,.42);
   border-radius: 48% 48% 10px 10px / 40% 40% 10px 10px;

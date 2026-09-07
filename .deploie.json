@@ -1,6 +1,6 @@
 {
- "version": "20260907-08589c81",
- "publie_le": "2026-09-07T06:20:34.709812+00:00",
+ "version": "20260907-aaa69d21",
+ "publie_le": "2026-09-07T06:53:26.264398+00:00",
  "fichiers": [
   ".nojekyll",
   "README.md",
@@ -25,6 +25,7 @@
   "assets/img/portes/bab-semmarine.svg",
   "assets/img/portes/seffarine.svg",
   "assets/img/portes/souk-el-henna.svg",
+  "assets/img/vues/medina.svg",
   "assets/js/admin/articles.js",
   "assets/js/admin/clients.js",
   "assets/js/admin/commandes.js",
