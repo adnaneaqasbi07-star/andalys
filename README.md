@@ -1,7 +1,18 @@
-# Essence de Fès — عبق فاس — Essence of Fez
+# ANDALYS — Trésor de Fès · أندلس — كنز فاس
 
-Boutique en ligne trilingue des produits authentiques de Fès : parfums
-traditionnels et internationaux, pâtisseries, produits du terroir, artisanat.
+Boutique en ligne trilingue des trésors de la médina de Fès. On n'y entre pas
+par des « catégories » mais par les **portes** de la ville — c'est ainsi qu'on
+achète à Fès.
+
+| Porte | Ce qu'on trouve derrière |
+|---|---|
+| 🕌 باب مولاي إدريس · **Bab Moulay Driss** | Parfums, oud, serghina, musc tahara, bakhoor |
+| 🥩 باب الرصيف · **Bab R'cif** | Khlii, smen, huile d'olive, miel, épices, safran |
+| 🍯 باب بوجلود · **Bab Boujloud** | Chebakia, cornes de gazelle, briouates, fekkas |
+| 🫖 الصفارين · **Seffarine** | Cuivre et laiton : théières, plateaux, lanternes |
+| 🌿 سوق الحناء · **Souk El Henna** | Henné, ghassoul, savon beldi, argan, aker fassi |
+| 🎁 باب السمارين · **Bab Semmarine** | Coffrets et cadeaux |
+
 Livraison à domicile partout au Maroc.
 
 **HTML/CSS/JS natif · zéro dépendance · Supabase (PostgREST + RLS) · GitHub Pages**
@@ -40,18 +51,18 @@ Trois étapes, une seule fois — le détail est dans
 
 | | |
 |---|---|
-| Boutique | `https://adnaneaqasbi07-star.github.io/fes/` |
-| Back-office | `https://adnaneaqasbi07-star.github.io/fes/admin.html` |
+| Boutique | `https://adnaneaqasbi07-star.github.io/andalys/` |
+| Back-office | `https://adnaneaqasbi07-star.github.io/andalys/admin.html` |
 | Recettes (inchangée) | `https://adnaneaqasbi07-star.github.io/SihamDelicesFes/` |
 
 ---
 
 ## Ce que fait l'application
 
-**Catalogue** — catégories arborescentes, marques, fiches parfum (famille
-olfactive, pyramide tête/cœur/fond, intensité, tenue, sillage) et fiches
-alimentaires (poids, ingrédients, allergènes, conservation, origine), formats
-multiples avec prix et stock propres, galerie avec zoom, avis modérés.
+**Catalogue** — six portes, chacune ouvrant sur ses échoppes ; marques ; fiches
+parfum (famille olfactive, pyramide tête/cœur/fond, intensité, tenue, sillage)
+et fiches alimentaires (poids, ingrédients, allergènes, conservation, origine) ;
+formats multiples avec prix et stock propres ; galerie avec zoom ; avis modérés.
 
 **Recherche** — plein texte Postgres sur les trois langues, suggestions à la
 frappe, filtres (prix, marque, genre, famille olfactive, disponibilité,
