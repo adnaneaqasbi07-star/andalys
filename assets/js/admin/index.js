@@ -35,7 +35,7 @@ let corps = null;
 function flanc() {
   const nav = h("nav.adm-flanc",
     h("div.titre", marque(30),
-      h("span", {}, h("div.nm", {}, "Essence de Fès"), h("div.sub", {}, "Back-office"))));
+      h("span", {}, h("div.nm", {}, "ANDALYS"), h("div.sub", {}, "Back-office"))));
 
   SECTIONS.forEach(function (s) {
     nav.appendChild(h("a", { href: "#" + s[0], "data-chemin": s[0] },

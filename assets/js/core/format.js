@@ -78,7 +78,8 @@ export function normaliserTelephone(v) {
 
 /** Repli d'affichage quand une image manque, selon le type de produit. */
 export function emojiType(type) {
-  return { parfum: "🫗", alimentaire: "🍯", artisanat: "🏺", coffret: "🎁" }[type] || "✨";
+  return { parfum: "🫗", alimentaire: "🍯", artisanat: "🫖",
+           beaute: "🌿", coffret: "🎁" }[type] || "✨";
 }
 
 export function slug(v) {

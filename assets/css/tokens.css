@@ -1,71 +1,76 @@
 /* =====================================================================
-   ESSENCE DE FÈS — jetons de conception
+   ANDALYS — TRÉSOR DE FÈS · أندلس — كنز فاس
+   Jetons de conception
    ---------------------------------------------------------------------
-   Une seule source pour les couleurs, les espacements et les rythmes.
-   Palette tirée de Fès : le cobalt des zelliges, le laiton des dinandiers,
-   le cuir des tanneries, la chaux du tadelakt.
+   La palette est celle de la marque : le vert profond des portes et des
+   zelliges de la médina, l'or des dinandiers de Seffarine, la chaux
+   crème du tadelakt.
 
-   Trois états de thème, comme dans l'application de recettes :
-     :root                              → clair (référence)
-     @media dark + :not([data-theme=light]) → sombre automatique
-     :root[data-theme="dark"]           → sombre choisi
+       #0F3B2E   vert andalou      #D4AF37   or        #E8E1D4   crème
+
+   L'or de marque tient 5,9:1 sur le vert : il est fait pour les plaques
+   et les arches, pas pour du texte sur fond clair. Pour cet usage,
+   --gold est une version plus profonde, vérifiée à 4,8:1.
+
+   Trois états de thème : clair par défaut, sombre automatique sous
+   prefers-color-scheme, et le choix explicite qui l'emporte.
    ===================================================================== */
 
 :root {
-  /* --- fonds --- */
-  --ground:      #FAF7F1;   /* tadelakt */
-  --surface:     #FFFDFA;
-  --surface-2:   #F3EDE2;
-  --surface-3:   #E9E0D1;
+  /* --- fonds : chaux et tadelakt --- */
+  --ground:      #FAF6EC;
+  --surface:     #FFFDF7;
+  --surface-2:   #F2EADA;
+  --surface-3:   #E8E1D4;   /* crème de marque */
 
-  /* --- encre --- */
-  --ink:         #1B1A17;
-  --ink-soft:    #55503F;
-  --ink-faint:   #777161;   /* 4,8:1 sur surface — AA pour du petit texte */
+  /* --- encre : vert très sombre plutôt que noir --- */
+  --ink:         #16241E;
+  --ink-soft:    #45544C;
+  --ink-faint:   #777062;
 
   /* --- traits --- */
-  --line:        #E2D8C6;
-  --line-soft:   #EDE6DA;
+  --line:        #DED3BE;
+  --line-soft:   #EDE5D5;
 
-  /* --- accents --- */
-  --accent:      #12507C;   /* bleu de Fès */
-  --accent-2:    #1D6B9F;
-  --accent-wash: #E6EFF6;
-  --on-accent:   #FFFDFA;
+  /* --- vert andalou : la couleur des portes --- */
+  --accent:      #0F3B2E;
+  --accent-2:    #1A5A45;
+  --accent-wash: #E4EDE8;
+  --on-accent:   #FDFBF5;
 
-  /* L'or sert aux surtitres en petites capitales : il doit tenir 4,5:1 sur
-     fond clair. --gold-2 est sa contrepartie pour les fonds sombres (hero,
-     logo), --gold-hover celle du bouton doré. */
-  --gold:        #88662B;   /* laiton — 4,9:1 sur le fond */
-  --gold-2:      #D5BA87;   /* sur fond sombre — 4,6:1 sur le bleu du hero */
-  --gold-hover:  #6F5222;
+  /* --- or : plaques et ornements sur fond sombre, texte sur fond clair --- */
+  --gold:        #826A1C;   /* texte et petites capitales sur crème */
+  --gold-2:      #D4AF37;   /* or de marque — sur vert et fonds sombres */
+  --gold-hover:  #6A5616;
   --on-gold:     #FFFFFF;
-  --gold-wash:   #F6EEDD;
+  --gold-wash:   #F7EFDA;
 
-  --terre:       #8A4B32;   /* cuir tanné */
-  --vert:        #2E6B52;   /* zellige vert */
+  /* --- matières de la médina --- */
+  --cuivre:      #9F632C;   /* Seffarine */
+  --terre:       #8A4B32;   /* cuir des tanneries */
 
   /* --- états --- */
-  --ok:          #2E6B52;
-  --warn:        #8C6318;
-  --danger:      #A93E26;
-  --danger-wash: #F8E9E3;
+  --ok:          #1A6B4C;
+  --warn:        #8A6318;
+  --danger:      #A33A2A;
+  --danger-wash: #F8E7E2;
 
   /* --- relief --- */
-  --shadow-1: 0 1px 2px rgba(27,26,23,.06);
-  --shadow-2: 0 2px 6px rgba(27,26,23,.07), 0 12px 28px -18px rgba(27,26,23,.32);
-  --shadow-3: 0 8px 24px -8px rgba(27,26,23,.18), 0 32px 64px -32px rgba(27,26,23,.35);
+  --shadow-1: 0 1px 2px rgba(22,36,30,.06);
+  --shadow-2: 0 2px 6px rgba(22,36,30,.07), 0 12px 28px -18px rgba(22,36,30,.32);
+  --shadow-3: 0 8px 24px -8px rgba(22,36,30,.18), 0 32px 64px -32px rgba(22,36,30,.35);
 
   /* --- géométrie --- */
   --r:    12px;
   --r-s:  8px;
   --r-l:  20px;
-  --tap:  46px;            /* cible tactile minimale */
+  --arc:  46% 46% 8px 8px / 38% 38% 8px 8px;   /* arc outrepassé approché */
+  --tap:  46px;
   --page: 1240px;
   --gut:  20px;
 
   /* --- typographie --- */
-  --f-display: Marcellus, "Cormorant Garamond", Georgia, serif;
+  --f-display: "Cormorant Garamond", Marcellus, Georgia, serif;
   --f-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --f-ar: Amiri, "IBM Plex Sans", serif;
 
@@ -79,30 +84,30 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ground:    #141310;
-    --surface:   #1C1A16;
-    --surface-2: #24211B;
-    --surface-3: #2E2A22;
-    --ink:       #F2EDE3;
-    --ink-soft:  #BDB4A2;
-    --ink-faint: #8C8474;
-    --line:      #35302A;
-    --line-soft: #29251F;
-    --accent:      #6FB0DC;
-    --accent-2:    #94C6E8;
-    --accent-wash: #16303F;
-    --on-accent:   #10222E;
-    --gold:      #D9B267;
-    --gold-2:    #E8C98C;
-    --gold-hover: #E8C98C;
-    --on-gold:   #241C0B;   /* l'or est clair ici : le texte doit être sombre */
-    --gold-wash: #2E2517;
-    --terre:     #C98462;
-    --vert:      #6BB394;
-    --ok:        #6BB394;
-    --warn:      #D9AE5A;
-    --danger:    #E58B6E;
-    --danger-wash: #35201A;
+    --ground:      #0F1512;
+    --surface:     #16201B;
+    --surface-2:   #1E2A24;
+    --surface-3:   #27352D;
+    --ink:         #EFE9DA;
+    --ink-soft:    #B4BDB4;
+    --ink-faint:   #8C8473;
+    --line:        #2E3B33;
+    --line-soft:   #232E28;
+    --accent:      #4FBC95;
+    --accent-2:    #7AD3B3;
+    --accent-wash: #14302A;
+    --on-accent:   #07211A;
+    --gold:        #D4AF37;
+    --gold-2:      #E3C766;
+    --gold-hover:  #E3C766;
+    --on-gold:     #1A1405;
+    --gold-wash:   #2C2412;
+    --cuivre:      #D08A4E;
+    --terre:       #C9885F;
+    --ok:          #6FC49E;
+    --warn:        #D9B45A;
+    --danger:      #E08D74;
+    --danger-wash: #34201B;
     --shadow-1: 0 1px 2px rgba(0,0,0,.4);
     --shadow-2: 0 2px 6px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.7);
     --shadow-3: 0 8px 24px -8px rgba(0,0,0,.5), 0 32px 64px -32px rgba(0,0,0,.8);
@@ -111,30 +116,30 @@
 }
 
 :root[data-theme="dark"] {
-  --ground:    #141310;
-  --surface:   #1C1A16;
-  --surface-2: #24211B;
-  --surface-3: #2E2A22;
-  --ink:       #F2EDE3;
-  --ink-soft:  #BDB4A2;
-  --ink-faint: #8C8474;
-  --line:      #35302A;
-  --line-soft: #29251F;
-  --accent:      #6FB0DC;
-  --accent-2:    #94C6E8;
-  --accent-wash: #16303F;
-  --on-accent:   #10222E;
-  --gold:      #D9B267;
-  --gold-2:    #E8C98C;
-  --gold-hover: #E8C98C;
-  --on-gold:   #241C0B;
-  --gold-wash: #2E2517;
-  --terre:     #C98462;
-  --vert:      #6BB394;
-  --ok:        #6BB394;
-  --warn:      #D9AE5A;
-  --danger:    #E58B6E;
-  --danger-wash: #35201A;
+  --ground:      #0F1512;
+  --surface:     #16201B;
+  --surface-2:   #1E2A24;
+  --surface-3:   #27352D;
+  --ink:         #EFE9DA;
+  --ink-soft:    #B4BDB4;
+  --ink-faint:   #8C8473;
+  --line:        #2E3B33;
+  --line-soft:   #232E28;
+  --accent:      #4FBC95;
+  --accent-2:    #7AD3B3;
+  --accent-wash: #14302A;
+  --on-accent:   #07211A;
+  --gold:        #D4AF37;
+  --gold-2:      #E3C766;
+  --gold-hover:  #E3C766;
+  --on-gold:     #1A1405;
+  --gold-wash:   #2C2412;
+  --cuivre:      #D08A4E;
+  --terre:       #C9885F;
+  --ok:          #6FC49E;
+  --warn:        #D9B45A;
+  --danger:      #E08D74;
+  --danger-wash: #34201B;
   --shadow-1: 0 1px 2px rgba(0,0,0,.4);
   --shadow-2: 0 2px 6px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.7);
   --shadow-3: 0 8px 24px -8px rgba(0,0,0,.5), 0 32px 64px -32px rgba(0,0,0,.8);

@@ -4,7 +4,7 @@
    ===================================================================== */
 
 import { h, remplir } from "../core/dom.js";
-import { t, L } from "../i18n/index.js";
+import { t, L, langue } from "../i18n/index.js";
 import { lien, aller, analyser } from "../core/routeur.js";
 import { etat } from "../core/etat.js";
 import * as catalogue from "../data/catalogue.js";
@@ -168,12 +168,28 @@ export default async function liste(hote, contexte) {
   let familles = [];
   try { familles = await catalogue.famillesOlfactives(); } catch (e) { familles = []; }
 
+  /* Une porte de la médina a droit à son bandeau : plaque arabe, nom
+     français, et la phrase qui dit ce qu'on trouve derrière. */
+  const estPorte = contexte.categorie && !contexte.categorie.parent_id;
+  const bandeau = estPorte
+    ? h("div.porte-tete",
+        h("div", { style: { fontSize: "30px" } }, contexte.categorie.icone || "✦"),
+        h("div.ar", { lang: "ar", dir: "rtl" }, L(contexte.categorie.nom, "ar")),
+        h("h1", {}, L(contexte.categorie.nom, langue() === "ar" ? "fr" : langue())),
+        L(contexte.categorie.sous_titre)
+          ? h("div.eyebrow", { style: { color: "var(--gold-2)" } },
+              L(contexte.categorie.sous_titre)) : null,
+        L(contexte.categorie.description)
+          ? h("p", { style: { marginTop: "12px" } }, L(contexte.categorie.description)) : null)
+    : null;
+
   remplir(hote, h("div.wrap",
     filActuel(contexte.categorie, contexte.marque, contexte.recherche),
+    bandeau,
     h("div.section-head",
       h("div",
-        h("h1", { style: { marginBottom: "2px" } }, titre),
-        contexte.categorie && L(contexte.categorie.description)
+        estPorte ? null : h("h1", { style: { marginBottom: "2px" } }, titre),
+        !estPorte && contexte.categorie && L(contexte.categorie.description)
           ? h("p", {}, L(contexte.categorie.description)) : null,
         compteur),
       selecteurTri),

@@ -13,7 +13,8 @@ import { trilingue, champ, interrupteur, panneau, fermerPanneau, table, vide, co
   from "./commun.js";
 
 const TYPES = [["parfum", "Parfum"], ["alimentaire", "Alimentaire"],
-               ["artisanat", "Artisanat"], ["coffret", "Coffret"], ["general", "Autre"]];
+               ["artisanat", "Artisanat"], ["beaute", "Beauté naturelle"],
+               ["coffret", "Coffret"], ["general", "Autre"]];
 
 const FORMES = ["extrait", "eau_de_parfum", "eau_de_toilette", "huile", "attar",
                 "musc", "bakhoor", "encens", "brume", "autre"];

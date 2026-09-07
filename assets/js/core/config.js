@@ -1,5 +1,5 @@
 /* =====================================================================
-   Configuration — Essence de Fès
+   Configuration — ANDALYS, Trésor de Fès
    ---------------------------------------------------------------------
    Mêmes paramètres de connexion et d'hébergement que « Siham Délices de
    Fès » : le projet Supabase est partagé, la boutique vit dans son propre
@@ -21,10 +21,10 @@ export const SUPA = {
 /* Réglages qui ne dépendent pas de la base. */
 export const APP = {
   devise: "MAD",
-  cleSession: "essencefes.session",
-  clePanier:  "essencefes.panier",
-  cleLangue:  "essencefes.langue",
-  cleTheme:   "essencefes.theme",
-  cleFavoris: "essencefes.favoris",
+  cleSession: "andalys.session",
+  clePanier:  "andalys.panier",
+  cleLangue:  "andalys.langue",
+  cleTheme:   "andalys.theme",
+  cleFavoris: "andalys.favoris",
   qteMax: 99
 };

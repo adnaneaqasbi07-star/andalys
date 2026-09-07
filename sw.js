@@ -8,7 +8,7 @@
    depuis le cache des recettes.
    ===================================================================== */
 
-const CACHE = "essence-de-fes-20260907-8041d14b";
+const CACHE = "andalys-20260907-edc31fd5";
 
 const SOCLE = [
   "index.html",
@@ -32,7 +32,7 @@ self.addEventListener("activate", function (e) {
     caches.keys()
       .then(function (ks) {
         return Promise.all(ks
-          .filter(function (k) { return k.startsWith("essence-de-fes-") && k !== CACHE; })
+          .filter(function (k) { return k.startsWith("andalys-") && k !== CACHE; })
           .map(function (k) { return caches.delete(k); }));
       })
       .then(function () { return self.clients.claim(); }));

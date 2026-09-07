@@ -133,11 +133,14 @@ function entete() {
   const header = h("header.header",
     h("div.wrap",
       h("div.header-in",
-        h("a.brand", { href: lien("/") },
-          marque(34),
-          h("span", {},
-            h("div.nm", {}, L((etat.parametres.boutique || {}).nom) || "Essence de Fès"),
-            h("div.sub", {}, "FÈS · MAROC"))),
+        (function () {
+          const b = etat.parametres.boutique || {};
+          return h("a.brand", { href: lien("/"), "aria-label": L(b.nom) || "Andalys" },
+            marque(30),
+            h("span", {},
+              h("div.nm", {}, (L(b.nom) || "Andalys").toUpperCase()),
+              h("div.sub", {}, L(b.signature) || "Trésor de Fès")));
+        })(),
         barreRecherche(),
         h("div.header-acts",
           selecteurLangue(),
@@ -299,8 +302,11 @@ function pied() {
       h("div.footer-in",
         h("div",
           h("div.row", { style: { gap: "10px", marginBottom: "10px" } },
-            marque(30), h("strong.display", { style: { fontSize: "18px" } },
-              L(b.nom) || "Essence de Fès")),
+            marque(28),
+            h("span", {},
+              h("div.display", { style: { fontSize: "20px", letterSpacing: ".12em" } },
+                (L(b.nom) || "Andalys").toUpperCase()),
+              h("div.eyebrow", { style: { fontSize: "9.5px" } }, L(b.signature) || "Trésor de Fès"))),
           h("p.faint", { style: { maxWidth: "34ch" } }, L(b.baseline) || t("hero_lede"))),
         colonne(t("categories"), catalogue.racines().slice(0, 6).map(function (c) {
           return [L(c.nom), lien("/c/" + c.slug)];
@@ -316,7 +322,7 @@ function pied() {
           [t("mentions"),        lien("/page/mentions")]
         ])),
       h("div.bas",
-        h("span", {}, "© " + new Date().getFullYear() + " " + (L(b.nom) || "Essence de Fès") +
+        h("span", {}, "© " + new Date().getFullYear() + " " + (L(b.nom) || "Andalys") +
           " · " + t("droits")),
         h("span", {}, t("assur_livraison") + " 🇲🇦"))));
 }

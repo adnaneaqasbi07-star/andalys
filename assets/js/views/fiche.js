@@ -330,7 +330,7 @@ export default async function fiche(hote, params) {
     return;
   }
 
-  document.title = L(p.nom) + " · Essence de Fès";
+  document.title = L(p.nom) + " · " + (L((etat.parametres.boutique || {}).nom) || "Andalys");
   const cat = p.categorie;
   const zoneSimilaires = h("div");
 

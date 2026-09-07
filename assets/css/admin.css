@@ -1,5 +1,5 @@
 /* =====================================================================
-   Back-office — dense, lisible, sans fioriture.
+   ANDALYS — back-office. Dense, lisible, sans fioriture.
    Réutilise les jetons et les composants de la boutique ; n'ajoute que
    ce que la boutique n'a pas : la grille à colonne latérale, les tables
    et les formulaires longs.
@@ -18,7 +18,8 @@
                overflow-x: auto; border-inline-end: 0; border-bottom: 1px solid var(--line-soft); }
 }
 .adm-flanc .titre { display: flex; align-items: center; gap: 9px; padding: 6px 10px 16px; }
-.adm-flanc .titre .nm { font-family: var(--f-display); font-size: 16px; line-height: 1.1; }
+.adm-flanc .titre .nm { font-family: var(--f-display); font-weight: 600; font-size: 18px;
+                        letter-spacing: .12em; line-height: 1.1; color: var(--accent); }
 .adm-flanc .titre .sub { font-size: 9.5px; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; }
 .adm-flanc a {
   display: flex; align-items: center; gap: 10px; white-space: nowrap;

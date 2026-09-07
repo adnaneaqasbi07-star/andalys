@@ -3,39 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Essence de Fès · عبق فاس · Essence of Fez</title>
-<meta name="description" content="Parfums traditionnels de Fès, parfums internationaux, pâtisseries marocaines, produits du terroir et artisanat fassi. Livraison à domicile partout au Maroc.">
+<title>Andalys — Trésor de Fès · أندلس كنز فاس</title>
+<meta name="description" content="Les portes de la médina de Fès : Bab Moulay Driss pour les parfums et l'oud, Bab R'cif pour le khlii et les épices, Bab Boujloud pour les pâtisseries, Seffarine pour le cuivre, Souk El Henna pour la beauté naturelle. Livraison à domicile partout au Maroc.">
 
-<meta name="apple-mobile-web-app-title" content="Essence de Fès">
+<meta name="apple-mobile-web-app-title" content="Andalys">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#FAF7F1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#141310" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAF6EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1512" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-symbole.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Essence de Fès">
-<meta property="og:description" content="Le meilleur de Fès, directement chez vous.">
+<meta property="og:title" content="Andalys — Trésor de Fès">
+<meta property="og:description" content="L'âme de Fès, la beauté au naturel.">
+<meta property="og:image" content="assets/img/icon-512.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://gugoqqlxqztcdbdjsqux.supabase.co" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=IBM+Plex+Sans:wght@400;500;600&family=Amiri:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Amiri:wght@400;700&display=swap">
 
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/app.css">
 
 <script>
 /* Thème et direction posés avant le premier rendu : pas de clignotement
-   blanc en mode sombre, pas de bascule LTR→RTL sous les yeux. */
+   clair en mode sombre, pas de bascule LTR→RTL sous les yeux. */
 (function () {
   "use strict";
   try {
-    var th = localStorage.getItem("essencefes.theme");
+    var th = localStorage.getItem("andalys.theme");
     if (th && th !== "auto") document.documentElement.setAttribute("data-theme", th);
-    var lg = localStorage.getItem("essencefes.langue");
+    var lg = localStorage.getItem("andalys.langue");
     if (lg === "ar") {
       document.documentElement.lang = "ar";
       document.documentElement.dir = "rtl";
@@ -49,15 +50,18 @@
 <body>
 
 <div id="app">
-  <div style="min-height:70vh;display:grid;place-items:center;color:#8B8471">
+  <div style="min-height:70vh;display:grid;place-items:center;color:#777062">
     <div style="text-align:center">
-      <svg viewBox="0 0 64 64" width="52" height="52" aria-hidden="true">
-        <circle cx="32" cy="32" r="31" fill="#12507C"/>
-        <path d="M32 9 38.6 25.4 55 32 38.6 38.6 32 55 25.4 38.6 9 32 25.4 25.4Z"
-              fill="none" stroke="#C29B52" stroke-width="2.2" stroke-linejoin="round"/>
-        <circle cx="32" cy="32" r="5" fill="#C29B52"/>
+      <svg viewBox="0 0 64 78" width="58" height="71" fill="none" aria-hidden="true">
+        <path d="M6 74 L6 30 C6 13 17 3 32 3 C47 3 58 13 58 30 L58 74"
+              stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="32,11.5 34.6,17.2 40.3,19.8 34.6,22.4 32,28.5 29.4,22.4 23.7,19.8 29.4,17.2"
+                 fill="#D4AF37"/>
+        <text x="32" y="63" text-anchor="middle" fill="#0F3B2E"
+              font-family="Cormorant Garamond, Georgia, serif" font-size="36" font-weight="600">A</text>
       </svg>
-      <p style="font-family:Marcellus,Georgia,serif;font-size:19px;margin:14px 0 0">Essence de Fès</p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:23px;letter-spacing:.14em;margin:16px 0 2px;color:#0F3B2E">ANDALYS</p>
+      <p style="font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;margin:0;color:#826A1C">Trésor de Fès</p>
     </div>
   </div>
 </div>

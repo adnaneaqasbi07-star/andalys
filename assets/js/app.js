@@ -7,7 +7,7 @@
    ===================================================================== */
 
 import { h, $, remplir, notice } from "./core/dom.js";
-import { t } from "./i18n/index.js";
+import { t, L } from "./i18n/index.js";
 import { detecterLangue, definirLangue } from "./i18n/index.js";
 import * as routeur from "./core/routeur.js";
 import { etat } from "./core/etat.js";
@@ -56,7 +56,11 @@ function attendreCatalogue(f) {
   };
 }
 
-routeur.definir("/",          vue("accueil"));
+/* L'accueil montre les portes de la médina : il lui faut le référentiel.
+   Sans cette attente, la grille des portes n'apparaît que si la requête
+   revient avant le chargement du module — une course qu'on gagne en local
+   et qu'on perd sur un réseau lent. */
+routeur.definir("/",          attendreCatalogue(vue("accueil")));
 routeur.definir("/produits",  attendreCatalogue(function (hote) {
   return vue("liste")(hote, { base: "/produits" });
 }));
@@ -93,7 +97,8 @@ function rendre(route) {
   if (!principal) return;
   coque.majNavigation();
   coque.majBarreMobile();
-  document.title = "Essence de Fès · عبق فاس";
+  const b = etat.parametres.boutique || {};
+  document.title = ((L(b.nom) || "Andalys") + " — " + (L(b.signature) || "Trésor de Fès"));
 
   if (!route) {
     remplir(principal, h("div.wrap.section", h("div.vide-etat",
