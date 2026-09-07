@@ -11,6 +11,7 @@ import { t, L } from "./i18n/index.js";
 import { detecterLangue, definirLangue } from "./i18n/index.js";
 import * as routeur from "./core/routeur.js";
 import { etat } from "./core/etat.js";
+import { messageErreur } from "./core/supa.js";
 import * as coque from "./ui/coque.js";
 import * as catalogue from "./data/catalogue.js";
 import * as panier from "./data/panier.js";
@@ -139,10 +140,7 @@ async function demarrer() {
 
   catalogue.chargerReferentiels().catch(function (e) {
     console.error(e);
-    const message = e.schemaNonExpose
-      ? t("schema_absent") + " — Supabase › Settings › API › Exposed schemas : « boutique »"
-      : (e.message || t("erreur_reseau"));
-    notice(message, true);
+    notice(messageErreur(e), true);
   });
 
   routeur.demarrer(rendre);

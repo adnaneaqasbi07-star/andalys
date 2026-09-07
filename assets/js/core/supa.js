@@ -9,6 +9,7 @@
    ===================================================================== */
 
 import { SUPA, APP } from "./config.js";
+import { t } from "../i18n/index.js";
 
 export const session = { jeton: null };   /* { access_token, refresh_token, expires_at } */
 
@@ -61,14 +62,28 @@ export function contenuJeton(tok) {
 /* ------------------------------------------------------------------ */
 export class ErreurSupa extends Error {
   constructor(code, message, details) {
-    super(message || "Erreur " + code);
-    this.code = code;
-    this.details = details || null;
-    /* Cas de figure fréquent tant que le tableau de bord n'est pas réglé :
-       PostgREST répond « Invalid schema: boutique » ou « The schema must be
-       one of the following ». Les deux formulations existent selon la version. */
-    this.schemaNonExpose = /invalid schema|schema must be one of/i.test(String(message || ""));
+    super(message || "HTTP " + code);
+    this.code = code;                                   /* statut HTTP */
+    this.details = details || null;                     /* corps JSON de PostgREST */
+    this.codePg = (details && details.code) || null;    /* ex. PGRST106 */
+    this.indice = (details && details.hint) || null;    /* la phrase d'aide de PostgREST */
+    /* Cas de figure fréquent tant que le tableau de bord n'est pas réglé.
+       On se fie d'abord au code PostgREST, plus stable que le libellé. */
+    this.schemaNonExpose = this.codePg === "PGRST106" ||
+      /invalid schema|schema must be one of/i.test(String(message || ""));
   }
+}
+
+/** Phrase à montrer au visiteur pour une erreur d'API. */
+export function messageErreur(e) {
+  if (!e) return t("erreur");
+  if (e.schemaNonExpose) {
+    return t("schema_absent") +
+      " — Supabase › Settings › API › Exposed schemas : « " + SUPA.schema + " »";
+  }
+  if (e.code === 401 || e.code === 403) return t("erreur_droits");
+  if (e.code >= 500) return t("erreur_serveur");
+  return e.message || t("erreur_reseau");
 }
 
 /* ------------------------------------------------------------------ */
@@ -110,10 +125,17 @@ async function appel(chemin, opts) {
     throw new ErreurSupa(res.status, msg, det);
   }
 
-  if (res.status === 204) return null;
-  const txt = await res.text();
-  if (!txt) return null;
-  try { return JSON.parse(txt); } catch (e) { return txt; }
+  let donnees = null;
+  if (res.status !== 204) {
+    const txt = await res.text();
+    if (txt) {
+      try { donnees = JSON.parse(txt); } catch (e) { donnees = txt; }
+    }
+  }
+  /* Certains appels ont besoin des en-têtes de réponse — content-range pour
+     la pagination. Les servir ici évite de refaire la requête à la main, et
+     donc d'y perdre le renouvellement du jeton et la lecture des erreurs. */
+  return opts.avecEntetes ? { donnees: donnees, entetes: res.headers } : donnees;
 }
 
 export async function rafraichir() {
@@ -163,16 +185,10 @@ export async function lire(table, q) {
   const chemin = "/rest/v1/" + table + "?" + p.toString();
   if (!q.compte) return (await appel(chemin, { headers: entetes })) || [];
 
-  /* count=exact : il faut lire l'en-tête, donc on refait l'appel à la main */
-  const res = await fetch(SUPA.url + chemin, {
-    headers: Object.assign({
-      apikey: SUPA.key, "Accept-Profile": SUPA.schema, Prefer: "count=exact",
-      Range: entetes.Range
-    }, session.jeton ? { Authorization: "Bearer " + session.jeton.access_token } : {})
-  });
-  if (!res.ok) throw new ErreurSupa(res.status, res.statusText);
-  const lignes = await res.json();
-  const cr = res.headers.get("content-range") || "";
+  /* count=exact : le total arrive dans l'en-tête content-range. */
+  const r = await appel(chemin, { headers: entetes, avecEntetes: true });
+  const lignes = r.donnees || [];
+  const cr = r.entetes.get("content-range") || "";
   lignes.total = Number(cr.split("/")[1]) || lignes.length;
   return lignes;
 }

@@ -3,6 +3,7 @@
    Les filtres vivent dans l'URL — un lien de résultats se partage.
    ===================================================================== */
 
+import { messageErreur } from "../core/supa.js";
 import { h, remplir } from "../core/dom.js";
 import { t, L, langue } from "../i18n/index.js";
 import { lien, aller, analyser } from "../core/routeur.js";
@@ -238,7 +239,8 @@ export default async function liste(hote, contexte) {
   } catch (e) {
     remplir(zoneResultats, h("div.vide-etat",
       h("div.em", {}, "⚠️"),
-      h("h3", {}, e.schemaNonExpose ? t("schema_absent") : t("erreur_reseau")),
-      h("p", {}, e.message || "")));
+      h("h3", {}, t("aucun_resultat")),
+      h("p", {}, messageErreur(e)),
+      e.indice ? h("p.faint", {}, e.indice) : null));
   }
 }

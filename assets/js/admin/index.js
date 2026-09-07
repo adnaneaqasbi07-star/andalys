@@ -13,7 +13,7 @@ import * as routeur from "../core/routeur.js";
 import { etat } from "../core/etat.js";
 import { demarrerSession, deconnexion, auth } from "../data/compte.js";
 import * as catalogue from "../data/catalogue.js";
-import { rpc } from "../core/supa.js";
+import { rpc, messageErreur } from "../core/supa.js";
 import { marque } from "../ui/logo.js";
 import { appliquerTheme, themeMemorise } from "../ui/coque.js";
 
@@ -147,8 +147,9 @@ async function demarrer() {
       remplir($("#adm"), h("div.wrap.section", h("div.vide-etat",
         h("div.em", {}, "⚙"),
         h("h3", {}, t("schema_absent")),
-        h("p", {}, "Supabase › Settings › API › Exposed schemas : ajouter « boutique », " +
-                   "puis pousser les migrations."))));
+        h("p", {}, messageErreur(e)),
+        e.indice ? h("p.faint", {}, e.indice) : null,
+        h("p.faint", {}, "Puis pousser les migrations : supabase db push"))));
       return;
     }
     autorise = false;

@@ -2,6 +2,7 @@
    Journal — la liste des articles.
    ===================================================================== */
 
+import { messageErreur } from "../core/supa.js";
 import { h, remplir, image } from "../core/dom.js";
 import { t, L, langue } from "../i18n/index.js";
 import { date } from "../core/format.js";
@@ -49,8 +50,9 @@ export default async function vueJournal(hote) {
   } catch (e) {
     remplir(zone, h("div.vide-etat",
       h("div.em", {}, "⚠️"),
-      h("h3", {}, e.schemaNonExpose ? t("schema_absent") : t("erreur_reseau")),
-      h("p", {}, e.message || "")));
+      h("h3", {}, t("erreur")),
+      h("p", {}, messageErreur(e)),
+      e.indice ? h("p.faint", {}, e.indice) : null));
   }
   window.scrollTo(0, 0);
 }

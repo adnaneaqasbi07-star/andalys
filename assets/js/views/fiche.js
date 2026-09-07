@@ -3,6 +3,7 @@
    alimentaire, avis, produits similaires.
    ===================================================================== */
 
+import { messageErreur } from "../core/supa.js";
 import { h, remplir, image, etoiles, notice, $, vider } from "../core/dom.js";
 import { t, L, langue } from "../i18n/index.js";
 import { prix, pourcentageRemise, delai, dateHeure } from "../core/format.js";
@@ -317,8 +318,9 @@ export default async function fiche(hote, params) {
   catch (e) {
     remplir(hote, h("div.wrap", h("div.vide-etat",
       h("div.em", {}, "⚠️"),
-      h("h3", {}, e.schemaNonExpose ? t("schema_absent") : t("erreur_reseau")),
-      h("p", {}, e.message || ""))));
+      h("h3", {}, t("erreur")),
+      h("p", {}, messageErreur(e)),
+      e.indice ? h("p.faint", {}, e.indice) : null)));
     return;
   }
 
