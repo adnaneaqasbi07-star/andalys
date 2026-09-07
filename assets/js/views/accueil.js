@@ -11,6 +11,11 @@ import { etat } from "../core/etat.js";
 import * as catalogue from "../data/catalogue.js";
 import { grille, squelettes } from "../ui/carte.js";
 import { marque } from "../ui/logo.js";
+import { stockage } from "../core/supa.js";
+
+/* Les motifs livrés avec le site, comme les photos déposées, passent par
+   la même résolution d'URL. */
+const ornement = function (chemin) { return stockage.urlPublique(chemin); };
 
 /* ------------------------------------------------------------------ */
 function hero() {
@@ -69,12 +74,14 @@ function portes() {
       h("div.portes", {}, racines.map(function (c) {
         const echoppes = catalogue.enfants(c.id);
         return h("a.porte", { href: lien("/c/" + c.slug) },
-          c.image_url ? image(c.image_url, "") : null,
-          h("div.em", { "aria-hidden": "true" }, c.icone || "✦"),
-          h("div.ar", { lang: "ar", dir: "rtl" }, L(c.nom, "ar")),
-          h("div.fr", {}, L(c.nom, langue() === "ar" ? "fr" : langue())),
-          L(c.sous_titre) ? h("div.ds", {}, L(c.sous_titre)) : null,
-          echoppes.length ? h("div.nb", {}, echoppes.length + " " + t("echoppes")) : null);
+          h("div.linteau",
+            c.image_url ? image(ornement(c.image_url), "") : null,
+            h("div.sceau", { "aria-hidden": "true" }, c.icone || "✦")),
+          h("div.corps",
+            h("div.ar", { lang: "ar", dir: "rtl" }, L(c.nom, "ar")),
+            h("div.fr", {}, L(c.nom, langue() === "ar" ? "fr" : langue())),
+            L(c.sous_titre) ? h("div.ds", {}, L(c.sous_titre)) : null,
+            echoppes.length ? h("div.nb", {}, echoppes.length + " " + t("echoppes")) : null));
       }))));
 }
 

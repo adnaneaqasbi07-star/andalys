@@ -293,6 +293,10 @@ export const stockage = {
   urlPublique(chemin) {
     if (!chemin) return "";
     if (/^(https?:|data:|blob:)/.test(chemin)) return chemin;
+    /* Un chemin qui commence par `assets/` désigne un fichier livré avec
+       le site — les motifs ornementaux, par exemple. Le passer au Storage
+       donnerait une URL introuvable. */
+    if (/^\.?\/?assets\//.test(chemin)) return String(chemin).replace(/^\.?\//, "");
     return SUPA.url + "/storage/v1/object/public/" + SUPA.bucket + "/" +
       String(chemin).replace(/^\/+/, "");
   },

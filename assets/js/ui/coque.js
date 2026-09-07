@@ -179,6 +179,11 @@ export function majNavigation() {
       "aria-current": actif === c.slug ? "page" : null
     }, h("span", { "aria-hidden": "true" }, c.icone || ""), L(c.nom)));
   });
+
+  dans.appendChild(h("a", {
+    href: lien("/journal"),
+    "aria-current": r && r.chemin === "/journal" ? "page" : null
+  }, h("span", { "aria-hidden": "true" }, "📖"), t("journal")));
 }
 
 /* ------------------------------------------------------------------ */
@@ -312,6 +317,7 @@ function pied() {
           return [L(c.nom), lien("/c/" + c.slug)];
         })),
         colonne(t("aide"), [
+          [t("journal"),         lien("/journal")],
           [t("suivre_commande"), lien("/suivi")],
           [t("mes_commandes"),   lien("/compte/commandes")],
           [t("contact"),         lien("/page/contact")]

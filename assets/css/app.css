@@ -445,28 +445,39 @@ h3 { font-size: 21px; }
 @media (max-width: 520px) { .portes { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 
 .porte {
-  position: relative; display: flex; flex-direction: column; align-items: center;
-  padding: 26px 16px 20px;
+  position: relative; display: flex; flex-direction: column;
   border: 1.5px solid var(--line);
   border-radius: var(--arc);
-  background:
-    radial-gradient(110% 70% at 50% 100%, var(--gold-wash) 0%, transparent 60%),
-    var(--surface);
+  background: var(--surface);
   text-align: center; overflow: hidden;
   transition: transform var(--t), box-shadow var(--t), border-color var(--t);
-}
-.porte::before {
-  content: ""; position: absolute; inset-inline: 16%; top: -1px; height: 3px;
-  border-radius: 0 0 100px 100px;
-  background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
-  opacity: .7;
 }
 .porte:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-2);
   border-color: color-mix(in srgb, var(--gold-2) 60%, transparent);
 }
-.porte .em { font-size: 30px; margin-bottom: 12px; }
+
+/* Le linteau : l'ornement de la porte, à pleine couleur. Le texte ne passe
+   pas par-dessus — un motif sous un texte, c'est un texte illisible. */
+.porte .linteau { position: relative; height: 108px; background: var(--accent); }
+.porte .linteau img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Le sceau à cheval sur le linteau et le corps, comme un cachet de cire. */
+.porte .sceau {
+  position: absolute; inset-inline: 0; bottom: -22px;
+  width: 44px; height: 44px; margin-inline: auto;
+  display: grid; place-items: center; font-size: 21px;
+  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--gold-2) 55%, transparent);
+  border-radius: 50%;
+  box-shadow: var(--shadow-1);
+}
+
+.porte .corps {
+  display: flex; flex-direction: column; flex: 1;
+  padding: 32px 16px 20px;
+}
 .porte .ar {
   font-family: var(--f-ar); font-weight: 700; font-size: 18px;
   color: var(--accent); line-height: 1.6;
@@ -475,15 +486,12 @@ h3 { font-size: 21px; }
   font-family: var(--f-display); font-weight: 600; font-size: 19px;
   color: var(--ink); margin-top: 2px; line-height: 1.2;
 }
-.porte .ds {
-  font-size: 12px; color: var(--ink-faint); margin-top: 8px; line-height: 1.6;
-}
+.porte .ds { font-size: 12px; color: var(--ink-faint); margin-top: 8px; line-height: 1.6; }
 .porte .nb {
   margin-top: auto; padding-top: 12px;
   font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold);
 }
 [dir="rtl"] .porte .nb { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
-.porte img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .13; }
 
 /* Bandeau d'en-tête d'une porte, sur sa page de catégorie. */
 .porte-tete {
@@ -725,6 +733,73 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .etape .txt { padding: 2px 0 22px; }
 .etape .t { font-size: 14.5px; font-weight: 500; }
 .etape .d { font-size: 12.5px; color: var(--ink-faint); }
+
+/* =====================================================================
+   Le journal — articles sur Fès
+   ===================================================================== */
+.articles { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(288px, 1fr)); }
+
+.acard {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line-soft);
+  border-radius: var(--r); overflow: hidden;
+  transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+}
+.acard:hover {
+  transform: translateY(-3px); box-shadow: var(--shadow-2);
+  border-color: color-mix(in srgb, var(--gold-2) 55%, transparent);
+}
+.acard .vis { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface-2); }
+.acard .vis img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-slow); }
+.acard:hover .vis img { transform: scale(1.04); }
+.acard .txt { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.acard .mq { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); }
+[dir="rtl"] .acard .mq { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
+.acard .nm {
+  font-family: var(--f-display); font-weight: 600; font-size: 21px; line-height: 1.2;
+}
+[dir="rtl"] .acard .nm { font-family: var(--f-ar); font-weight: 700; font-size: 20px; line-height: 1.5; }
+.acard .ds { margin: 0; font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.acard .meta { margin-top: auto; padding-top: 10px; font-size: 12px; color: var(--ink-faint); }
+
+/* --- l'article lui-même : une colonne de lecture, pas une page web --- */
+.papier { padding-block: clamp(28px, 5vw, 52px); }
+.papier > .wrap { max-width: 760px; }
+
+.article-tete { margin-bottom: 26px; }
+.article-tete h1 { font-size: clamp(30px, 4.6vw, 46px); margin: 10px 0 14px; }
+.article-tete .chapo {
+  font-family: var(--f-display); font-weight: 500;
+  font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5;
+  color: var(--ink-soft); margin: 0 0 16px;
+}
+[dir="rtl"] .article-tete .chapo { font-family: var(--f-ar); font-size: 19px; line-height: 1.85; }
+.article-tete .meta {
+  font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
+  border-top: 1px solid var(--line-soft); padding-top: 12px;
+}
+[dir="rtl"] .article-tete .meta { letter-spacing: 0; text-transform: none; font-size: 13px; }
+
+.article-image {
+  margin: 0 0 30px; border-radius: var(--r-l); overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold-2) 32%, transparent);
+}
+.article-image img { width: 100%; display: block; }
+
+/* La colonne de texte : mesure courte, interligne large. On lit un article,
+   on ne balaye pas une interface. */
+.papier .corps {
+  font-size: 17px; line-height: 1.78; color: var(--ink);
+  max-width: 64ch;
+}
+[dir="rtl"] .papier .corps { font-size: 19px; line-height: 2.05; max-width: 58ch; }
+.papier .corps::first-letter {
+  font-family: var(--f-display); font-weight: 600;
+  font-size: 3.4em; line-height: .82; float: inline-start;
+  margin-inline-end: 8px; margin-block-start: 4px;
+  color: var(--accent);
+}
+[dir="rtl"] .papier .corps::first-letter { font-size: 1em; float: none; margin: 0; color: inherit; }
 
 /* =====================================================================
    Pied de page et barre mobile

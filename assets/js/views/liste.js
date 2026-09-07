@@ -171,6 +171,7 @@ export default async function liste(hote, contexte) {
   /* Une porte de la médina a droit à son bandeau : plaque arabe, nom
      français, et la phrase qui dit ce qu'on trouve derrière. */
   const estPorte = contexte.categorie && !contexte.categorie.parent_id;
+  const zoneArticles = h("div");
   const bandeau = estPorte
     ? h("div.porte-tete",
         h("div", { style: { fontSize: "30px" } }, contexte.categorie.icone || "✦"),
@@ -196,7 +197,25 @@ export default async function liste(hote, contexte) {
     h("div.avec-flanc",
       flanc(base, f, contexte, familles),
       zoneResultats),
+    zoneArticles,
     h("div", { style: { height: "40px" } })));
+
+  /* Ce qui se lit derrière la porte, sous ce qui s'y achète. */
+  if (estPorte) {
+    import("../data/journal.js").then(function (journal) {
+      return journal.articles({ porte: contexte.categorie.id, limite: 3 });
+    }).then(function (lus) {
+      if (!lus || !lus.length) return;
+      return import("./journal.js").then(function (vue) {
+        remplir(zoneArticles, h("section.section",
+          h("div.section-head",
+            h("div", h("div.eyebrow", {}, t("journal")),
+              h("h2", {}, t("journal_titre"))),
+            h("a.btn.btn-ghost.btn-sm", { href: lien("/journal") }, t("voir_tout"))),
+          vue.grilleArticles(lus)));
+      });
+    }).catch(function () { /* section simplement absente */ });
+  }
 
   try {
     const filtres = Object.assign({}, f, {

@@ -21,6 +21,14 @@ export const UI = {
   toutes_marques:     ["كل العلامات", "Toutes les marques", "All brands"],
   nos_produits:       ["منتجاتنا", "Nos produits", "Our products"],
   a_propos:           ["من نحن", "À propos", "About"],
+  journal:            ["المجلة", "Le journal", "The journal"],
+  journal_titre:      ["حكايات من فاس", "Histoires de Fès", "Stories from Fez"],
+  journal_lede:       ["ما تشتريه له تاريخ وطريقة استعمال. هنا نحكيهما.",
+                       "Ce que vous achetez a une histoire et un mode d'emploi. Nous les racontons ici.",
+                       "What you buy has a history and a way of being used. We tell both here."],
+  journal_vide:       ["لا مقالات بعد", "Aucun article pour l'instant", "No articles yet"],
+  journal_suite:      ["اقرأ أيضاً", "À lire aussi", "Read next"],
+  lire_article:       ["اقرأ المقال", "Lire l'article", "Read the article"],
   contact:            ["اتصل بنا", "Contact", "Contact"],
 
   /* --- en-tête ----------------------------------------------------- */

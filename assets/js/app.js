@@ -88,6 +88,8 @@ routeur.definir("/connexion",     vueNommee("compte", "connexion"));
 routeur.definir("/compte",           vue("compte"));
 routeur.definir("/compte/commandes", vue("compte"));
 routeur.definir("/compte/adresses",  vue("compte"));
+routeur.definir("/journal",          vue("journal"));
+routeur.definir("/journal/:slug",    attendreCatalogue(vue("article")));
 routeur.definir("/page/:slug",       vue("page"));
 
 /* ------------------------------------------------------------------ */

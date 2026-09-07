@@ -22,6 +22,7 @@ const SECTIONS = [
   ["/produits",    "✦", "Produits"],
   ["/commandes",   "📦", "Commandes"],
   ["/clients",     "👥", "Clients"],
+  ["/journal",     "📖", "Journal"],
   ["/categories",  "🗂", "Catégories"],
   ["/marques",     "🏷", "Marques"],
   ["/promos",      "％", "Promotions"],
@@ -113,6 +114,7 @@ routeur.definir("/produits",      section("produits"));
 routeur.definir("/commandes",     section("commandes"));
 routeur.definir("/commandes/:id", section("commandes"));
 routeur.definir("/clients",       section("clients"));
+routeur.definir("/journal",       section("articles"));
 routeur.definir("/categories",    section("referentiels"));
 routeur.definir("/marques",       section("referentiels"));
 routeur.definir("/promos",        section("referentiels"));
