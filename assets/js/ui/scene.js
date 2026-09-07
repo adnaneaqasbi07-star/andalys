@@ -1,55 +1,68 @@
 /* =====================================================================
-   La bannière en perspective — l'enfilade d'arches de la médina
+   La bannière en relief — les portes du palais et le réseau de zellige
    ---------------------------------------------------------------------
-   Cinq travées d'arcades posées à des profondeurs réelles sur l'axe Z. Le
-   navigateur calcule la perspective ; la souris fait tourner la scène de
-   quelques degrés, ce qui suffit à donner le relief. Sur écran tactile
-   le défilement fait le même travail.
+   Deux plans posés à des profondeurs réelles sur l'axe Z, dans un espace
+   en perspective :
 
-   La forme des arcs et le percement du mur sont dans app.css (.travee) ;
-   ce module ne pose que la profondeur et la teinte de chaque travée.
+     • la photographie des portes du palais, au fond ;
+     • le voile qui garde le texte lisible, 100 px devant ;
+     • et 80 px plus près encore, un réseau de zellige lumineux.
 
-   Aucune bibliothèque, et une seule ressource : la tuile de zellige,
-   3,8 Ko de SVG, mise en cache dès la première visite. Le reste tient en
-   une dizaine d'éléments et deux transformations.
+   Le navigateur calcule la perspective ; la souris fait tourner le monde
+   de quelques degrés. Comme les deux plans ne sont pas à la même
+   profondeur, ils ne se déplacent pas de la même quantité : le réseau
+   glisse sur les portes. C'est cette parallaxe qui donne le relief, et
+   elle est vraie — ce n'est pas une illusion peinte.
+
+   Le réseau et son animation sont dans app.css (.reseau) ; ce module ne
+   pose que la profondeur de chaque plan et le mouvement de la souris.
+
+   Aucune bibliothèque. Une poignée d'éléments et deux transformations.
    ===================================================================== */
 
 import { h } from "../core/dom.js";
 
-/* Profondeur, teinte du mur et pas du zellige, travée par travée — de la
-   plus lointaine à la plus proche. La géométrie de l'arcade est la même
-   partout : c'est la perspective qui met à l'échelle. Seule la teinte
-   change, et elle s'assombrit en s'approchant : c'est ce qui creuse la
-   galerie.
+/* Profondeur de chaque plan, et l'agrandissement qui va avec.
 
-   Le pas du zellige, lui, est corrigé travée par travée. À sa taille
-   nominale, la perspective réduirait la tuile de la travée du fond à une
-   quarantaine de pixels : le motif se brouillerait en moiré. Le pas est
-   donc agrandi avec la profondeur, de façon à ce que la tuile fasse
-   toujours une centaine de pixels à l'écran. La correction est partielle
-   (exposant 0,6) : le zellige reste un peu plus serré au loin, ce qui
-   continue de dire la distance. */
-const TRAVEES = [
-  { z: -1250, mur: "#1B5C46", zel: 201 },
-  { z:  -900, mur: "#14493A", zel: 182 },
-  { z:  -580, mur: "#0E3A2D", zel: 161 },
-  { z:  -300, mur: "#0A2B21", zel: 142 },
-  { z:   -80, mur: "#061A14", zel: 126 }
+   Un plan reculé de |z| paraît plus petit du facteur PERSP / (PERSP + |z|).
+   Pour qu'il remplisse encore le cadre, il faut l'agrandir de l'inverse.
+   C'est pour cela que l'échelle est calculée et non choisie : posée à la
+   main, elle laisserait un liseré vide sur un bord ou l'autre. */
+const PERSP = 900;
+
+/* L'ordre de peinture ne suit pas le DOM mais la profondeur : le plan le
+   plus lointain est dessiné en premier. C'est pour cela que le voile est
+   ici, entre la photo et le réseau, et non plus posé par-dessus le tout.
+   Placé au-dessus, il éteignait la lumière du réseau — 94 % du voile sur
+   le bord du titre, il n'en restait rien. */
+const PLANS = [
+  { classe: "plan-porte", z: 300 },
+  { classe: "plan-voile", z: 200 },
+  { classe: "reseau", z: 120, contenu: ["zel", "flux"] }
 ];
+
+function echelle(z) {
+  /* un peu de marge : la rotation du monde découvrirait sinon les bords */
+  return (PERSP + z) / PERSP * 1.06;
+}
 
 /** Construit la scène. Renvoie l'élément et une fonction de démontage. */
 export function scene() {
   const monde = h("div.scene-monde", { "aria-hidden": "true" });
-  monde.appendChild(h("div.scene-fond"));
 
-  TRAVEES.forEach(function (t) {
-    monde.appendChild(h("div.travee", {
+  PLANS.forEach(function (p) {
+    const enfants = (p.contenu || []).map(function (c) {
+      /* les trois étincelles qui courent sur le réseau */
+      return c === "flux"
+        ? h("div.flux", {}, h("i"), h("i"), h("i"))
+        : h("div." + c);
+    });
+    monde.appendChild(h("div." + p.classe, {
       style: {
-        transform: "translateZ(" + t.z + "px)",
-        "--t-mur": t.mur,
-        "--t-zel": t.zel + "px"
+        transform: "translateZ(" + (-p.z) + "px) scale(" +
+                   echelle(p.z).toFixed(4) + ")"
       }
-    }, h("div.mur")));
+    }, enfants));
   });
 
   const el = h("div.scene", { "aria-hidden": "true" }, monde);
@@ -59,7 +72,7 @@ export function scene() {
   let attache = false;
 
   function incliner(fx, fy) {
-    /* quelques degrés suffisent : au-delà, les travées se décollent */
+    /* quelques degrés suffisent : au-delà, les plans se décollent */
     el.style.setProperty("--incl-y", (fx * 5).toFixed(2) + "deg");
     el.style.setProperty("--incl-x", (fy * -3).toFixed(2) + "deg");
   }
@@ -76,7 +89,7 @@ export function scene() {
   function surDefilement() {
     const r = el.getBoundingClientRect();
     if (r.bottom < 0 || r.top > window.innerHeight) return;
-    /* le couloir s'incline doucement quand on descend la page */
+    /* le cadre s'incline doucement quand on descend la page */
     incliner(0, Math.max(-0.5, Math.min(0.5, -r.top / (r.height || 1))));
   }
 

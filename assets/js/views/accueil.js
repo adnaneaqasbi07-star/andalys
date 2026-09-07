@@ -24,12 +24,14 @@ function hero() {
   const portesOuvertes = catalogue.racines();
 
   return h("section.hero",
-    /* L'enfilade d'arches en perspective réelle, puis la médina dessinée
-       en surimpression basse, puis le voile qui garde le texte lisible. */
+    /* Les portes du palais en photographie, le voile de lisibilité, et
+       devant eux un réseau de zellige lumineux : trois plans à trois
+       profondeurs, tous dans scene().
+
+       La vue de Fès à vol d'oiseau n'est pas ici : superposée à la photo,
+       elle n'en ressortait pas. Elle a son propre bandeau, plus bas, où on
+       la voit vraiment. */
     scene(),
-    h("img.panorama", { src: "assets/img/vues/medina.svg", alt: "", "aria-hidden": "true",
-                        loading: "eager", decoding: "async" }),
-    h("div.voile-hero", { "aria-hidden": "true" }),
     h("div.wrap",
       h("div.hero-in",
         h("div",
@@ -134,6 +136,19 @@ function marques() {
 }
 
 /* ------------------------------------------------------------------ */
+/** Fès à vol d'oiseau. Un dessin, pas une photographie : la géométrie
+    d'une ville n'appartient à personne, et celui-ci est à vous. */
+function bandeauVille() {
+  return h("section.bandeau-ville",
+    h("img", { src: "assets/img/vues/fes-oiseau.svg", alt: t("ville_alt"),
+               loading: "lazy", decoding: "async" }),
+    h("div.legende", h("div.wrap",
+      h("div.eyebrow", {}, t("portes")),
+      h("h2", {}, t("ville_titre")),
+      h("p", {}, t("ville_lede")))));
+}
+
+/* ------------------------------------------------------------------ */
 export default function accueil(hote) {
   const vedettes = bande(t("vedettes"),   t("nos_produits"), lien("/produits"));
   const promos   = bande(t("promotions"), t("boutique"),     lien("/produits?promo=1"));
@@ -143,6 +158,7 @@ export default function accueil(hote) {
     hero(),
     assurances(),
     portes(),
+    bandeauVille(),
     vedettes.section,
     promos.section,
     nouveaux.section,

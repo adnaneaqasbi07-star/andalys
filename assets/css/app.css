@@ -371,23 +371,15 @@ h3 { font-size: 21px; }
    que sont les toits et le rempart, et c'est ce qu'on veut voir quand la
    bande est basse sur un téléphone. */
 .hero .panorama {
-  position: absolute; inset-inline: 0; bottom: 0; z-index: 0;
-  width: 100%; height: auto; max-height: 58%;
-  object-fit: cover; object-position: bottom center;
-  /* discret : la scène en perspective porte le relief, le panorama ne
-     fait qu'asseoir la base du hero sur une silhouette de ville */
-  opacity: .18; pointer-events: none;
-  mask-image: linear-gradient(transparent, #000 38%);
-}
-/* Un voile pour que le texte reste lisible par-dessus le dessin. */
-.hero .voile-hero {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: linear-gradient(100deg,
-    rgba(10,42,33,.94) 0%, rgba(10,42,33,.80) 42%, rgba(10,42,33,.28) 100%);
-}
-[dir="rtl"] .hero .voile-hero {
-  background: linear-gradient(-100deg,
-    rgba(10,42,33,.94) 0%, rgba(10,42,33,.80) 42%, rgba(10,42,33,.28) 100%);
+  position: absolute; inset-inline: 0; top: 0; z-index: 0;
+  width: 100%; height: 44%;
+  object-fit: cover; object-position: top center;
+  /* Fès à vol d'oiseau, en haut de la bannière : la médina et la
+     Karaouiyine, par-dessus le mur crénelé du palais. Le fondu s'éteint
+     avant les arcs, pour qu'on ne voie pas la couture entre les deux. */
+  opacity: .46; pointer-events: none;
+  -webkit-mask-image: linear-gradient(#000 0, #000 26%, transparent 88%);
+  mask-image: linear-gradient(#000 0, #000 26%, transparent 88%);
 }
 
 .hero::after {
@@ -537,6 +529,34 @@ h3 { font-size: 21px; }
 .porte-tete h1 { color: #FFFBF0; margin: 10px 0 6px; }
 .porte-tete .ar { font-family: var(--f-ar); font-weight: 700; font-size: 22px; color: var(--gold-2); }
 .porte-tete p { color: #D0C8B4; max-width: 62ch; margin: 0 auto; }
+
+/* =====================================================================
+   Le bandeau de la ville — Fès à vol d'oiseau
+   =====================================================================
+   Le dessin est clair et la légende est claire aussi : on ne peut pas
+   poser du texte ivoire dessus. La légende a donc son propre fond vert,
+   en bas du bandeau, et le dessin garde ses couleurs au-dessus. */
+.bandeau-ville {
+  position: relative; overflow: hidden;
+  margin-block: clamp(24px, 4vw, 48px);
+  background: var(--accent);
+}
+.bandeau-ville img {
+  display: block; width: 100%; height: clamp(220px, 30vw, 380px);
+  object-fit: cover; object-position: 50% 42%;
+}
+.bandeau-ville .legende {
+  position: absolute; inset-inline: 0; bottom: 0;
+  padding-block: clamp(16px, 2.6vw, 28px) clamp(14px, 2.2vw, 24px);
+  background: linear-gradient(transparent, rgba(8,34,27,.82) 34%, rgba(8,34,27,.95));
+  color: #F6F1E4;
+}
+.bandeau-ville .legende h2 { color: #FFFBF0; margin: 6px 0 6px; }
+.bandeau-ville .legende p { color: #DCD5C4; margin: 0; max-width: 68ch; }
+@media (max-width: 640px) {
+  .bandeau-ville { border-radius: 0; }
+  .bandeau-ville .legende p { font-size: 14.5px; }
+}
 
 /* =====================================================================
    Produits
@@ -900,33 +920,21 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   /* la scène ne bouge pas si le visiteur a demandé moins d'animations */
   --incl-x: 0deg;
   --incl-y: 0deg;
-  /* Les trois tuiles de la galerie, toutes dessinées par bin/motifs.py :
-     le percement de l'arc, le filet doré qui le souligne, et le zellige de
-     Fès — l'étoile à huit branches dans son octogone, en pavage sans
-     raccord. Le masque et le filet sortent du même tracé d'arc : ils ne
-     peuvent pas divergre. */
-  --arcade: url("../img/motifs/arcade-masque.svg");
-  --arcade-filet: url("../img/motifs/arcade-filet.svg");
+  /* le zellige de Fès : l'étoile à huit branches dans son octogone,
+     dessinée par bin/motifs.py, en pavage sans raccord */
   --zellige: url("../img/motifs/zellige-fes.svg");
-  --tw: 210px;
-  --th: 430px;
+  --zel-pas: 128px;
+  --reseau-dose: linear-gradient(100deg,
+    rgba(0,0,0,.10) 0%, rgba(0,0,0,.24) 38%,
+    rgba(0,0,0,.82) 72%, #000 100%);
 }
+[dir="rtl"] .scene {
+  --reseau-dose: linear-gradient(260deg,
+    rgba(0,0,0,.10) 0%, rgba(0,0,0,.24) 38%,
+    rgba(0,0,0,.82) 72%, #000 100%);
+}
+@media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
-/* Sur téléphone, deux corrections. La tuile rétrécit, sinon une bande
-   d'arcade de 430 px ne laisserait plus de mur au-dessus. Et surtout la
-   scène ne prend plus toute la hauteur du hero : celui-ci fait près de
-   1000 px sur un téléphone, si bien que l'arcade, calée en bas, tombait
-   sous la ligne de flottaison — le visiteur ne voyait qu'un mur. La scène
-   est donc ramenée en haut, sur 520 px, et son bas est fondu pour qu'on
-   ne voie pas où elle s'arrête. */
-@media (max-width: 720px) {
-  .scene {
-    --tw: 132px; --th: 268px;
-    bottom: auto; height: min(520px, 100%);
-    -webkit-mask-image: linear-gradient(#000 74%, transparent);
-    mask-image: linear-gradient(#000 74%, transparent);
-  }
-}
 .scene-monde {
   position: absolute; inset: 0;
   transform-style: preserve-3d;
@@ -935,60 +943,131 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   will-change: transform;
 }
 
-/* Une travée : un mur percé d'une arcade d'arcs outrepassés. Le mur est
-   opaque, les arcs sont les trous — et c'est par ces trous qu'on voit la
-   travée suivante, puis la lumière du fond.
+/* Le voile. Il n'est pas posé sur la scène mais dedans, entre la photo
+   et le réseau : c'est ce qui permet à la lumière du zellige de se lire
+   par-dessus lui.
 
-   Les cinq travées ont exactement la même géométrie locale. C'est voulu :
-   c'est la perspective qui les met à l'échelle, si bien qu'une travée
-   lointaine montre des arcs plus serrés qu'une travée proche. On regarde
-   donc une vraie galerie en enfilade, pas une pile de calques.
-
-   Le percement se fait au masque : une tuile SVG répétée horizontalement
-   (l'arc, en trou, par `fill-rule: evenodd`) et, au-dessus d'elle, un
-   aplat qui garde le haut du mur plein. Les deux couches s'additionnent —
-   c'est le `mask-composite` par défaut. */
-.travee {
+   Le dosage n'est pas décoratif : à 0,88 d'opacité, le pixel de la photo
+   ne peut plus remonter que de 12 % vers le blanc, donc le titre en ivoire
+   garde son contraste quelle que soit la photo dessous. Passé le bloc de
+   texte, le voile s'ouvre et la photo reprend ses couleurs. */
+.plan-voile {
   position: absolute; inset: 0;
-  transform-style: preserve-3d;
+  background: linear-gradient(100deg,
+    rgba(8,34,27,.94) 0%, rgba(8,34,27,.88) 46%,
+    rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
 }
-/* Le parement. Le zellige habille le niveau de l'arcade et s'arrête là
-   où il s'arrête sur les murs de la médina : au-dessus, le mur est nu,
-   comme le plâtre au-dessus d'un lambris. C'est la première couche —
-   un aplat de la teinte du mur — qui recouvre le zellige sur cette
-   hauteur ; la couleur de fond fait le reste. */
-.travee .mur {
+[dir="rtl"] .plan-voile {
+  background: linear-gradient(260deg,
+    rgba(8,34,27,.94) 0%, rgba(8,34,27,.88) 46%,
+    rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
+}
+
+/* Le plan du fond : les portes du palais. Le cadrage privilégie le bas —
+   les arcs et le zellige — plutôt que les tuiles du toit. */
+.plan-porte {
   position: absolute; inset: 0;
-  background-color: var(--t-mur);
-  background-image:
-    linear-gradient(var(--t-mur) 0, var(--t-mur) calc(100% - var(--th)),
-                    transparent calc(100% - var(--th))),
-    var(--arcade-filet),
-    var(--zellige);
-  background-size: 100% 100%, var(--tw) var(--th), var(--t-zel) var(--t-zel);
-  background-repeat: no-repeat, repeat-x, repeat;
-  background-position: 0 0, 50% 100%, 50% 100%;
-  -webkit-mask-image: var(--arcade), linear-gradient(#000 0 0);
-  -webkit-mask-size: var(--tw) var(--th), 100% calc(100% - var(--th));
+  background-image: url("../img/photos/bab-palais.webp");
+  background-size: cover;
+  background-position: 50% 68%;
+  background-repeat: no-repeat;
+}
+
+/* ---------------------------------------------------------------------
+   Le réseau de zellige, et les lumières qui y courent
+   ---------------------------------------------------------------------
+   Le motif n'est pas peint : il découpe. Un calque porte un dégradé, un
+   autre porte des taches de lumière mobiles, et le zellige leur sert de
+   masque à tous les deux. Le dégradé court donc sur toute la bannière au
+   lieu de se répéter tuile par tuile — ce qu'on ne pourrait pas faire en
+   peignant le motif dans la tuile.
+
+   Deux masques qui s'intersectent : le pavage, et un fondu vertical qui
+   allège le réseau vers le haut, là où il croiserait le titre. */
+.reseau {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  /* `screen` ajoute la lumière du réseau à celle de la photo au lieu de la
+     remplacer : le zellige de la photo continue de se lire sous le nôtre,
+     et une ligne déjà claire devient blanche au passage d'une étincelle.
+     Le mélange n'a lieu qu'à l'intérieur de .scene-monde, où se trouve
+     aussi le plan de la photo — c'est ce qui le rend possible. */
+  mix-blend-mode: screen;
+}
+
+.reseau .zel,
+.reseau .flux {
+  position: absolute; inset: 0;
+  /* Le second masque dose le réseau au lieu de l'étaler partout : presque
+     rien derrière le titre, plein sur la photo. Il suit la même diagonale
+     que le voile, pour que les deux se relaient sans marche visible. */
+  -webkit-mask-image: var(--zellige), var(--reseau-dose);
+  -webkit-mask-size: var(--zel-pas) var(--zel-pas), 100% 100%;
   -webkit-mask-position: 50% 100%, 0 0;
-  -webkit-mask-repeat: repeat-x, no-repeat;
-  mask-image: var(--arcade), linear-gradient(#000 0 0);
-  mask-size: var(--tw) var(--th), 100% calc(100% - var(--th));
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image: var(--zellige), var(--reseau-dose);
+  mask-size: var(--zel-pas) var(--zel-pas), 100% 100%;
   mask-position: 50% 100%, 0 0;
-  mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
 }
 
-/* La lumière au bout de la galerie. Posée loin derrière la dernière
-   travée, et agrandie d'autant pour continuer à remplir le cadre : à
-   1500 px de profondeur, la perspective la réduit de plus de moitié. */
-.scene-fond {
-  position: absolute; inset: 0;
-  transform: translateZ(-1500px) scale(2.8);
-  background:
-    radial-gradient(62% 52% at 50% 62%,
-      #FFF6DE 0%, #F2D08A 20%, #C99A45 38%, #3E6B54 66%, #0E3126 100%);
+/* le dégradé du zellige : sauge en haut, or au milieu, ivoire en bas */
+.reseau .zel {
+  background: linear-gradient(168deg,
+    #4E7A66 0%, #8A6E30 26%, #C8A433 52%, #E9CE8E 74%, #FFF2CC 100%);
+  opacity: .58;
+}
+
+/* Les lumières.
+
+   Trois taches dérivent sous le masque du pavage, et l'on ne voit d'elles
+   que la part qui tombe sur une ligne de zellige : la lueur passe donc
+   d'une étoile à l'autre en suivant les entrelacs, comme le long d'un
+   réseau. `plus-lighter` ajoute la lumière au lieu de la remplacer, si
+   bien qu'une ligne déjà dorée devient blanche au passage.
+
+   Ce sont des `transform` qui sont animés, jamais une position de fond :
+   le compositeur du navigateur s'en charge seul, sans repeindre. */
+.reseau .flux { overflow: hidden; }
+
+.reseau .flux i {
+  position: absolute; width: 330px; height: 330px; border-radius: 50%;
+  background: radial-gradient(circle,
+    #FFFFFF 0%, #FFFDF4 12%, rgba(255,246,214,.96) 26%,
+    rgba(248,216,148,.62) 46%, rgba(212,175,55,.18) 66%, transparent 80%);
+  will-change: transform, opacity;
+  animation: derive 16s cubic-bezier(.45,.05,.55,.95) infinite alternate;
+}
+.reseau .flux i:nth-child(1) { inset-inline-start: -12%; bottom: 6%;
+  animation-duration: 15s; animation-delay: -2s; }
+.reseau .flux i:nth-child(2) { inset-inline-start: 30%; bottom: 42%;
+  animation-duration: 22s; animation-delay: -9s; width: 250px; height: 250px; }
+.reseau .flux i:nth-child(3) { inset-inline-start: 66%; bottom: 14%;
+  animation-duration: 19s; animation-delay: -5s; width: 290px; height: 290px; }
+
+/* La lumière ne fait pas que dériver : elle s'allume par à-coups. Les
+   pics d'opacité sont plus serrés que le déplacement, si bien qu'on voit
+   des éclats successifs le long des entrelacs plutôt qu'une lampe
+   promenée — c'est ce qui fait le réseau plutôt que le projecteur. */
+@keyframes derive {
+  0%   { transform: translate3d(-30%, 12%, 0) scale(.58);  opacity: .08; }
+  9%   { transform: translate3d(6%, -8%, 0) scale(.96);    opacity: 1; }
+  17%  { transform: translate3d(40%, -22%, 0) scale(.74);  opacity: .16; }
+  30%  { transform: translate3d(96%, 4%, 0) scale(1.04);   opacity: .98; }
+  41%  { transform: translate3d(140%, 20%, 0) scale(.72);  opacity: .12; }
+  56%  { transform: translate3d(196%, -6%, 0) scale(1);    opacity: .94; }
+  68%  { transform: translate3d(238%, -26%, 0) scale(.76); opacity: .18; }
+  83%  { transform: translate3d(300%, -4%, 0) scale(1.06); opacity: 1; }
+  100% { transform: translate3d(348%, 8%, 0) scale(.66);   opacity: .10; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scene-monde { transition: none; }
+  /* Les lumières s'arrêtent net et se posent là où elles éclairent le
+     mieux : le zellige garde son relief, plus rien ne bouge. */
+  .reseau .flux i { animation: none; opacity: .48;
+                    transform: translate3d(58%, -10%, 0); }
+}
+
 }
