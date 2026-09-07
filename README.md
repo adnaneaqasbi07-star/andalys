@@ -37,15 +37,18 @@ seront publiés.
 Tant que la base n'est pas en place, la boutique s'affiche et signale
 `La base n'est pas encore configurée`.
 
-## Mettre en service
+## Mise en service
 
-Trois étapes, une seule fois — le détail est dans
-[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) :
+**Faite le 7 septembre 2026.** Le schéma `boutique` est en place avec 55 produits
+et 6 articles, le schéma est exposé, l'URL de retour Google est autorisée, le
+compartiment d'images existe. Le détail et la marche à suivre pour rejouer tout
+cela sont dans [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md).
 
-1. `supabase db push` — crée le schéma `boutique` ;
-2. dans le tableau de bord : exposer le schéma `boutique`, ajouter l'URL de
-   retour Google, créer le compartiment de stockage `boutique` ;
-3. `python3 bin/deploie.py --pousser` — publie sur GitHub Pages.
+Pour publier une mise à jour du site :
+
+```bash
+python3 bin/deploie.py --pousser
+```
 
 ## Adresses
 
