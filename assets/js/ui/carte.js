@@ -9,14 +9,23 @@ import { lien } from "../core/routeur.js";
 import { estFavori, basculer } from "../data/favoris.js";
 import * as panier from "../data/panier.js";
 
+/**
+ * Le visuel affiché quand un produit n'a pas encore de photo. Une niche en
+ * arche plutôt qu'un emoji perdu au milieu du vide : l'absence de photo
+ * devient une intention, pas un oubli.
+ */
+export function visuelVide(type, grand) {
+  return h("div.vide" + (grand ? ".vide-grand" : ""),
+    h("span.em", { "aria-hidden": "true" }, emojiType(type)));
+}
+
 export function carte(p, options) {
   options = options || {};
   const remise = pourcentageRemise(p.prix, p.prix_barre);
   const rupture = Number(p.stock) <= 0 && !(p.variantes && p.variantes.length);
 
   const vis = h("a.vis", { href: lien("/p/" + p.slug), "aria-label": L(p.nom) },
-    p.image ? image(p.image, L(p.nom))
-            : h("div.vide", {}, emojiType(p.type)),
+    p.image ? image(p.image, L(p.nom)) : visuelVide(p.type),
     h("div.tags",
       remise  ? h("span.badge.badge-promo", {}, "−" + remise + "%") : null,
       p.nouveaute && !remise ? h("span.badge.badge-new", {}, t("nouveautes")) : null,

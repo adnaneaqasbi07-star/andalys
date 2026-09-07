@@ -5,7 +5,7 @@
 
 import { h, remplir, image, etoiles, notice, $, vider } from "../core/dom.js";
 import { t, L, langue } from "../i18n/index.js";
-import { prix, pourcentageRemise, emojiType, delai, dateHeure } from "../core/format.js";
+import { prix, pourcentageRemise, delai, dateHeure } from "../core/format.js";
 import { lien, aller } from "../core/routeur.js";
 import { etat } from "../core/etat.js";
 import { APP } from "../core/config.js";
@@ -13,7 +13,7 @@ import * as catalogue from "../data/catalogue.js";
 import * as panier from "../data/panier.js";
 import { estFavori, basculer } from "../data/favoris.js";
 import { inserer } from "../core/supa.js";
-import { grille, squelettes } from "../ui/carte.js";
+import { grille, squelettes, visuelVide } from "../ui/carte.js";
 import { ouvrirTiroir } from "../ui/coque.js";
 
 /* ------------------------------------------------------------------ */
@@ -27,8 +27,7 @@ function galerie(p) {
     grande.classList.remove("zoom");
     grande.appendChild(images.length
       ? image(images[i].src, L(images[i].alt) || L(p.nom))
-      : h("div", { style: { display: "grid", placeItems: "center", height: "100%", fontSize: "72px", opacity: ".28" } },
-          emojiType(p.type)));
+      : visuelVide(p.type, true));
     Array.prototype.forEach.call(vignettes.children, function (b, j) {
       b.setAttribute("aria-pressed", j === i ? "true" : "false");
     });

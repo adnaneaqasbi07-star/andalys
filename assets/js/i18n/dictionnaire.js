@@ -247,6 +247,12 @@ export const UI = {
   suivez_nous:        ["تابعونا", "Suivez-nous", "Follow us"],
   aide:               ["المساعدة", "Aide", "Help"],
   mentions:           ["معلومات قانونية", "Mentions légales", "Legal notice"],
+  page_vide:          ["لم يُحرَّر هذا النص بعد", "Ce texte n'a pas encore été rédigé",
+                       "This text has not been written yet"],
+  page_vide_admin:    ["يُحرَّر من لوحة التحكم › الإعدادات", "À rédiger depuis le back-office › Réglages",
+                       "To be written from the back-office › Settings"],
+  contact_vide:       ["لم تُضف بيانات الاتصال بعد", "Les coordonnées ne sont pas encore renseignées",
+                       "Contact details have not been filled in yet"],
   confidentialite:    ["سياسة الخصوصية", "Confidentialité", "Privacy"],
   conditions:         ["شروط البيع", "Conditions de vente", "Terms of sale"],
   droits:             ["كل الحقوق محفوظة", "Tous droits réservés", "All rights reserved"]

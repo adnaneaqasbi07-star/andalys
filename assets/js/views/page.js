@@ -32,9 +32,13 @@ export default function page(hote, params) {
           b.email     ? h("p", {}, "✉️ ", h("a", { href: "mailto:" + b.email }, b.email)) : null,
           L(b.adresse) ? h("p", {}, "📍 " + L(b.adresse)) : null,
           !b.telephone && !b.email
-            ? h("p.faint", {}, t("chargement"))
+            ? h("p.faint", {}, t("contact_vide"))
             : null)
-      : h("p.faint", {}, t("chargement"));
+      /* Dire « Chargement… » quand rien ne charge, c'est mentir : le texte
+         n'existe pas encore, et il se rédige depuis le back-office. */
+      : h("div.vide-etat", { style: { textAlign: "start", padding: "24px 0" } },
+          h("p", {}, t("page_vide")),
+          etat.estAdmin ? h("p.faint", {}, t("page_vide_admin")) : null);
 
   remplir(hote, h("div.wrap.section",
     h("div", { style: { maxWidth: "740px" } },
