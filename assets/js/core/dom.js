@@ -96,12 +96,20 @@ const observateur = "IntersectionObserver" in window
     }, { rootMargin: "300px" })
   : null;
 
-export function image(src, alt, classe) {
+/**
+ * @param {string} src
+ * @param {string} alt
+ * @param {string} classe
+ * @param {boolean} immediat  vrai pour ce qui est visible d'emblée : différer
+ *   le chargement d'une image au-dessus de la ligne de flottaison ne gagne
+ *   rien et laisse un aplat vide sous les yeux.
+ */
+export function image(src, alt, classe, immediat) {
   const img = h("img" + (classe ? "." + classe : ""), {
-    alt: alt || "", loading: "lazy", decoding: "async"
+    alt: alt || "", loading: immediat ? "eager" : "lazy", decoding: "async"
   });
   if (!src) { img.dataset.vide = "1"; return img; }
-  if (observateur) { img.dataset.src = src; observateur.observe(img); }
+  if (observateur && !immediat) { img.dataset.src = src; observateur.observe(img); }
   else { img.src = src; }
   return img;
 }

@@ -79,7 +79,8 @@ function portes() {
         const echoppes = catalogue.enfants(c.id);
         return h("a.porte", { href: lien("/c/" + c.slug) },
           h("div.linteau",
-            c.image_url ? image(ornement(c.image_url), "") : null,
+            /* les six portes sont juste sous le hero : chargement immédiat */
+            c.image_url ? image(ornement(c.image_url), "", null, true) : null,
             h("div.sceau", { "aria-hidden": "true" }, c.icone || "✦")),
           h("div.corps",
             h("div.ar", { lang: "ar", dir: "rtl" }, L(c.nom, "ar")),
