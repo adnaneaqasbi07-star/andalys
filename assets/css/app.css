@@ -362,50 +362,59 @@ h3 { font-size: 21px; }
    ===================================================================== */
 .hero {
   position: relative; overflow: hidden;
+  /* une seule mesure pour la hauteur du bandeau et le décalage du texte :
+     les deux ne peuvent pas se désaccorder */
+  --bandeau-h: clamp(124px, 20vh, 208px);
   background:
     radial-gradient(90% 120% at 50% 0%, #17513E 0%, #0F3B2E 55%, #0A2A21 100%);
   color: #F6F1E4;
 }
 
-/* La médina, dessinée, en fond du hero. Elle est ancrée en bas : c'est là
-   que sont les toits et le rempart, et c'est ce qu'on veut voir quand la
-   bande est basse sur un téléphone. */
-.hero .panorama {
-  position: absolute; inset-inline: 0; top: 0; z-index: 0;
-  width: 100%; height: 44%;
-  object-fit: cover; object-position: top center;
-  /* Fès à vol d'oiseau, en haut de la bannière : la médina et la
-     Karaouiyine, par-dessus le mur crénelé du palais. Le fondu s'éteint
-     avant les arcs, pour qu'on ne voie pas la couture entre les deux. */
-  opacity: .46; pointer-events: none;
-  -webkit-mask-image: linear-gradient(#000 0, #000 26%, transparent 88%);
-  mask-image: linear-gradient(#000 0, #000 26%, transparent 88%);
+/* Il n'y a plus de motif statique posé sur le hero. Il y en avait un —
+   une rosette répétée, à 28 % d'opacité — et c'est lui qui étouffait le
+   réseau de zellige animé : deux trames superposées, dont une immobile,
+   et l'œil ne voyait plus que l'immobile. Le réseau de scene() fait ce
+   travail, et lui, il vit. */
+
+/* Fès à vol d'oiseau, en haut du cadre.
+
+   Il est hors de la pile 3D et par-dessus le voile — c'est le seul moyen
+   qu'il soit visible : dans la pile, le voile passait entre lui et le
+   texte et l'éteignait à 90 %. Son bas se fond dans la photo des portes,
+   et le contenu du hero est décalé d'autant pour ne pas s'y écrire. */
+.hero .bandeau-haut {
+  position: absolute; inset-inline: 0; top: 0; z-index: 1;
+  width: 100%; height: var(--bandeau-h);
+  object-fit: cover; object-position: 50% 26%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(#000 0, #000 54%, transparent 100%);
+  mask-image: linear-gradient(#000 0, #000 54%, transparent 100%);
 }
 
-.hero::after {
-  content: ""; position: absolute; inset: 0; opacity: .28; pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'>\
-<g fill='none' stroke='%23D4AF37' stroke-width='.9' stroke-opacity='.22'>\
-<path d='M36 4 41 22 59 27 41 32 36 50 31 32 13 27 31 22Z'/>\
-<circle cx='36' cy='27' r='17'/>\
-<path d='M0 63h72M36 55v17'/>\
-</g></svg>");
-  background-size: 72px 72px;
-}
 .hero-in {
   position: relative; z-index: 1;
   display: grid; gap: 34px; align-items: center;
-  padding-block: clamp(46px, 8vw, 92px);
+  padding-block: calc(var(--bandeau-h) * .82 + 18px) clamp(46px, 8vw, 92px);
 }
 @media (min-width: 940px) { .hero-in { grid-template-columns: 1.02fr .98fr; gap: 56px; } }
+
+/* Le texte du hero repose sur une photographie, pas sur un aplat : le
+   voile ne suffit pas toujours, une arête claire de zellige peut passer
+   juste derrière une lettre. Un halo sombre très doux — pas une ombre
+   portée — détache donc les caractères de ce qu'il y a dessous, sans
+   qu'on remarque l'ombre elle-même. */
+.hero h1, .hero .lede, .hero .eyebrow,
+.hero-cta .btn-ghost,
+.hero-arche .nom, .hero-arche .sous, .hero-arche .liste {
+  text-shadow: 0 1px 2px rgba(4,20,15,.62), 0 3px 18px rgba(4,20,15,.48);
+}
 
 .hero h1 {
   font-size: clamp(34px, 6vw, 62px); margin-bottom: 18px; line-height: 1.08;
   color: #FFFBF0;
 }
 [dir="rtl"] .hero h1 { font-size: clamp(30px, 5.4vw, 52px); }
-.hero .lede { font-size: clamp(15.5px, 1.6vw, 18px); color: #D8D0BC; max-width: 52ch; margin: 0 0 30px; }
+.hero .lede { font-size: clamp(15.5px, 1.6vw, 18px); color: #EDE6D6; max-width: 52ch; margin: 0 0 30px; }
 .hero .eyebrow { color: var(--gold-2); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero-cta .btn-ghost { border-color: rgba(212,175,55,.5); color: #F6F1E4; }
@@ -441,7 +450,7 @@ h3 { font-size: 21px; }
 }
 [dir="rtl"] .hero-arche .sous { letter-spacing: .06em; text-transform: none; font-size: 13px; }
 .hero-arche .liste {
-  margin-top: 6px; font-size: 12.5px; color: #C9C0A9; text-align: center; line-height: 1.9;
+  margin-top: 6px; font-size: 12.5px; color: #DCD4C0; text-align: center; line-height: 1.9;
 }
 
 .assurances {
@@ -552,7 +561,10 @@ h3 { font-size: 21px; }
   color: #F6F1E4;
 }
 .bandeau-ville .legende h2 { color: #FFFBF0; margin: 6px 0 6px; }
-.bandeau-ville .legende p { color: #DCD5C4; margin: 0; max-width: 68ch; }
+.bandeau-ville .legende p { color: #E3DCCB; margin: 0; max-width: 68ch; }
+.bandeau-ville .legende h2, .bandeau-ville .legende p, .bandeau-ville .legende .eyebrow {
+  text-shadow: 0 1px 2px rgba(4,20,15,.62), 0 3px 18px rgba(4,20,15,.48);
+}
 @media (max-width: 640px) {
   .bandeau-ville { border-radius: 0; }
   .bandeau-ville .legende p { font-size: 14.5px; }
@@ -925,13 +937,13 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   --zellige: url("../img/motifs/zellige-fes.svg");
   --zel-pas: 128px;
   --reseau-dose: linear-gradient(100deg,
-    rgba(0,0,0,.10) 0%, rgba(0,0,0,.24) 38%,
-    rgba(0,0,0,.82) 72%, #000 100%);
+    rgba(0,0,0,.30) 0%, rgba(0,0,0,.46) 38%,
+    rgba(0,0,0,.88) 70%, #000 100%);
 }
 [dir="rtl"] .scene {
   --reseau-dose: linear-gradient(260deg,
-    rgba(0,0,0,.10) 0%, rgba(0,0,0,.24) 38%,
-    rgba(0,0,0,.82) 72%, #000 100%);
+    rgba(0,0,0,.30) 0%, rgba(0,0,0,.46) 38%,
+    rgba(0,0,0,.88) 70%, #000 100%);
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
@@ -952,7 +964,7 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    garde son contraste quelle que soit la photo dessous. Passé le bloc de
    texte, le voile s'ouvre et la photo reprend ses couleurs. */
 .plan-voile {
-  position: absolute; inset: 0;
+  position: absolute;
   background: linear-gradient(100deg,
     rgba(8,34,27,.94) 0%, rgba(8,34,27,.88) 46%,
     rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
@@ -963,14 +975,25 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
     rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
 }
 
-/* Le plan du fond : les portes du palais. Le cadrage privilégie le bas —
-   les arcs et le zellige — plutôt que les tuiles du toit. */
+/* Les portes du palais. Le cadrage privilégie le bas — les arcs et le
+   zellige — plutôt que les tuiles du toit.
+
+   Le fondu du haut n'est pas décoratif : c'est la couture entre les deux
+   photographies. Les pourcentages sont ceux du plan, pas du hero : le
+   plan déborde de 21 % en haut, si bien que le bord haut du hero tombe à
+   15 % de sa hauteur. Le fondu court donc de 15 % à 40 %. */
 .plan-porte {
-  position: absolute; inset: 0;
+  position: absolute;
   background-image: url("../img/photos/bab-palais.webp");
   background-size: cover;
-  background-position: 50% 68%;
+  background-position: 50% 74%;
   background-repeat: no-repeat;
+  /* Un fondu doux du haut, pour que la photo naisse du bandeau au lieu de
+     le heurter. Les pourcentages sont ceux du plan, pas du hero : le plan
+     déborde de 21 % en haut, si bien que le bord haut du hero tombe à
+     15 % de sa hauteur. */
+  -webkit-mask-image: linear-gradient(transparent 14%, #000 30%);
+  mask-image: linear-gradient(transparent 14%, #000 30%);
 }
 
 /* ---------------------------------------------------------------------
@@ -985,7 +1008,7 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    Deux masques qui s'intersectent : le pavage, et un fondu vertical qui
    allège le réseau vers le haut, là où il croiserait le titre. */
 .reseau {
-  position: absolute; inset: 0; transform-style: preserve-3d;
+  position: absolute; transform-style: preserve-3d;
   /* `screen` ajoute la lumière du réseau à celle de la photo au lieu de la
      remplacer : le zellige de la photo continue de se lire sous le nôtre,
      et une ligne déjà claire devient blanche au passage d'une étincelle.
@@ -1016,7 +1039,7 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .reseau .zel {
   background: linear-gradient(168deg,
     #4E7A66 0%, #8A6E30 26%, #C8A433 52%, #E9CE8E 74%, #FFF2CC 100%);
-  opacity: .58;
+  opacity: .66;
 }
 
 /* Les lumières.
@@ -1029,22 +1052,37 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 
    Ce sont des `transform` qui sont animés, jamais une position de fond :
    le compositeur du navigateur s'en charge seul, sans repeindre. */
-.reseau .flux { overflow: hidden; }
+/* `plus-lighter` additionne, là où `screen` se contente d'éclaircir. La
+   nuance est décisive : additionnée à l'or du réseau, la lumière dépasse
+   le blanc et la ligne de zellige *crame* au passage de l'étincelle. Avec
+   `screen` sur une photo déjà claire, on ne voyait presque rien.
+
+   Le mélange se fait à l'intérieur de .reseau, donc contre le dégradé du
+   zellige ; c'est ensuite .reseau tout entier qui est écranisé sur la
+   photo. Un navigateur qui ignore `plus-lighter` retombe sur `normal` :
+   l'étincelle reste blanche, elle ne fait simplement plus flamber la
+   ligne. */
+.reseau .flux { overflow: hidden; mix-blend-mode: plus-lighter; }
 
 .reseau .flux i {
-  position: absolute; width: 330px; height: 330px; border-radius: 50%;
+  /* Un cœur franc et une chute rapide : c'est ce qui fait un éclat plutôt
+     qu'un halo. Un dégradé long étalait la lumière sur trop de lignes à la
+     fois, et plus rien ne clignotait. */
+  position: absolute; width: 210px; height: 210px; border-radius: 50%;
   background: radial-gradient(circle,
-    #FFFFFF 0%, #FFFDF4 12%, rgba(255,246,214,.96) 26%,
-    rgba(248,216,148,.62) 46%, rgba(212,175,55,.18) 66%, transparent 80%);
+    #FFFFFF 0%, #FFFFFF 20%, rgba(255,252,240,.72) 34%,
+    rgba(252,230,170,.30) 52%, rgba(212,175,55,.08) 68%, transparent 78%);
   will-change: transform, opacity;
   animation: derive 16s cubic-bezier(.45,.05,.55,.95) infinite alternate;
 }
-.reseau .flux i:nth-child(1) { inset-inline-start: -12%; bottom: 6%;
-  animation-duration: 15s; animation-delay: -2s; }
-.reseau .flux i:nth-child(2) { inset-inline-start: 30%; bottom: 42%;
-  animation-duration: 22s; animation-delay: -9s; width: 250px; height: 250px; }
-.reseau .flux i:nth-child(3) { inset-inline-start: 66%; bottom: 14%;
-  animation-duration: 19s; animation-delay: -5s; width: 290px; height: 290px; }
+.reseau .flux i:nth-child(1) { inset-inline-start: -10%; bottom: 6%;
+  animation-duration: 9s; animation-delay: -1s; }
+.reseau .flux i:nth-child(2) { inset-inline-start: 24%; bottom: 44%;
+  animation-duration: 13s; animation-delay: -6s; width: 160px; height: 160px; }
+.reseau .flux i:nth-child(3) { inset-inline-start: 56%; bottom: 14%;
+  animation-duration: 7.5s; animation-delay: -3s; width: 185px; height: 185px; }
+.reseau .flux i:nth-child(4) { inset-inline-start: 6%; bottom: 64%;
+  animation-duration: 16s; animation-delay: -11s; width: 245px; height: 245px; }
 
 /* La lumière ne fait pas que dériver : elle s'allume par à-coups. Les
    pics d'opacité sont plus serrés que le déplacement, si bien qu'on voit

@@ -28,10 +28,14 @@ function hero() {
        devant eux un réseau de zellige lumineux : trois plans à trois
        profondeurs, tous dans scene().
 
-       La vue de Fès à vol d'oiseau n'est pas ici : superposée à la photo,
-       elle n'en ressortait pas. Elle a son propre bandeau, plus bas, où on
-       la voit vraiment. */
+       La même vue se retrouve en grand plus bas dans la page : ici on n'en
+       montre que la bande haute, là on la donne en entier. */
     scene(),
+    /* Fès à vol d'oiseau, en haut du cadre : la médina et la Karaouiyine,
+       comme aperçues par-dessus le mur du palais. */
+    h("img.bandeau-haut", { src: "assets/img/vues/fes-oiseau.svg",
+                            alt: "Fès à vol d'oiseau : la médina et la mosquée Karaouiyine",
+                            loading: "eager", decoding: "async" }),
     h("div.wrap",
       h("div.hero-in",
         h("div",
