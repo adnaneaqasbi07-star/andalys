@@ -1,6 +1,6 @@
 {
- "version": "20260907-15313a33",
- "publie_le": "2026-09-07T17:38:39.968787+00:00",
+ "version": "20260907-6e7878d4",
+ "publie_le": "2026-09-07T17:54:11.546012+00:00",
  "fichiers": [
   ".nojekyll",
   "README.md",
@@ -19,6 +19,9 @@
   "assets/img/journal/fes-les-portes-de-la-medina.svg",
   "assets/img/journal/fes-seffarine-le-cuivre.svg",
   "assets/img/logo-symbole.svg",
+  "assets/img/motifs/arcade-filet.svg",
+  "assets/img/motifs/arcade-masque.svg",
+  "assets/img/motifs/zellige-fes.svg",
   "assets/img/photos/bab-boujloud.webp",
   "assets/img/photos/bab-moulay-driss.webp",
   "assets/img/photos/bab-rcif.webp",

@@ -900,11 +900,14 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   /* la scène ne bouge pas si le visiteur a demandé moins d'animations */
   --incl-x: 0deg;
   --incl-y: 0deg;
-  /* la tuile de l'arcade : un arc outrepassé percé dans un pan de mur */
-  --arcade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' \
-width='210' height='430' viewBox='0 0 210 430'%3E%3Cpath fill='%23000' \
-fill-rule='evenodd' d='M0 0H210V430H0Z M56 430V252A64 64 0 1 1 154 252V430Z'\
-/%3E%3C/svg%3E");
+  /* Les trois tuiles de la galerie, toutes dessinées par bin/motifs.py :
+     le percement de l'arc, le filet doré qui le souligne, et le zellige de
+     Fès — l'étoile à huit branches dans son octogone, en pavage sans
+     raccord. Le masque et le filet sortent du même tracé d'arc : ils ne
+     peuvent pas divergre. */
+  --arcade: url("../img/motifs/arcade-masque.svg");
+  --arcade-filet: url("../img/motifs/arcade-filet.svg");
+  --zellige: url("../img/motifs/zellige-fes.svg");
   --tw: 210px;
   --th: 430px;
 }
@@ -949,9 +952,22 @@ fill-rule='evenodd' d='M0 0H210V430H0Z M56 430V252A64 64 0 1 1 154 252V430Z'\
   position: absolute; inset: 0;
   transform-style: preserve-3d;
 }
+/* Le parement. Le zellige habille le niveau de l'arcade et s'arrête là
+   où il s'arrête sur les murs de la médina : au-dessus, le mur est nu,
+   comme le plâtre au-dessus d'un lambris. C'est la première couche —
+   un aplat de la teinte du mur — qui recouvre le zellige sur cette
+   hauteur ; la couleur de fond fait le reste. */
 .travee .mur {
   position: absolute; inset: 0;
-  background: var(--t-mur);
+  background-color: var(--t-mur);
+  background-image:
+    linear-gradient(var(--t-mur) 0, var(--t-mur) calc(100% - var(--th)),
+                    transparent calc(100% - var(--th))),
+    var(--arcade-filet),
+    var(--zellige);
+  background-size: 100% 100%, var(--tw) var(--th), var(--t-zel) var(--t-zel);
+  background-repeat: no-repeat, repeat-x, repeat;
+  background-position: 0 0, 50% 100%, 50% 100%;
   -webkit-mask-image: var(--arcade), linear-gradient(#000 0 0);
   -webkit-mask-size: var(--tw) var(--th), 100% calc(100% - var(--th));
   -webkit-mask-position: 50% 100%, 0 0;
