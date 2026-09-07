@@ -11,6 +11,7 @@ import { etat } from "../core/etat.js";
 import * as catalogue from "../data/catalogue.js";
 import { grille, squelettes } from "../ui/carte.js";
 import { marque } from "../ui/logo.js";
+import { scene } from "../ui/scene.js";
 import { stockage } from "../core/supa.js";
 
 /* Les motifs livrés avec le site, comme les photos déposées, passent par
@@ -23,7 +24,9 @@ function hero() {
   const portesOuvertes = catalogue.racines();
 
   return h("section.hero",
-    /* Le dessin de la médina, puis le voile qui garde le texte lisible. */
+    /* L'enfilade d'arches en perspective réelle, puis la médina dessinée
+       en surimpression basse, puis le voile qui garde le texte lisible. */
+    scene(),
     h("img.panorama", { src: "assets/img/vues/medina.svg", alt: "", "aria-hidden": "true",
                         loading: "eager", decoding: "async" }),
     h("div.voile-hero", { "aria-hidden": "true" }),

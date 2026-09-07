@@ -23,7 +23,7 @@ export function h(selecteur, attrs) {
       const k = e[0], v = e[1];
       if (v === null || v === undefined || v === false) return;
       if (k === "class") el.className = v;
-      else if (k === "style" && typeof v === "object") Object.assign(el.style, v);
+      else if (k === "style" && typeof v === "object") style(el, v);
       else if (k === "html") el.innerHTML = v;               /* réservé aux gabarits internes */
       else if (k === "dataset") Object.assign(el.dataset, v);
       else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
@@ -38,6 +38,21 @@ export function h(selecteur, attrs) {
 
   for (let i = debut; i < arguments.length; i++) ajouter(el, arguments[i]);
   return el;
+}
+
+/* Applique un objet de styles. Attention aux propriétés personnalisées :
+   `el.style["--x"] = v` ne fait rien du tout — cela crée une propriété
+   JavaScript sur l'objet, que le moteur de style ignore. Il faut passer par
+   setProperty(). C'est ce qui manquait quand la scène du hero est restée
+   invisible : ses murs tiraient leur couleur et la découpe de leur arc de
+   trois variables posées travée par travée. */
+function style(el, styles) {
+  Object.entries(styles).forEach(function (e) {
+    const k = e[0], v = e[1];
+    if (v === null || v === undefined || v === false) return;
+    if (k.startsWith("--")) el.style.setProperty(k, String(v));
+    else el.style[k] = v;
+  });
 }
 
 function ajouter(parent, enfant) {

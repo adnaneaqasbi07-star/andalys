@@ -372,9 +372,12 @@ h3 { font-size: 21px; }
    bande est basse sur un téléphone. */
 .hero .panorama {
   position: absolute; inset-inline: 0; bottom: 0; z-index: 0;
-  width: 100%; height: auto; min-height: 62%;
+  width: 100%; height: auto; max-height: 58%;
   object-fit: cover; object-position: bottom center;
-  opacity: .5; pointer-events: none;
+  /* discret : la scène en perspective porte le relief, le panorama ne
+     fait qu'asseoir la base du hero sur une silhouette de ville */
+  opacity: .18; pointer-events: none;
+  mask-image: linear-gradient(transparent, #000 38%);
 }
 /* Un voile pour que le texte reste lisible par-dessus le dessin. */
 .hero .voile-hero {
@@ -875,4 +878,101 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 @media print {
   .header, .nav, .tabbar, .footer, .voile, .tiroir, .btn, .icon-btn { display: none !important; }
   body { background: #fff; color: #000; }
+}
+
+/* =====================================================================
+   La bannière en perspective — entrer dans la médina
+   ---------------------------------------------------------------------
+   Une enfilade d'arches posées à des profondeurs différentes dans un
+   espace 3D. Ce n'est pas un dégradé qui imite la profondeur : chaque
+   arche est réellement translatée sur l'axe Z, le navigateur calcule la
+   perspective, et le mouvement de la souris fait tourner la scène.
+
+   Aucune bibliothèque : `perspective` et `translate3d` suffisent, et le
+   compositeur du navigateur s'en occupe sur le processeur graphique.
+   ===================================================================== */
+.scene {
+  position: absolute; inset: 0; z-index: 0;
+  perspective: 900px;
+  perspective-origin: 50% 46%;
+  overflow: hidden;
+  pointer-events: none;
+  /* la scène ne bouge pas si le visiteur a demandé moins d'animations */
+  --incl-x: 0deg;
+  --incl-y: 0deg;
+  /* la tuile de l'arcade : un arc outrepassé percé dans un pan de mur */
+  --arcade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' \
+width='210' height='430' viewBox='0 0 210 430'%3E%3Cpath fill='%23000' \
+fill-rule='evenodd' d='M0 0H210V430H0Z M56 430V252A64 64 0 1 1 154 252V430Z'\
+/%3E%3C/svg%3E");
+  --tw: 210px;
+  --th: 430px;
+}
+
+/* Sur téléphone, deux corrections. La tuile rétrécit, sinon une bande
+   d'arcade de 430 px ne laisserait plus de mur au-dessus. Et surtout la
+   scène ne prend plus toute la hauteur du hero : celui-ci fait près de
+   1000 px sur un téléphone, si bien que l'arcade, calée en bas, tombait
+   sous la ligne de flottaison — le visiteur ne voyait qu'un mur. La scène
+   est donc ramenée en haut, sur 520 px, et son bas est fondu pour qu'on
+   ne voie pas où elle s'arrête. */
+@media (max-width: 720px) {
+  .scene {
+    --tw: 132px; --th: 268px;
+    bottom: auto; height: min(520px, 100%);
+    -webkit-mask-image: linear-gradient(#000 74%, transparent);
+    mask-image: linear-gradient(#000 74%, transparent);
+  }
+}
+.scene-monde {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--incl-x)) rotateY(var(--incl-y));
+  transition: transform 420ms cubic-bezier(.2,.7,.3,1);
+  will-change: transform;
+}
+
+/* Une travée : un mur percé d'une arcade d'arcs outrepassés. Le mur est
+   opaque, les arcs sont les trous — et c'est par ces trous qu'on voit la
+   travée suivante, puis la lumière du fond.
+
+   Les cinq travées ont exactement la même géométrie locale. C'est voulu :
+   c'est la perspective qui les met à l'échelle, si bien qu'une travée
+   lointaine montre des arcs plus serrés qu'une travée proche. On regarde
+   donc une vraie galerie en enfilade, pas une pile de calques.
+
+   Le percement se fait au masque : une tuile SVG répétée horizontalement
+   (l'arc, en trou, par `fill-rule: evenodd`) et, au-dessus d'elle, un
+   aplat qui garde le haut du mur plein. Les deux couches s'additionnent —
+   c'est le `mask-composite` par défaut. */
+.travee {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+}
+.travee .mur {
+  position: absolute; inset: 0;
+  background: var(--t-mur);
+  -webkit-mask-image: var(--arcade), linear-gradient(#000 0 0);
+  -webkit-mask-size: var(--tw) var(--th), 100% calc(100% - var(--th));
+  -webkit-mask-position: 50% 100%, 0 0;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-image: var(--arcade), linear-gradient(#000 0 0);
+  mask-size: var(--tw) var(--th), 100% calc(100% - var(--th));
+  mask-position: 50% 100%, 0 0;
+  mask-repeat: repeat-x, no-repeat;
+}
+
+/* La lumière au bout de la galerie. Posée loin derrière la dernière
+   travée, et agrandie d'autant pour continuer à remplir le cadre : à
+   1500 px de profondeur, la perspective la réduit de plus de moitié. */
+.scene-fond {
+  position: absolute; inset: 0;
+  transform: translateZ(-1500px) scale(2.8);
+  background:
+    radial-gradient(62% 52% at 50% 62%,
+      #FFF6DE 0%, #F2D08A 20%, #C99A45 38%, #3E6B54 66%, #0E3126 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-monde { transition: none; }
 }
