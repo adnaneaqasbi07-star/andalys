@@ -24,18 +24,14 @@ function hero() {
   const portesOuvertes = catalogue.racines();
 
   return h("section.hero",
-    /* Les portes du palais en photographie, le voile de lisibilité, et
-       devant eux un réseau de zellige lumineux : trois plans à trois
-       profondeurs, tous dans scene().
+    /* La médina en photographie, le voile de lisibilité, et devant eux un
+       réseau de zellige lumineux : trois plans à trois profondeurs, tous
+       dans scene().
 
-       La même vue se retrouve en grand plus bas dans la page : ici on n'en
-       montre que la bande haute, là on la donne en entier. */
+       Le dessin à vol d'oiseau n'est plus ici : cette photographie est
+       déjà une vue de Fès, et empiler les deux ne faisait que les brouiller.
+       Le dessin garde son bandeau, plus bas dans la page. */
     scene(),
-    /* Fès à vol d'oiseau, en haut du cadre : la médina et la Karaouiyine,
-       comme aperçues par-dessus le mur du palais. */
-    h("img.bandeau-haut", { src: "assets/img/vues/fes-oiseau.svg",
-                            alt: "Fès à vol d'oiseau : la médina et la mosquée Karaouiyine",
-                            loading: "eager", decoding: "async" }),
     h("div.wrap",
       h("div.hero-in",
         h("div",

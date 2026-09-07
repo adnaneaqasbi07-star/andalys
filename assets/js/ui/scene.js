@@ -1,18 +1,12 @@
 /* =====================================================================
-   La bannière en relief — Fès, les portes du palais, et le zellige
+   La bannière en relief — Fès, la médina, et le zellige
    ---------------------------------------------------------------------
    Quatre plans posés à des profondeurs réelles sur l'axe Z, dans un
    espace en perspective :
 
-     • la photographie des portes du palais, au fond ;
+     • la photographie de la médina, au fond ;
      • le voile qui garde le texte lisible, 100 px devant ;
      • et devant tout, un réseau de zellige où court la lumière.
-
-   Fès à vol d'oiseau n'est pas dans cette pile : le voile passe entre les
-   deux photographies, et il éteignait la vue à 90 %. Elle a donc son
-   propre bandeau, au-dessus du voile — voir .bandeau-haut dans app.css.
-   Elle y perd sa parallaxe, ce qui ne coûte rien : à cette distance, le
-   décalage aurait été imperceptible. Elle y gagne d'être visible.
 
    Le navigateur calcule la perspective ; la souris fait tourner le monde
    de quelques degrés. Comme les plans ne sont pas à la même profondeur,
@@ -43,7 +37,7 @@ import { h } from "../core/dom.js";
 const PERSP = 900;
 
 const PLANS = [
-  { classe: "plan-porte", z: 300 },
+  { classe: "plan-fond", z: 300 },
   { classe: "plan-voile", z: 200 },
   { classe: "reseau", z: 120, etincelles: 4 }
 ];

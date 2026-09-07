@@ -362,9 +362,11 @@ h3 { font-size: 21px; }
    ===================================================================== */
 .hero {
   position: relative; overflow: hidden;
-  /* une seule mesure pour la hauteur du bandeau et le décalage du texte :
-     les deux ne peuvent pas se désaccorder */
-  --bandeau-h: clamp(124px, 20vh, 208px);
+  /* La photographie fait deux de large pour un de haut. Si le cadre
+     devient trop haut, `cover` la remonte et l'on ne voit plus que du
+     ciel : la hauteur suit donc la largeur, elle ne suit pas l'écran. */
+  min-height: clamp(440px, 52vw, 680px);
+  display: grid;
   background:
     radial-gradient(90% 120% at 50% 0%, #17513E 0%, #0F3B2E 55%, #0A2A21 100%);
   color: #F6F1E4;
@@ -376,25 +378,12 @@ h3 { font-size: 21px; }
    et l'œil ne voyait plus que l'immobile. Le réseau de scene() fait ce
    travail, et lui, il vit. */
 
-/* Fès à vol d'oiseau, en haut du cadre.
-
-   Il est hors de la pile 3D et par-dessus le voile — c'est le seul moyen
-   qu'il soit visible : dans la pile, le voile passait entre lui et le
-   texte et l'éteignait à 90 %. Son bas se fond dans la photo des portes,
-   et le contenu du hero est décalé d'autant pour ne pas s'y écrire. */
-.hero .bandeau-haut {
-  position: absolute; inset-inline: 0; top: 0; z-index: 1;
-  width: 100%; height: var(--bandeau-h);
-  object-fit: cover; object-position: 50% 26%;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(#000 0, #000 54%, transparent 100%);
-  mask-image: linear-gradient(#000 0, #000 54%, transparent 100%);
-}
-
 .hero-in {
   position: relative; z-index: 1;
-  display: grid; gap: 34px; align-items: center;
-  padding-block: calc(var(--bandeau-h) * .82 + 18px) clamp(46px, 8vw, 92px);
+  display: grid; gap: 34px; align-items: start;
+  /* Le contenu tient le haut du cadre, où le dégradé le porte. Le bas est
+     laissé à la photographie : c'est là qu'est la ville. */
+  padding-block: clamp(40px, 5vw, 68px) clamp(124px, 17vw, 250px);
 }
 @media (min-width: 940px) { .hero-in { grid-template-columns: 1.02fr .98fr; gap: 56px; } }
 
@@ -406,15 +395,21 @@ h3 { font-size: 21px; }
 .hero h1, .hero .lede, .hero .eyebrow,
 .hero-cta .btn-ghost,
 .hero-arche .nom, .hero-arche .sous, .hero-arche .liste {
-  text-shadow: 0 1px 2px rgba(4,20,15,.62), 0 3px 18px rgba(4,20,15,.48);
+  text-shadow: 0 1px 2px rgba(4,20,15,.55), 0 3px 20px rgba(4,20,15,.45);
 }
 
 .hero h1 {
-  font-size: clamp(34px, 6vw, 62px); margin-bottom: 18px; line-height: 1.08;
+  /* 5,6vw et non 7 : à 7, le titre passait à trois lignes vers 1000 px et
+     poussait les boutons hors du cadre. */
+  font-size: clamp(38px, 5.6vw, 74px); margin-bottom: 20px; line-height: 1.05;
+  letter-spacing: .005em;
   color: #FFFBF0;
 }
-[dir="rtl"] .hero h1 { font-size: clamp(30px, 5.4vw, 52px); }
-.hero .lede { font-size: clamp(15.5px, 1.6vw, 18px); color: #EDE6D6; max-width: 52ch; margin: 0 0 30px; }
+/* L'arabe n'a pas de capitales : à corps égal, l'Amiri paraît plus petit
+   que la romaine latine. On le remonte donc au lieu de le rapetisser —
+   c'est l'inverse de ce que faisait la règle précédente. */
+[dir="rtl"] .hero h1 { font-size: clamp(36px, 5.4vw, 70px); line-height: 1.34; }
+.hero .lede { font-size: clamp(16px, 1.7vw, 19.5px); color: #EDE6D6; max-width: 52ch; margin: 0 0 32px; }
 .hero .eyebrow { color: var(--gold-2); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero-cta .btn-ghost { border-color: rgba(212,175,55,.5); color: #F6F1E4; }
@@ -423,7 +418,7 @@ h3 { font-size: 21px; }
 /* La grande arche du fond de boutique, avec le blason de la maison. */
 .hero-arche {
   position: relative; z-index: 1;
-  aspect-ratio: 4 / 4.4; max-width: 380px; margin-inline: auto; width: 100%;
+  aspect-ratio: 4 / 4.5; max-width: 420px; margin-inline: auto; width: 100%;
   border: 2px solid rgba(212,175,55,.42);
   border-radius: 48% 48% 10px 10px / 40% 40% 10px 10px;
   background:
@@ -441,17 +436,57 @@ h3 { font-size: 21px; }
 }
 .hero-arche .nom {
   font-family: var(--f-display); font-weight: 600;
-  font-size: clamp(26px, 3.4vw, 38px); letter-spacing: .16em;
+  font-size: clamp(30px, 4vw, 46px); letter-spacing: .17em;
   color: #FFFBF0; text-align: center; line-height: 1;
 }
+[dir="rtl"] .hero-arche .nom {
+  font-family: var(--f-ar); font-weight: 700; letter-spacing: 0;
+  font-size: clamp(34px, 4.6vw, 54px); line-height: 1.25;
+}
+
+/* « TRÉSOR DE FÈS » / « كنز فاس » — la signature de la maison.
+
+   Ce n'était qu'une ligne de 10,5 px sous le nom. C'est pourtant la
+   moitié de la marque, et en arabe c'est le mot qui parle au client. Elle
+   devient donc une vraie ligne de titre : deux filets d'or l'encadrent,
+   comme sur une plaque émaillée, et en arabe elle passe à l'Amiri à un
+   corps qui se voit. */
 .hero-arche .sous {
-  font-size: 10.5px; letter-spacing: .34em; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-family: var(--f-display); font-weight: 600;
+  font-size: clamp(12.5px, 1.5vw, 16px);
+  letter-spacing: .40em; text-transform: uppercase;
   color: var(--gold-2); text-align: center;
+  white-space: nowrap;
 }
-[dir="rtl"] .hero-arche .sous { letter-spacing: .06em; text-transform: none; font-size: 13px; }
+.hero-arche .sous::before,
+.hero-arche .sous::after {
+  content: ""; flex: 0 0 clamp(18px, 3vw, 34px); height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-2));
+}
+.hero-arche .sous::after { transform: scaleX(-1); }
+
+[dir="rtl"] .hero-arche .sous {
+  font-family: var(--f-ar); font-weight: 700;
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: 0; text-transform: none;
+  gap: 16px;
+}
 .hero-arche .liste {
-  margin-top: 6px; font-size: 12.5px; color: #DCD4C0; text-align: center; line-height: 1.9;
+  margin-top: 8px; font-size: 13px; color: #DCD4C0; text-align: center; line-height: 1.95;
 }
+
+/* Sous 940 px, le blason passait sous le texte et faisait un hero de
+   900 px de haut. Or la photographie fait deux de large pour un de haut :
+   dans un cadre aussi haut, `cover` l'agrandit tant qu'il n'en reste
+   qu'une tranche, et le voile achève de la cacher. Le blason sort donc du
+   hero — il ne dit rien que l'en-tête ne dise déjà — et la bannière
+   retrouve son format.
+
+   La règle est ici, après `.hero-arche`, et non plus avant : à
+   spécificité égale c'est la dernière qui gagne, et le `display: grid` du
+   blason l'emportait. */
+@media (max-width: 939px) { .hero-arche { display: none; } }
 
 .assurances {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -936,14 +971,13 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      dessinée par bin/motifs.py, en pavage sans raccord */
   --zellige: url("../img/motifs/zellige-fes.svg");
   --zel-pas: 128px;
-  --reseau-dose: linear-gradient(100deg,
-    rgba(0,0,0,.30) 0%, rgba(0,0,0,.46) 38%,
-    rgba(0,0,0,.88) 70%, #000 100%);
-}
-[dir="rtl"] .scene {
-  --reseau-dose: linear-gradient(260deg,
-    rgba(0,0,0,.30) 0%, rgba(0,0,0,.46) 38%,
-    rgba(0,0,0,.88) 70%, #000 100%);
+  /* Le réseau se dose par la hauteur, comme le voile : franc en haut, sur
+     le ciel assombri où il se lit et où il tient compagnie au texte, puis
+     il s'efface vers le bas pour laisser la médina tranquille. Un filet
+     posé sur des toits réels ferait faux. */
+  --reseau-dose: linear-gradient(
+    rgba(0,0,0,.82) 0%,  #000 13%,             rgba(0,0,0,.64) 33%,
+    rgba(0,0,0,.32) 53%, rgba(0,0,0,.09) 74%,  transparent 92%);
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
@@ -959,41 +993,39 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    et le réseau : c'est ce qui permet à la lumière du zellige de se lire
    par-dessus lui.
 
-   Le dosage n'est pas décoratif : à 0,88 d'opacité, le pixel de la photo
-   ne peut plus remonter que de 12 % vers le blanc, donc le titre en ivoire
-   garde son contraste quelle que soit la photo dessous. Passé le bloc de
-   texte, le voile s'ouvre et la photo reprend ses couleurs. */
+   Il descend du haut, et c'est un choix de cadrage autant que de
+   lisibilité. Le sujet de la photographie est en bas — le minaret, les
+   toits de tuiles vertes, la colline de maisons — et le ciel est la partie
+   vide. Assombrir le ciel ne coûte rien ; assombrir la médina, c'est jeter
+   la photographie. Le texte va donc en haut, sur le ciel, et le bas du
+   cadre reste en pleine couleur.
+
+   Une verticale n'a pas non plus besoin d'être inversée en arabe : elle
+   n'a pas de sens de lecture, contrairement à la diagonale qu'il y avait
+   avant.
+
+   Le dosage n'est pas décoratif : derrière le bloc de texte le voile passe
+   0,88, si bien qu'un pixel de nuage ne peut plus remonter que de 12 %
+   vers le blanc — le titre en ivoire garde son contraste. */
 .plan-voile {
   position: absolute;
-  background: linear-gradient(100deg,
-    rgba(8,34,27,.94) 0%, rgba(8,34,27,.88) 46%,
-    rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
-}
-[dir="rtl"] .plan-voile {
-  background: linear-gradient(260deg,
-    rgba(8,34,27,.94) 0%, rgba(8,34,27,.88) 46%,
-    rgba(8,34,27,.44) 76%, rgba(8,34,27,.18) 100%);
+  background: linear-gradient(to bottom,
+    rgba(6,28,22,.96) 0%,  rgba(6,28,22,.92) 24%, rgba(6,28,22,.80) 42%,
+    rgba(6,28,22,.52) 58%, rgba(6,28,22,.22) 76%, rgba(6,28,22,.02) 100%);
 }
 
-/* Les portes du palais. Le cadrage privilégie le bas — les arcs et le
-   zellige — plutôt que les tuiles du toit.
+/* Le plan du fond : la médina depuis la place.
 
-   Le fondu du haut n'est pas décoratif : c'est la couture entre les deux
-   photographies. Les pourcentages sont ceux du plan, pas du hero : le
-   plan déborde de 21 % en haut, si bien que le bord haut du hero tombe à
-   15 % de sa hauteur. Le fondu court donc de 15 % à 40 %. */
-.plan-porte {
+   Le cadrage est ancré à droite et bas : à droite pour garder le minaret,
+   que le recouvrement en `cover` rognerait sinon sur un cadre plus haut
+   que large ; bas pour que la colline de maisons et les toits verts
+   restent dans le champ plutôt que le ciel seul. */
+.plan-fond {
   position: absolute;
-  background-image: url("../img/photos/bab-palais.webp");
+  background-image: url("../img/photos/fes-medina.webp");
   background-size: cover;
-  background-position: 50% 74%;
+  background-position: 76% 64%;
   background-repeat: no-repeat;
-  /* Un fondu doux du haut, pour que la photo naisse du bandeau au lieu de
-     le heurter. Les pourcentages sont ceux du plan, pas du hero : le plan
-     déborde de 21 % en haut, si bien que le bord haut du hero tombe à
-     15 % de sa hauteur. */
-  -webkit-mask-image: linear-gradient(transparent 14%, #000 30%);
-  mask-image: linear-gradient(transparent 14%, #000 30%);
 }
 
 /* ---------------------------------------------------------------------
@@ -1038,8 +1070,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 /* le dégradé du zellige : sauge en haut, or au milieu, ivoire en bas */
 .reseau .zel {
   background: linear-gradient(168deg,
-    #4E7A66 0%, #8A6E30 26%, #C8A433 52%, #E9CE8E 74%, #FFF2CC 100%);
-  opacity: .66;
+    #6E9C84 0%, #A5842F 24%, #D8B23C 50%, #F2D89C 74%, #FFF6DC 100%);
+  opacity: .80;
 }
 
 /* Les lumières.
@@ -1065,47 +1097,50 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .reseau .flux { overflow: hidden; mix-blend-mode: plus-lighter; }
 
 .reseau .flux i {
-  /* Un cœur franc et une chute rapide : c'est ce qui fait un éclat plutôt
-     qu'un halo. Un dégradé long étalait la lumière sur trop de lignes à la
-     fois, et plus rien ne clignotait. */
-  position: absolute; width: 210px; height: 210px; border-radius: 50%;
+  /* Un cœur franc mais pas éblouissant, et une chute nette : c'est ce qui
+     fait passer une lueur le long d'une ligne plutôt qu'un halo posé sur
+     tout le quartier. */
+  position: absolute; width: 230px; height: 230px; border-radius: 50%;
   background: radial-gradient(circle,
-    #FFFFFF 0%, #FFFFFF 20%, rgba(255,252,240,.72) 34%,
-    rgba(252,230,170,.30) 52%, rgba(212,175,55,.08) 68%, transparent 78%);
+    rgba(255,255,255,.92) 0%, rgba(255,253,244,.78) 18%, rgba(255,248,224,.52) 32%,
+    rgba(250,226,164,.24) 50%, rgba(212,175,55,.07) 68%, transparent 80%);
   will-change: transform, opacity;
-  animation: derive 16s cubic-bezier(.45,.05,.55,.95) infinite alternate;
+  animation: derive 26s cubic-bezier(.5,.08,.5,.92) infinite alternate;
 }
-.reseau .flux i:nth-child(1) { inset-inline-start: -10%; bottom: 6%;
-  animation-duration: 9s; animation-delay: -1s; }
-.reseau .flux i:nth-child(2) { inset-inline-start: 24%; bottom: 44%;
-  animation-duration: 13s; animation-delay: -6s; width: 160px; height: 160px; }
-.reseau .flux i:nth-child(3) { inset-inline-start: 56%; bottom: 14%;
-  animation-duration: 7.5s; animation-delay: -3s; width: 185px; height: 185px; }
-.reseau .flux i:nth-child(4) { inset-inline-start: 6%; bottom: 64%;
-  animation-duration: 16s; animation-delay: -11s; width: 245px; height: 245px; }
+/* Des durées longues et premières entre elles : les quatre lueurs ne se
+   recroisent jamais au même endroit, et aucune ne repasse assez vite pour
+   qu'on la guette. C'est ce qui fait la différence entre une bannière qui
+   respire et une guirlande. */
+.reseau .flux i:nth-child(1) { inset-inline-start: -10%; bottom: 8%;
+  animation-duration: 23s; animation-delay: -3s; }
+.reseau .flux i:nth-child(2) { inset-inline-start: 24%; bottom: 40%;
+  animation-duration: 31s; animation-delay: -14s; width: 175px; height: 175px; }
+.reseau .flux i:nth-child(3) { inset-inline-start: 56%; bottom: 16%;
+  animation-duration: 19s; animation-delay: -7s; width: 200px; height: 200px; }
+.reseau .flux i:nth-child(4) { inset-inline-start: 6%; bottom: 58%;
+  animation-duration: 37s; animation-delay: -25s; width: 265px; height: 265px; }
 
-/* La lumière ne fait pas que dériver : elle s'allume par à-coups. Les
-   pics d'opacité sont plus serrés que le déplacement, si bien qu'on voit
-   des éclats successifs le long des entrelacs plutôt qu'une lampe
-   promenée — c'est ce qui fait le réseau plutôt que le projecteur. */
+/* La lumière dérive et s'allume, mais en douceur : les montées et les
+   descentes sont étalées, et le maximum reste sous 0,8. On avait d'abord
+   des pics à 1 tous les deux temps — c'était net, et c'était fatigant. Ici
+   la lueur enfle et s'éteint comme une respiration. */
 @keyframes derive {
-  0%   { transform: translate3d(-30%, 12%, 0) scale(.58);  opacity: .08; }
-  9%   { transform: translate3d(6%, -8%, 0) scale(.96);    opacity: 1; }
-  17%  { transform: translate3d(40%, -22%, 0) scale(.74);  opacity: .16; }
-  30%  { transform: translate3d(96%, 4%, 0) scale(1.04);   opacity: .98; }
-  41%  { transform: translate3d(140%, 20%, 0) scale(.72);  opacity: .12; }
-  56%  { transform: translate3d(196%, -6%, 0) scale(1);    opacity: .94; }
-  68%  { transform: translate3d(238%, -26%, 0) scale(.76); opacity: .18; }
-  83%  { transform: translate3d(300%, -4%, 0) scale(1.06); opacity: 1; }
-  100% { transform: translate3d(348%, 8%, 0) scale(.66);   opacity: .10; }
+  0%   { transform: translate3d(-30%, 12%, 0) scale(.62);  opacity: .06; }
+  14%  { transform: translate3d(28%, -6%, 0) scale(.92);   opacity: .58; }
+  27%  { transform: translate3d(78%, 14%, 0) scale(.74);   opacity: .14; }
+  44%  { transform: translate3d(140%, -10%, 0) scale(1);   opacity: .74; }
+  58%  { transform: translate3d(190%, 16%, 0) scale(.78);  opacity: .18; }
+  76%  { transform: translate3d(258%, -8%, 0) scale(.98);  opacity: .66; }
+  90%  { transform: translate3d(312%, 10%, 0) scale(.76);  opacity: .20; }
+  100% { transform: translate3d(346%, 4%, 0) scale(.66);   opacity: .08; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scene-monde { transition: none; }
   /* Les lumières s'arrêtent net et se posent là où elles éclairent le
      mieux : le zellige garde son relief, plus rien ne bouge. */
-  .reseau .flux i { animation: none; opacity: .48;
-                    transform: translate3d(58%, -10%, 0); }
+  .reseau .flux i { animation: none; opacity: .42;
+                    transform: translate3d(58%, -10%, 0) scale(.95); }
 }
 
 }
