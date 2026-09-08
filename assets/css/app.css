@@ -1185,6 +1185,15 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   animation-duration: 37s; animation-delay: -25s; width: 280px; height: 280px; }
 
 /* Le balai. Une barre verticale très douce, qui traverse tout le cadre
+   —
+   Sur le budget lumière : le balai et les quatre lueurs s'additionnent
+   (`plus-lighter`). Leurs périodes sont 34, 19, 23, 31 et 37 secondes,
+   donc premières entre elles — mais rien n'empêche qu'elles culminent
+   ensemble une fois de temps en temps. En forçant ce pire cas, le titre
+   devenait illisible. Les intensités sont donc réglées pour que la SOMME
+   reste tenable, pas chacune prise à part : 0,58 pour le balai, 0,54 au
+   pic d'une lueur. Si l'on veut plus de lumière, c'est le nombre de
+   sources qu'il faut baisser, pas leur plafond qu'il faut lever.
    puis laisse un long silence : quatorze secondes de passage pour vingt
    de repos. C'est ce rythme qui fait la différence entre une lumière
    qu'on remarque et un clignotant. Comme il partage le masque de `.flux`,
@@ -1193,17 +1202,17 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   position: absolute; top: 0; bottom: 0;
   inset-inline-start: 0; width: 34%;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(255,250,232,.22) 26%, rgba(255,255,255,.62) 46%,
-    rgba(255,252,240,.72) 50%, rgba(255,255,255,.58) 54%,
-    rgba(255,250,232,.18) 74%, transparent 100%);
+    transparent 0%, rgba(255,250,232,.14) 26%, rgba(255,255,255,.40) 46%,
+    rgba(255,252,240,.48) 50%, rgba(255,255,255,.37) 54%,
+    rgba(255,250,232,.11) 74%, transparent 100%);
   will-change: transform, opacity;
   animation: balai 34s linear infinite;
 }
 
 @keyframes balai {
   0%   { transform: translate3d(-135%, 0, 0); opacity: 0; }
-  6%   { opacity: .95; }
-  34%  { opacity: .95; }
+  6%   { opacity: .58; }
+  34%  { opacity: .58; }
   41%  { transform: translate3d(295%, 0, 0);  opacity: 0; }
   100% { transform: translate3d(295%, 0, 0);  opacity: 0; }
 }
@@ -1213,14 +1222,14 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    des pics à 1 tous les deux temps — c'était net, et c'était fatigant. Ici
    la lueur enfle et s'éteint comme une respiration. */
 @keyframes derive {
-  0%   { transform: translate3d(-30%, 12%, 0) scale(.62);  opacity: .06; }
-  14%  { transform: translate3d(28%, -6%, 0) scale(.92);   opacity: .58; }
-  27%  { transform: translate3d(78%, 14%, 0) scale(.74);   opacity: .14; }
-  44%  { transform: translate3d(140%, -10%, 0) scale(1);   opacity: .74; }
-  58%  { transform: translate3d(190%, 16%, 0) scale(.78);  opacity: .18; }
-  76%  { transform: translate3d(258%, -8%, 0) scale(.98);  opacity: .66; }
-  90%  { transform: translate3d(312%, 10%, 0) scale(.76);  opacity: .20; }
-  100% { transform: translate3d(346%, 4%, 0) scale(.66);   opacity: .08; }
+  0%   { transform: translate3d(-30%, 12%, 0) scale(.62);  opacity: .05; }
+  14%  { transform: translate3d(28%, -6%, 0) scale(.92);   opacity: .42; }
+  27%  { transform: translate3d(78%, 14%, 0) scale(.74);   opacity: .11; }
+  44%  { transform: translate3d(140%, -10%, 0) scale(1);   opacity: .54; }
+  58%  { transform: translate3d(190%, 16%, 0) scale(.78);  opacity: .13; }
+  76%  { transform: translate3d(258%, -8%, 0) scale(.98);  opacity: .48; }
+  90%  { transform: translate3d(312%, 10%, 0) scale(.76);  opacity: .15; }
+  100% { transform: translate3d(346%, 4%, 0) scale(.66);   opacity: .06; }
 }
 
 @media (prefers-reduced-motion: reduce) {
