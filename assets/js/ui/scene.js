@@ -70,6 +70,11 @@ export function scene() {
       /* le dégradé du zellige, puis les lumières qui y courent */
       const flux = h("div.flux");
       for (let i = 0; i < p.etincelles; i++) flux.appendChild(h("i"));
+      /* Le balai : une barre de lumière douce qui traverse le cadre de
+         loin en loin. Les lueurs isolées font respirer le zellige ; c'est
+         le balai qui donne à voir que la lumière le PARCOURT, parce qu'il
+         allume des colonnes entières d'entrelacs dans un sens net. */
+      flux.appendChild(h("b"));
       enfants.push(h("div.zel"), flux);
     }
     if (p.derives) {

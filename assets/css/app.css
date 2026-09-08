@@ -965,9 +965,14 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      le ciel assombri où il se lit et où il tient compagnie au texte, puis
      il s'efface vers le bas pour laisser la médina tranquille. Un filet
      posé sur des toits réels ferait faux. */
+  /* Le palier à 1 court de 12 % à 44 % du cadre. Il était bien plus
+     court, et c'est ce qui rendait la lumière timide : dans la bande où
+     elle passe, le masque était descendu à 0,3-0,6, donc même un blanc
+     franc n'arrivait qu'à demi. Un masque n'atténue pas seulement le
+     motif — il atténue tout ce qui le traverse. */
   --reseau-dose: linear-gradient(
-    rgba(0,0,0,.82) 0%,  #000 13%,             rgba(0,0,0,.64) 33%,
-    rgba(0,0,0,.32) 53%, rgba(0,0,0,.09) 74%,  transparent 92%);
+    rgba(0,0,0,.80) 0%,  #000 12%,             #000 44%,
+    rgba(0,0,0,.46) 58%, rgba(0,0,0,.12) 76%,  transparent 92%);
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
@@ -1149,8 +1154,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      tout le quartier. */
   position: absolute; width: 230px; height: 230px; border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(255,255,255,.92) 0%, rgba(255,253,244,.78) 18%, rgba(255,248,224,.52) 32%,
-    rgba(250,226,164,.24) 50%, rgba(212,175,55,.07) 68%, transparent 80%);
+    #FFFFFF 0%, rgba(255,254,248,.88) 18%, rgba(255,248,224,.62) 32%,
+    rgba(250,226,164,.30) 50%, rgba(212,175,55,.09) 68%, transparent 80%);
   will-change: transform, opacity;
   animation: derive 26s cubic-bezier(.5,.08,.5,.92) infinite alternate;
 }
@@ -1165,14 +1170,43 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    quatre dérivaient dans une zone où le masque est à 0,09 : elles étaient
    calculées, animées, et invisibles. Elles reviennent là où le zellige se
    voit. */
-.reseau .flux i:nth-child(1) { inset-inline-start: -10%; top: 6%;
+/* Les quatre lueurs vivent entre 18 % et 46 % du cadre, et ce n'est pas
+   un choix d'esthète : c'est là que le voile est à 0,86-0,92, donc là
+   qu'une lumière ajoutée se voit. Plus haut, le ciel est clair et
+   `screen` n'y change presque rien — deux des lueurs y étaient, et elles
+   ne servaient à rien. */
+.reseau .flux i:nth-child(1) { inset-inline-start: -10%; top: 20%;
   animation-duration: 23s; animation-delay: -3s; }
-.reseau .flux i:nth-child(2) { inset-inline-start: 24%; top: 24%;
-  animation-duration: 31s; animation-delay: -14s; width: 175px; height: 175px; }
-.reseau .flux i:nth-child(3) { inset-inline-start: 56%; top: 12%;
-  animation-duration: 19s; animation-delay: -7s; width: 200px; height: 200px; }
-.reseau .flux i:nth-child(4) { inset-inline-start: 6%; top: 33%;
-  animation-duration: 37s; animation-delay: -25s; width: 265px; height: 265px; }
+.reseau .flux i:nth-child(2) { inset-inline-start: 24%; top: 34%;
+  animation-duration: 31s; animation-delay: -14s; width: 195px; height: 195px; }
+.reseau .flux i:nth-child(3) { inset-inline-start: 56%; top: 24%;
+  animation-duration: 19s; animation-delay: -7s; width: 215px; height: 215px; }
+.reseau .flux i:nth-child(4) { inset-inline-start: 6%; top: 42%;
+  animation-duration: 37s; animation-delay: -25s; width: 280px; height: 280px; }
+
+/* Le balai. Une barre verticale très douce, qui traverse tout le cadre
+   puis laisse un long silence : quatorze secondes de passage pour vingt
+   de repos. C'est ce rythme qui fait la différence entre une lumière
+   qu'on remarque et un clignotant. Comme il partage le masque de `.flux`,
+   il n'éclaire que les entrelacs — jamais le vide entre eux. */
+.reseau .flux b {
+  position: absolute; top: 0; bottom: 0;
+  inset-inline-start: 0; width: 34%;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(255,250,232,.22) 26%, rgba(255,255,255,.62) 46%,
+    rgba(255,252,240,.72) 50%, rgba(255,255,255,.58) 54%,
+    rgba(255,250,232,.18) 74%, transparent 100%);
+  will-change: transform, opacity;
+  animation: balai 34s linear infinite;
+}
+
+@keyframes balai {
+  0%   { transform: translate3d(-135%, 0, 0); opacity: 0; }
+  6%   { opacity: .95; }
+  34%  { opacity: .95; }
+  41%  { transform: translate3d(295%, 0, 0);  opacity: 0; }
+  100% { transform: translate3d(295%, 0, 0);  opacity: 0; }
+}
 
 /* La lumière dérive et s'allume, mais en douceur : les montées et les
    descentes sont étalées, et le maximum reste sous 0,8. On avait d'abord
@@ -1196,6 +1230,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   .nuages .derive { animation: none; }
   .reseau .flux i { animation: none; opacity: .42;
                     transform: translate3d(58%, -10%, 0) scale(.95); }
+  /* le balai disparaît : un balayage ne se fige pas, il s'enlève */
+  .reseau .flux b { animation: none; opacity: 0; }
 }
 
 }
