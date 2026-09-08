@@ -401,14 +401,14 @@ h3 { font-size: 21px; }
 .hero h1 {
   /* 5,6vw et non 7 : à 7, le titre passait à trois lignes vers 1000 px et
      poussait les boutons hors du cadre. */
-  font-size: clamp(38px, 5.6vw, 74px); margin-bottom: 20px; line-height: 1.05;
+  font-size: clamp(41px, 6vw, 82px); margin-bottom: 22px; line-height: 1.03;
   letter-spacing: .005em;
   color: #FFFBF0;
 }
 /* L'arabe n'a pas de capitales : à corps égal, l'Amiri paraît plus petit
    que la romaine latine. On le remonte donc au lieu de le rapetisser —
    c'est l'inverse de ce que faisait la règle précédente. */
-[dir="rtl"] .hero h1 { font-size: clamp(36px, 5.4vw, 70px); line-height: 1.34; }
+[dir="rtl"] .hero h1 { font-size: clamp(39px, 5.8vw, 78px); line-height: 1.3; }
 .hero .lede { font-size: clamp(16px, 1.7vw, 19.5px); color: #EDE6D6; max-width: 52ch; margin: 0 0 32px; }
 .hero .eyebrow { color: var(--gold-2); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -418,14 +418,14 @@ h3 { font-size: 21px; }
 /* La grande arche du fond de boutique, avec le blason de la maison. */
 .hero-arche {
   position: relative; z-index: 1;
-  aspect-ratio: 4 / 4.5; max-width: 420px; margin-inline: auto; width: 100%;
+  aspect-ratio: 4 / 4.45; max-width: 448px; margin-inline: auto; width: 100%;
   border: 2px solid rgba(212,175,55,.42);
   border-radius: 48% 48% 10px 10px / 40% 40% 10px 10px;
   background:
     radial-gradient(100% 70% at 50% 100%, rgba(212,175,55,.16) 0%, transparent 65%),
     rgba(255,251,240,.05);
   display: grid; place-items: center; gap: 10px;
-  padding: 34px 22px;
+  padding: 38px 24px;
   box-shadow: inset 0 0 60px -20px rgba(212,175,55,.5);
 }
 .hero-arche::before {
@@ -436,12 +436,12 @@ h3 { font-size: 21px; }
 }
 .hero-arche .nom {
   font-family: var(--f-display); font-weight: 600;
-  font-size: clamp(30px, 4vw, 46px); letter-spacing: .17em;
+  font-size: clamp(32px, 4.4vw, 52px); letter-spacing: .18em;
   color: #FFFBF0; text-align: center; line-height: 1;
 }
 [dir="rtl"] .hero-arche .nom {
   font-family: var(--f-ar); font-weight: 700; letter-spacing: 0;
-  font-size: clamp(34px, 4.6vw, 54px); line-height: 1.25;
+  font-size: clamp(38px, 5.2vw, 62px); line-height: 1.22;
 }
 
 /* « TRÉSOR DE FÈS » / « كنز فاس » — la signature de la maison.
@@ -452,25 +452,32 @@ h3 { font-size: 21px; }
    comme sur une plaque émaillée, et en arabe elle passe à l'Amiri à un
    corps qui se voit. */
 .hero-arche .sous {
-  display: flex; align-items: center; justify-content: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
   font-family: var(--f-display); font-weight: 600;
-  font-size: clamp(12.5px, 1.5vw, 16px);
+  font-size: clamp(14px, 1.7vw, 19px);
   letter-spacing: .40em; text-transform: uppercase;
   color: var(--gold-2); text-align: center;
   white-space: nowrap;
 }
 .hero-arche .sous::before,
 .hero-arche .sous::after {
-  content: ""; flex: 0 0 clamp(18px, 3vw, 34px); height: 1px;
+  content: ""; flex: 0 0 clamp(22px, 3.4vw, 42px); height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold-2));
 }
 .hero-arche .sous::after { transform: scaleX(-1); }
 
+/* En arabe, « كنز فاس » n'est pas un sous-titre : c'est le nom que le
+   client lit. Il passe donc à un corps de titre, dans l'Amiri, et les
+   deux filets d'or lui font une plaque. */
 [dir="rtl"] .hero-arche .sous {
   font-family: var(--f-ar); font-weight: 700;
-  font-size: clamp(22px, 3vw, 34px);
+  font-size: clamp(26px, 3.6vw, 42px);
   letter-spacing: 0; text-transform: none;
-  gap: 16px;
+  gap: 18px;
+}
+[dir="rtl"] .hero-arche .sous::before,
+[dir="rtl"] .hero-arche .sous::after {
+  flex-basis: clamp(24px, 3.6vw, 46px);
 }
 .hero-arche .liste {
   margin-top: 8px; font-size: 13px; color: #DCD4C0; text-align: center; line-height: 1.95;
@@ -573,37 +580,6 @@ h3 { font-size: 21px; }
 .porte-tete h1 { color: #FFFBF0; margin: 10px 0 6px; }
 .porte-tete .ar { font-family: var(--f-ar); font-weight: 700; font-size: 22px; color: var(--gold-2); }
 .porte-tete p { color: #D0C8B4; max-width: 62ch; margin: 0 auto; }
-
-/* =====================================================================
-   Le bandeau de la ville — Fès à vol d'oiseau
-   =====================================================================
-   Le dessin est clair et la légende est claire aussi : on ne peut pas
-   poser du texte ivoire dessus. La légende a donc son propre fond vert,
-   en bas du bandeau, et le dessin garde ses couleurs au-dessus. */
-.bandeau-ville {
-  position: relative; overflow: hidden;
-  margin-block: clamp(24px, 4vw, 48px);
-  background: var(--accent);
-}
-.bandeau-ville img {
-  display: block; width: 100%; height: clamp(220px, 30vw, 380px);
-  object-fit: cover; object-position: 50% 42%;
-}
-.bandeau-ville .legende {
-  position: absolute; inset-inline: 0; bottom: 0;
-  padding-block: clamp(16px, 2.6vw, 28px) clamp(14px, 2.2vw, 24px);
-  background: linear-gradient(transparent, rgba(8,34,27,.82) 34%, rgba(8,34,27,.95));
-  color: #F6F1E4;
-}
-.bandeau-ville .legende h2 { color: #FFFBF0; margin: 6px 0 6px; }
-.bandeau-ville .legende p { color: #E3DCCB; margin: 0; max-width: 68ch; }
-.bandeau-ville .legende h2, .bandeau-ville .legende p, .bandeau-ville .legende .eyebrow {
-  text-shadow: 0 1px 2px rgba(4,20,15,.62), 0 3px 18px rgba(4,20,15,.48);
-}
-@media (max-width: 640px) {
-  .bandeau-ville { border-radius: 0; }
-  .bandeau-ville .legende p { font-size: 14.5px; }
-}
 
 /* =====================================================================
    Produits
@@ -1010,8 +986,9 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .plan-voile {
   position: absolute;
   background: linear-gradient(to bottom,
-    rgba(6,28,22,.96) 0%,  rgba(6,28,22,.92) 24%, rgba(6,28,22,.80) 42%,
-    rgba(6,28,22,.52) 58%, rgba(6,28,22,.22) 76%, rgba(6,28,22,.02) 100%);
+    rgba(6,28,22,.58) 0%,  rgba(6,28,22,.86) 15%, rgba(6,28,22,.92) 30%,
+    rgba(6,28,22,.86) 44%, rgba(6,28,22,.56) 58%, rgba(6,28,22,.24) 76%,
+    rgba(6,28,22,.02) 100%);
 }
 
 /* Le plan du fond : la médina depuis la place.
@@ -1027,6 +1004,59 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   background-position: 76% 64%;
   background-repeat: no-repeat;
 }
+
+/* ---------------------------------------------------------------------
+   Le ciel qui bouge
+   ---------------------------------------------------------------------
+   Les cumulus de la photographie ne bougeront jamais. On ne les remplace
+   pas : on fait dériver par-dessus des voiles de nuage très doux, en
+   `screen`, qui ajoutent de la lumière au ciel comme le ferait un nuage
+   réel qui passe. Deux voiles à deux vitesses, parce qu'un ciel à une
+   seule vitesse se voit tout de suite.
+
+   210 secondes pour traverser le cadre : environ sept pixels par seconde.
+   C'est la vitesse d'un cirrus, et c'est justement ce qu'il faut — assez
+   pour que le ciel soit vivant si on le regarde, trop peu pour qu'il
+   attire l'œil pendant qu'on lit.
+
+   Le masque arrête les nuages avant les toits : un nuage qui passerait
+   devant un minaret ruinerait tout. */
+.nuages {
+  position: absolute; overflow: hidden;
+  /* la dérive ne se retourne pas en arabe : un nuage n'a pas de sens de
+     lecture, et `left` avec `direction: ltr` la met à l'abri du miroir */
+  direction: ltr;
+  /* Le masque suit le voile, pas le cadre. Les nuages n'ont d'intérêt que
+     là où le ciel se voit : la bande claire du haut, et celle qui court
+     juste au-dessus des toits. Entre les deux, derrière le titre, le voile
+     est à 0,92 — les y faire dériver n'aurait rien donné, sinon du calcul
+     perdu. Ils s'arrêtent avant les toits : un nuage qui passerait devant
+     le minaret ruinerait tout. */
+  opacity: .74;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(#000 0, #000 44%, transparent 63%);
+  mask-image: linear-gradient(#000 0, #000 44%, transparent 63%);
+}
+.nuages .derive {
+  position: absolute; inset-block: 0; left: 0;
+  width: 200%; display: flex;
+  will-change: transform;
+  animation: souffle 210s linear infinite;
+}
+.nuages .derive i {
+  flex: 0 0 50%;
+  background: url("../img/motifs/nuages.svg") 0 0 / 100% 100% no-repeat;
+}
+.nuages .derive.lente {
+  animation-duration: 335s; animation-delay: -140s; opacity: .66;
+}
+.nuages .derive.lente i {
+  background-image: url("../img/motifs/nuages-2.svg");
+}
+
+/* Une dalle exactement : à l'instant du rebouclage, la seconde dalle est
+   là où était la première. Rien ne saute. */
+@keyframes souffle { to { transform: translate3d(-50%, 0, 0); } }
 
 /* ---------------------------------------------------------------------
    Le réseau de zellige, et les lumières qui y courent
@@ -1137,8 +1167,9 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 
 @media (prefers-reduced-motion: reduce) {
   .scene-monde { transition: none; }
-  /* Les lumières s'arrêtent net et se posent là où elles éclairent le
-     mieux : le zellige garde son relief, plus rien ne bouge. */
+  /* Le ciel s'immobilise, et les lumières se posent là où elles éclairent
+     le mieux : le zellige garde son relief, plus rien ne bouge. */
+  .nuages .derive { animation: none; }
   .reseau .flux i { animation: none; opacity: .42;
                     transform: translate3d(58%, -10%, 0) scale(.95); }
 }

@@ -8,7 +8,7 @@
    depuis le cache des recettes.
    ===================================================================== */
 
-const CACHE = "andalys-20260907-e717ac1c";
+const CACHE = "andalys-20260908-645ea11d";
 
 const SOCLE = [
   "index.html",
@@ -74,7 +74,29 @@ self.addEventListener("fetch", function (e) {
     return;
   }
 
-  /* Le reste — code, styles, polices, images : cache d'abord, réseau ensuite. */
+  /* Le code et les styles : réseau d'abord, cache en repli.
+
+     C'était « cache d'abord, revalidation en arrière-plan » — et ça a
+     coûté cher. Le visiteur déjà venu recevait l'ancienne feuille de
+     style, la nouvelle n'arrivant que pour la visite suivante. Sur un site
+     qu'on retouche, cela veut dire qu'on ne voit jamais ce qu'on vient de
+     publier avant d'avoir rechargé deux fois. Une image peut attendre un
+     tour ; une feuille de style, non : c'est elle qui décide de ce qu'on
+     voit. Et le repli garde le mode hors ligne intact. */
+  if (/\.(?:css|js|webmanifest)$/.test(url.pathname)) {
+    e.respondWith(
+      fetch(req)
+        .then(function (res) { return memoriser(req, res); })
+        .catch(function () {
+          return caches.match(req).then(function (hit) {
+            return hit || new Response("", { status: 504, statusText: "hors ligne" });
+          });
+        }));
+    return;
+  }
+
+  /* Le reste — images, polices : cache d'abord, réseau ensuite. Ce sont
+     les fichiers lourds, et ils ne changent qu'avec leur nom. */
   e.respondWith(
     caches.match(req).then(function (hit) {
       if (hit) {

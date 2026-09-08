@@ -5,7 +5,8 @@
    espace en perspective :
 
      • la photographie de la médina, au fond ;
-     • le voile qui garde le texte lisible, 100 px devant ;
+     • des voiles de nuages qui dérivent dans son ciel, 50 px devant ;
+     • le voile qui garde le texte lisible, 50 px plus près ;
      • et devant tout, un réseau de zellige où court la lumière.
 
    Le navigateur calcule la perspective ; la souris fait tourner le monde
@@ -38,6 +39,9 @@ const PERSP = 900;
 
 const PLANS = [
   { classe: "plan-fond", z: 300 },
+  /* Les nuages passent entre la photo et le voile : ils se mêlent au ciel
+     avant qu'on l'assombrisse, au lieu d'être peints par-dessus. */
+  { classe: "nuages", z: 250, derives: 2 },
   { classe: "plan-voile", z: 200 },
   { classe: "reseau", z: 120, etincelles: 4 }
 ];
@@ -63,6 +67,17 @@ export function scene() {
       const flux = h("div.flux");
       for (let i = 0; i < p.etincelles; i++) flux.appendChild(h("i"));
       enfants.push(h("div.zel"), flux);
+    }
+    if (p.derives) {
+      /* Chaque voile de nuages est une piste de deux dalles identiques,
+         côte à côte, que l'on translate d'exactement une dalle. Quand
+         l'animation reboucle, la seconde dalle se trouve pile là où était
+         la première : la dérive est continue, sans saut. C'est pour cela
+         qu'on ne peut pas se contenter d'un fond répété — un `background`
+         qui défile laisse voir sa couture. */
+      for (let i = 0; i < p.derives; i++) {
+        enfants.push(h("div.derive" + (i ? ".lente" : ""), {}, h("i"), h("i")));
+      }
     }
     monde.appendChild(h("div." + p.classe, {
       style: { transform: "translateZ(" + (-p.z) + "px)", inset: debord(p.z) }

@@ -11,7 +11,7 @@ achète à Fès.
 | 🍯 باب بوجلود · **Bab Boujloud** | Chebakia, cornes de gazelle, briouates, fekkas |
 | 🫖 الصفارين · **Seffarine** | Cuivre et laiton : théières, plateaux, lanternes |
 | 🌿 سوق الحناء · **Souk El Henna** | Henné, ghassoul, savon beldi, argan, aker fassi |
-| 🎁 باب السمارين · **Bab Semmarine** | Coffrets et cadeaux |
+| 🎁 كنوز فاس · **Trésors de Fès** | Coffrets et cadeaux |
 
 Livraison à domicile partout au Maroc.
 

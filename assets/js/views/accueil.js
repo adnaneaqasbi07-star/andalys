@@ -136,19 +136,6 @@ function marques() {
 }
 
 /* ------------------------------------------------------------------ */
-/** Fès à vol d'oiseau. Un dessin, pas une photographie : la géométrie
-    d'une ville n'appartient à personne, et celui-ci est à vous. */
-function bandeauVille() {
-  return h("section.bandeau-ville",
-    h("img", { src: "assets/img/vues/fes-oiseau.svg", alt: t("ville_alt"),
-               loading: "lazy", decoding: "async" }),
-    h("div.legende", h("div.wrap",
-      h("div.eyebrow", {}, t("portes")),
-      h("h2", {}, t("ville_titre")),
-      h("p", {}, t("ville_lede")))));
-}
-
-/* ------------------------------------------------------------------ */
 export default function accueil(hote) {
   const vedettes = bande(t("vedettes"),   t("nos_produits"), lien("/produits"));
   const promos   = bande(t("promotions"), t("boutique"),     lien("/produits?promo=1"));
@@ -158,7 +145,6 @@ export default function accueil(hote) {
     hero(),
     assurances(),
     portes(),
-    bandeauVille(),
     vedettes.section,
     promos.section,
     nouveaux.section,
