@@ -13,18 +13,21 @@ body {
   background: var(--ground);
   color: var(--ink);
   font-family: var(--f-ui);
-  font-size: 15.5px;
+  font-size: 16.5px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;
 }
 
+/* L'Amiri n'a pas de capitales et son œil est plus petit : à corps égal,
+   il paraît plus menu que le latin. Il lui faut donc davantage — deux
+   points de plus, pas un de moins. */
 [dir="rtl"] body,
 [dir="rtl"] input, [dir="rtl"] textarea,
 [dir="rtl"] select, [dir="rtl"] button {
   font-family: var(--f-ar);
-  font-size: 17px;
-  line-height: 1.75;
+  font-size: 19px;
+  line-height: 1.8;
 }
 
 img, svg, video { max-width: 100%; height: auto; display: block; }
@@ -55,14 +58,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 h1, h2, h3 { font-family: var(--f-display); font-weight: 600; margin: 0 0 .4em; line-height: 1.15; }
 [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 { font-family: var(--f-ar); font-weight: 700; line-height: 1.5; }
-h1 { font-size: clamp(32px, 5.6vw, 52px); letter-spacing: .01em; }
-h2 { font-size: clamp(25px, 3.8vw, 36px); }
-h3 { font-size: 21px; }
-[dir="rtl"] h1 { font-size: clamp(28px, 5vw, 44px); }
+h1 { font-size: clamp(34px, 5.8vw, 56px); letter-spacing: .01em; }
+h2 { font-size: clamp(27px, 4vw, 40px); }
+h3 { font-size: 22.5px; }
+[dir="rtl"] h1 { font-size: clamp(36px, 6vw, 58px); }
+[dir="rtl"] h2 { font-size: clamp(29px, 4.2vw, 42px); }
+[dir="rtl"] h3 { font-size: 24px; }
 
 .eyebrow {
   font-family: var(--f-ui);
-  font-size: 11.5px; font-weight: 600;
+  font-size: 12px; font-weight: 600;
   letter-spacing: .18em; text-transform: uppercase;
   color: var(--gold);
   display: inline-flex; align-items: center; gap: 9px;
@@ -72,7 +77,7 @@ h3 { font-size: 21px; }
   content: ""; width: 5px; height: 5px; flex: none;
   background: currentColor; transform: rotate(45deg); opacity: .65;
 }
-[dir="rtl"] .eyebrow { letter-spacing: 0; text-transform: none; font-size: 13px; font-family: var(--f-ar); }
+[dir="rtl"] .eyebrow { letter-spacing: 0; text-transform: none; font-size: 15px; font-family: var(--f-ar); }
 
 .muted { color: var(--ink-soft); }
 .faint { color: var(--ink-faint); font-size: .92em; }
@@ -160,7 +165,7 @@ h3 { font-size: 21px; }
   min-height: var(--tap); padding-inline: 20px;
   border: 1px solid transparent; border-radius: var(--r-s);
   background: var(--surface-2); color: var(--ink);
-  font-size: 14.5px; font-weight: 500; letter-spacing: .01em;
+  font-size: 15.5px; font-weight: 500; letter-spacing: .01em;
   cursor: pointer; text-align: center;
   transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast), opacity var(--t-fast);
 }
@@ -182,8 +187,11 @@ h3 { font-size: 21px; }
 
 .btn-danger { background: var(--danger-wash); color: var(--danger); }
 .btn-block { width: 100%; }
-.btn-lg { min-height: 54px; padding-inline: 30px; font-size: 16px; }
-.btn-sm { min-height: 36px; padding-inline: 14px; font-size: 13.5px; }
+.btn-lg { min-height: 56px; padding-inline: 32px; font-size: 17px; }
+.btn-sm { min-height: 38px; padding-inline: 15px; font-size: 14.5px; }
+[dir="rtl"] .btn { font-size: 17px; }
+[dir="rtl"] .btn-lg { font-size: 19px; }
+[dir="rtl"] .btn-sm { font-size: 16px; }
 
 .icon-btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -500,8 +508,10 @@ h3 { font-size: 21px; }
   gap: 1px; background: var(--line-soft); border-block: 1px solid var(--line-soft);
 }
 .assurances div { background: var(--ground); padding: 18px 20px; display: flex; gap: 12px; align-items: center; }
-.assurances .t { font-size: 13.5px; font-weight: 600; }
-.assurances .d { font-size: 12.5px; color: var(--ink-faint); }
+.assurances .t { font-size: 14.5px; font-weight: 600; }
+.assurances .d { font-size: 13.5px; color: var(--ink-faint); }
+[dir="rtl"] .assurances .t { font-size: 16.5px; }
+[dir="rtl"] .assurances .d { font-size: 15px; }
 .assurances .em { font-size: 22px; color: var(--gold); }
 
 /* --- les portes de la médina ----------------------------------------- */
@@ -637,14 +647,18 @@ h3 { font-size: 21px; }
 .vide-grand::before { inset: 14% 22% 0; }
 .pcard .tags { position: absolute; top: 9px; inset-inline-start: 9px; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
 .pcard .fav { position: absolute; top: 5px; inset-inline-end: 5px; background: color-mix(in srgb, var(--surface) 80%, transparent); backdrop-filter: blur(6px); }
-.pcard .txt { padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
-.pcard .mq { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); }
-[dir="rtl"] .pcard .mq { letter-spacing: 0; text-transform: none; font-size: 12.5px; }
-.pcard .nm { font-size: 14.8px; font-weight: 500; line-height: 1.35; }
-[dir="rtl"] .pcard .nm { font-size: 16px; }
+.pcard .txt { padding: 13px 14px 15px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
+/* Les vignettes du carrousel. C'est ici que l'arabe était le plus mal
+   traité : 16 px pour le nom d'un produit, dans une police à petit œil,
+   sur une carte de 216 px de large. On y lisait mal. */
+.pcard .mq { font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); }
+[dir="rtl"] .pcard .mq { letter-spacing: 0; text-transform: none; font-size: 14px; }
+.pcard .nm { font-size: 16px; font-weight: 500; line-height: 1.38; }
+[dir="rtl"] .pcard .nm { font-size: 19.5px; line-height: 1.6; }
 .pcard .pr { margin-top: auto; padding-top: 8px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.pcard .px { font-size: 16.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.pcard .px-old { font-size: 13px; color: var(--ink-faint); text-decoration: line-through; }
+.pcard .px { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+[dir="rtl"] .pcard .px { font-size: 19.5px; }
+.pcard .px-old { font-size: 14px; color: var(--ink-faint); text-decoration: line-through; }
 .pcard .add { margin: 0 13px 13px; }
 
 /* --- page produit ----------------------------------------------------- */
@@ -957,12 +971,11 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
+/* Le monde ne tourne plus : il ne fait que tenir les plans dans un même
+   espace 3D. C'est le plan du réseau qui s'incline, lui seul. */
 .scene-monde {
   position: absolute; inset: 0;
   transform-style: preserve-3d;
-  transform: rotateX(var(--incl-x)) rotateY(var(--incl-y));
-  transition: transform 420ms cubic-bezier(.2,.7,.3,1);
-  will-change: transform;
 }
 
 /* Le voile. Il n'est pas posé sur la scène mais dedans, entre la photo
@@ -1014,10 +1027,12 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    réel qui passe. Deux voiles à deux vitesses, parce qu'un ciel à une
    seule vitesse se voit tout de suite.
 
-   210 secondes pour traverser le cadre : environ sept pixels par seconde.
-   C'est la vitesse d'un cirrus, et c'est justement ce qu'il faut — assez
-   pour que le ciel soit vivant si on le regarde, trop peu pour qu'il
-   attire l'œil pendant qu'on lit.
+   96 secondes pour traverser le cadre, soit une quinzaine de pixels par
+   seconde. Le premier réglage était à 210 s : juste, physiquement — c'est
+   la vitesse d'un cirrus — mais trop lent pour qu'on voie quoi que ce
+   soit sans fixer le ciel une minute. Un mouvement qu'il faut chercher
+   n'existe pas. À 96 s on le remarque en quelques secondes, et il reste
+   bien en dessous du seuil où il dérangerait la lecture.
 
    Le masque arrête les nuages avant les toits : un nuage qui passerait
    devant un minaret ruinerait tout. */
@@ -1032,23 +1047,23 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      est à 0,92 — les y faire dériver n'aurait rien donné, sinon du calcul
      perdu. Ils s'arrêtent avant les toits : un nuage qui passerait devant
      le minaret ruinerait tout. */
-  opacity: .74;
+  opacity: .92;
   mix-blend-mode: screen;
-  -webkit-mask-image: linear-gradient(#000 0, #000 44%, transparent 63%);
-  mask-image: linear-gradient(#000 0, #000 44%, transparent 63%);
+  -webkit-mask-image: linear-gradient(#000 0, #000 46%, transparent 64%);
+  mask-image: linear-gradient(#000 0, #000 46%, transparent 64%);
 }
 .nuages .derive {
   position: absolute; inset-block: 0; left: 0;
   width: 200%; display: flex;
   will-change: transform;
-  animation: souffle 210s linear infinite;
+  animation: souffle 96s linear infinite;
 }
 .nuages .derive i {
   flex: 0 0 50%;
   background: url("../img/motifs/nuages.svg") 0 0 / 100% 100% no-repeat;
 }
 .nuages .derive.lente {
-  animation-duration: 335s; animation-delay: -140s; opacity: .66;
+  animation-duration: 158s; animation-delay: -64s; opacity: .72;
 }
 .nuages .derive.lente i {
   background-image: url("../img/motifs/nuages-2.svg");
@@ -1071,6 +1086,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    allège le réseau vers le haut, là où il croiserait le titre. */
 .reseau {
   position: absolute; transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(.2,.7,.3,1);
+  will-change: transform;
   /* `screen` ajoute la lumière du réseau à celle de la photo au lieu de la
      remplacer : le zellige de la photo continue de se lire sous le nôtre,
      et une ligne déjà claire devient blanche au passage d'une étincelle.
@@ -1141,13 +1158,20 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    recroisent jamais au même endroit, et aucune ne repasse assez vite pour
    qu'on la guette. C'est ce qui fait la différence entre une bannière qui
    respire et une guirlande. */
-.reseau .flux i:nth-child(1) { inset-inline-start: -10%; bottom: 8%;
+/* Les quatre lueurs sont repérées depuis le HAUT, et c'est une
+   correction, pas un détail de style. Elles étaient calées sur `bottom`
+   du temps où le réseau était dense en bas du cadre. Depuis que le
+   dosage a été retourné — franc en haut, effacé sur les toits — trois des
+   quatre dérivaient dans une zone où le masque est à 0,09 : elles étaient
+   calculées, animées, et invisibles. Elles reviennent là où le zellige se
+   voit. */
+.reseau .flux i:nth-child(1) { inset-inline-start: -10%; top: 6%;
   animation-duration: 23s; animation-delay: -3s; }
-.reseau .flux i:nth-child(2) { inset-inline-start: 24%; bottom: 40%;
+.reseau .flux i:nth-child(2) { inset-inline-start: 24%; top: 24%;
   animation-duration: 31s; animation-delay: -14s; width: 175px; height: 175px; }
-.reseau .flux i:nth-child(3) { inset-inline-start: 56%; bottom: 16%;
+.reseau .flux i:nth-child(3) { inset-inline-start: 56%; top: 12%;
   animation-duration: 19s; animation-delay: -7s; width: 200px; height: 200px; }
-.reseau .flux i:nth-child(4) { inset-inline-start: 6%; bottom: 58%;
+.reseau .flux i:nth-child(4) { inset-inline-start: 6%; top: 33%;
   animation-duration: 37s; animation-delay: -25s; width: 265px; height: 265px; }
 
 /* La lumière dérive et s'allume, mais en douceur : les montées et les

@@ -9,11 +9,10 @@
      • le voile qui garde le texte lisible, 50 px plus près ;
      • et devant tout, un réseau de zellige où court la lumière.
 
-   Le navigateur calcule la perspective ; la souris fait tourner le monde
-   de quelques degrés. Comme les plans ne sont pas à la même profondeur,
-   ils ne se déplacent pas de la même quantité : la médina bouge à peine,
-   les portes un peu, le réseau franchement. C'est cette parallaxe qui
-   donne le relief, et elle est vraie — ce n'est pas une illusion peinte.
+   Le navigateur calcule la perspective. La souris n'incline que le plan
+   du réseau, de quelques degrés : la photographie reste immobile, comme
+   il se doit, et c'est le zellige qui glisse devant elle. Le décalage est
+   vrai — ce n'est pas une illusion peinte.
 
    Le réseau et son animation sont dans app.css (.reseau) ; ce module ne
    pose que la profondeur de chaque plan et le mouvement de la souris.
@@ -43,7 +42,12 @@ const PLANS = [
      avant qu'on l'assombrisse, au lieu d'être peints par-dessus. */
   { classe: "nuages", z: 250, derives: 2 },
   { classe: "plan-voile", z: 200 },
-  { classe: "reseau", z: 120, etincelles: 4 }
+  /* `incline` : seul ce plan suit la souris. La rotation était sur le
+     monde entier, si bien que la photographie tanguait au passage du
+     curseur — ce qui n'est pas un effet, c'est un défaut : le sol d'une
+     image ne bouge pas. Le zellige, lui, est censé flotter devant elle,
+     et c'est de son décalage seul que vient le relief. */
+  { classe: "reseau", z: 120, etincelles: 4, incline: true }
 ];
 
 function facteur(z) {
@@ -79,8 +83,14 @@ export function scene() {
         enfants.push(h("div.derive" + (i ? ".lente" : ""), {}, h("i"), h("i")));
       }
     }
+    const tourne = p.incline
+      ? "rotateX(var(--incl-x)) rotateY(var(--incl-y)) "
+      : "";
     monde.appendChild(h("div." + p.classe, {
-      style: { transform: "translateZ(" + (-p.z) + "px)", inset: debord(p.z) }
+      style: {
+        transform: tourne + "translateZ(" + (-p.z) + "px)",
+        inset: debord(p.z)
+      }
     }, enfants));
   });
 
@@ -132,8 +142,15 @@ export function scene() {
     window.removeEventListener("scroll", surDefilement);
   }
 
-  /* on ne branche qu'une fois la scène dans le document */
+  /* On ne branche qu'une fois la scène dans le document — l'écouteur va
+     sur le parent, qui n'existe pas encore à la construction.
+
+     Deux voies, et ce n'est pas de la ceinture-bretelles : dans un onglet
+     ouvert en arrière-plan, `requestAnimationFrame` ne s'exécute pas du
+     tout. `setTimeout`, lui, tourne même caché. `brancher` est protégé
+     par son drapeau, donc être appelé deux fois ne coûte rien. */
   requestAnimationFrame(brancher);
+  setTimeout(brancher, 0);
 
   el.debrancher = debrancher;
   return el;
