@@ -426,7 +426,11 @@ h3 { font-size: 22.5px; }
 /* La grande arche du fond de boutique, avec le blason de la maison. */
 .hero-arche {
   position: relative; z-index: 1;
+  /* `aspect-ratio` donne la proportion de l'arche, mais la hauteur
+     minimale reste celle du contenu : si la liste passe à quatre lignes,
+     le blason s'allonge au lieu de laisser le texte déborder du filet. */
   aspect-ratio: 4 / 4.45; max-width: 448px; margin-inline: auto; width: 100%;
+  min-height: min-content;
   border: 2px solid rgba(212,175,55,.42);
   border-radius: 48% 48% 10px 10px / 40% 40% 10px 10px;
   background:
@@ -487,8 +491,24 @@ h3 { font-size: 22.5px; }
 [dir="rtl"] .hero-arche .sous::after {
   flex-basis: clamp(24px, 3.6vw, 46px);
 }
+/* La liste des portes, sous le blason. Elle était à 13 px sans variante
+   arabe : autant dire illisible en Amiri, dont l'œil est plus petit. Elle
+   passe à 15 px en latin et à 18 px en arabe, avec une interligne qui
+   respire — c'est une énumération, elle se lit en balayant. */
 .hero-arche .liste {
-  margin-top: 8px; font-size: 13px; color: #DCD4C0; text-align: center; line-height: 1.95;
+  margin-top: 10px; font-size: 15px; color: #E1DACA;
+  text-align: center; line-height: 2;
+  max-width: 30ch; margin-inline: auto;
+}
+/* Un nom de porte ne se coupe pas : `nowrap` sur chaque nom, et le point
+   médian posé entre eux par `::before` — c'est lui, et lui seul, qui
+   offre un point de retour à la ligne. */
+.hero-arche .liste span { white-space: nowrap; }
+.hero-arche .liste span + span::before {
+  content: " · "; white-space: normal; color: var(--gold-2); opacity: .8;
+}
+[dir="rtl"] .hero-arche .liste {
+  font-size: 18px; line-height: 2.05; max-width: 26ch;
 }
 
 /* Sous 940 px, le blason passait sous le texte et faisait un hero de

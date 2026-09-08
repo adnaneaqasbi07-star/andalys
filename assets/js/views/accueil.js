@@ -48,9 +48,14 @@ function hero() {
           marque(58, { or: "#D4AF37", vert: "#FFFBF0" }),
           h("div.nom", {}, (L(b.nom) || "Andalys").toUpperCase()),
           h("div.sous", {}, L(b.signature) || t("hero_eyebrow")),
+          /* Chaque porte dans son propre élément, et non une seule chaîne
+             jointe par des points médians : ainsi le retour à la ligne
+             tombe entre deux noms et jamais au milieu d'un — « باب /
+             بوجلود » sur deux lignes, ce n'est pas une coupure, c'est une
+             faute. Les séparateurs sont posés en CSS. */
           portesOuvertes.length
             ? h("div.liste", {}, portesOuvertes.slice(0, 6)
-                .map(function (c) { return L(c.nom); }).join(" · "))
+                .map(function (c) { return h("span", {}, L(c.nom)); }))
             : null))));
 }
 
