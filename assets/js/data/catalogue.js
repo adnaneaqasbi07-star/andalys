@@ -127,9 +127,24 @@ const TRIS = {
   note:             "note_moyenne.desc,nb_avis.desc"
 };
 
+/* Les signes de vocalisation arabes — fatha, damma, kasra, shadda,
+   sukun — et le tatweel. On les retire de la saisie parce que l'index les
+   retire aussi (voir boutique.sans_diacritiques, migration 20260908000002) :
+   les deux côtés doivent s'accorder, sinon « أندلِس » ne trouve pas
+   « أندلس » et réciproquement.
+
+   Cela répare aussi un défaut plus ancien : le nettoyage ci-dessous ne
+   garde que les catégories Unicode L et N, et une kasra n'est ni l'une ni
+   l'autre — c'est une marque non espaçante. Elle était donc remplacée par
+   une espace, ce qui COUPAIT le mot en deux : « أندلِس » cherchait
+   « أندل » et « س » séparément. Retirer les signes avant le nettoyage,
+   plutôt qu'après, est ce qui fait la différence. */
+const DIACRITIQUES = /[\u064B-\u0652\u0670\u0640]/g;
+
 /** Transforme une saisie libre en tsquery sûre : « oud rose » → « oud:* & rose:* ». */
 export function tsquery(q) {
   const mots = String(q || "")
+    .replace(DIACRITIQUES, "")
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .split(/\s+/).filter(Boolean).slice(0, 6);
   if (!mots.length) return null;

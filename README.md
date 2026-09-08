@@ -1,4 +1,4 @@
-# ANDALYS — Trésor de Fès · أندلس — كنز فاس
+# ANDALYS — Trésor de Fès · أندلِس — كنز فاس
 
 Boutique en ligne trilingue des trésors de la médina de Fès. On n'y entre pas
 par des « catégories » mais par les **portes** de la ville — c'est ainsi qu'on
