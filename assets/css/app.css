@@ -420,8 +420,30 @@ h3 { font-size: 22.5px; }
 .hero .lede { font-size: clamp(16px, 1.7vw, 19.5px); color: #EDE6D6; max-width: 52ch; margin: 0 0 32px; }
 .hero .eyebrow { color: var(--gold-2); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-cta .btn-ghost { border-color: rgba(212,175,55,.5); color: #F6F1E4; }
-.hero-cta .btn-ghost:hover { background: rgba(212,175,55,.14); border-color: var(--gold-2); }
+/* Les boutons fantômes posent le même problème que le blason, en pire :
+   leur fond était entièrement transparent, si bien que « Découvrir nos
+   parfums » se lisait sur ce qui passait derrière — une arête de zellige,
+   un toit clair, une lueur. Le bouton plein d'à côté, lui, n'a jamais eu
+   ce défaut : c'est l'écart entre les deux qui se voyait.
+   Ils reçoivent donc le fond du blason, à l'identique — même vert de
+   nuit, même flou : les trois boutons deviennent une rangée cohérente,
+   au lieu d'un plein suivi de deux trous. */
+.hero-cta .btn-ghost {
+  border-color: rgba(212,175,55,.62); color: #F6F1E4;
+  background: linear-gradient(180deg, rgba(6,26,20,.52) 0%, rgba(6,26,20,.36) 100%);
+  -webkit-backdrop-filter: blur(3px) saturate(1.06);
+  backdrop-filter: blur(3px) saturate(1.06);
+  box-shadow: 0 10px 26px -18px rgba(4,16,12,.72);
+}
+/* Au survol, l'or s'ajoute PAR-DESSUS le fond au lieu de le remplacer :
+   remplacer, c'était rendre le bouton illisible juste au moment où on le
+   vise. */
+.hero-cta .btn-ghost:hover {
+  background:
+    linear-gradient(180deg, rgba(212,175,55,.22) 0%, rgba(212,175,55,.14) 100%),
+    linear-gradient(180deg, rgba(6,26,20,.52) 0%, rgba(6,26,20,.36) 100%);
+  border-color: var(--gold-2);
+}
 
 /* La grande arche du fond de boutique, avec le blason de la maison. */
 .hero-arche {
@@ -431,14 +453,29 @@ h3 { font-size: 22.5px; }
      le blason s'allonge au lieu de laisser le texte déborder du filet. */
   aspect-ratio: 4 / 4.45; max-width: 448px; margin-inline: auto; width: 100%;
   min-height: min-content;
-  border: 2px solid rgba(212,175,55,.42);
+  border: 2px solid rgba(212,175,55,.58);
   border-radius: 48% 48% 10px 10px / 40% 40% 10px 10px;
+  /* Le blason ne portait qu'un voile de blanc à 5 % : sur un aplat il
+     aurait suffi, mais il repose sur la photographie ET sur le zellige,
+     où passent trois lueurs. Le nom et la liste des portes se retrouvaient
+     posés sur un fond qui bouge, et une lettre pouvait tomber sur une
+     arête claire d'entrelacs. Il lui faut donc un fond à lui : un vert de
+     nuit translucide, plus dense en haut où court le nom, qui laisse la
+     médina se deviner mais rend le texte franc partout.
+     Le flou d'arrière-plan finit le travail : il efface le détail du
+     zellige sous le blason sans l'assombrir, si bien que la plaque se
+     détache par la NETTETÉ autant que par la valeur. */
   background:
-    radial-gradient(100% 70% at 50% 100%, rgba(212,175,55,.16) 0%, transparent 65%),
-    rgba(255,251,240,.05);
+    radial-gradient(100% 70% at 50% 100%, rgba(212,175,55,.18) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(6,26,20,.52) 0%, rgba(6,26,20,.34) 100%);
+  -webkit-backdrop-filter: blur(3px) saturate(1.06);
+  backdrop-filter: blur(3px) saturate(1.06);
   display: grid; place-items: center; gap: 10px;
   padding: 38px 24px;
-  box-shadow: inset 0 0 60px -20px rgba(212,175,55,.5);
+  /* L'ombre extérieure décolle la plaque de la photo ; sans elle, le fond
+     assombri se lisait comme une tache du cliché. */
+  box-shadow: inset 0 0 60px -20px rgba(212,175,55,.55),
+              0 18px 46px -22px rgba(4,16,12,.72);
 }
 .hero-arche::before {
   content: ""; position: absolute; inset-inline: 18%; top: -1px; height: 4px;
@@ -496,7 +533,7 @@ h3 { font-size: 22.5px; }
    passe à 15 px en latin et à 18 px en arabe, avec une interligne qui
    respire — c'est une énumération, elle se lit en balayant. */
 .hero-arche .liste {
-  margin-top: 10px; font-size: 15px; color: #E1DACA;
+  margin-top: 10px; font-size: 15px; color: #F1EADA;
   text-align: center; line-height: 2;
   max-width: 30ch; margin-inline: auto;
 }
@@ -505,7 +542,7 @@ h3 { font-size: 22.5px; }
    offre un point de retour à la ligne. */
 .hero-arche .liste span { white-space: nowrap; }
 .hero-arche .liste span + span::before {
-  content: " · "; white-space: normal; color: var(--gold-2); opacity: .8;
+  content: " · "; white-space: normal; color: var(--gold-2); opacity: 1;
 }
 [dir="rtl"] .hero-arche .liste {
   font-size: 18px; line-height: 2.05; max-width: 26ch;
@@ -991,8 +1028,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      franc n'arrivait qu'à demi. Un masque n'atténue pas seulement le
      motif — il atténue tout ce qui le traverse. */
   --reseau-dose: linear-gradient(
-    rgba(0,0,0,.92) 0%,  #000 10%,             #000 52%,
-    rgba(0,0,0,.62) 66%, rgba(0,0,0,.24) 82%,  transparent 96%);
+    rgba(0,0,0,.80) 0%,  #000 12%,             #000 44%,
+    rgba(0,0,0,.46) 58%, rgba(0,0,0,.12) 76%,  transparent 92%);
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
@@ -1143,11 +1180,7 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .reseau .zel {
   background: linear-gradient(168deg,
     #6E9C84 0%, #A5842F 24%, #D8B23C 50%, #F2D89C 74%, #FFF6DC 100%);
-  /* Trois atténuations se multipliaient avant d'arriver à l'œil : la
-     tuile-masque, le dosage vertical, et cette opacité. Le zellige n'en
-     ressortait qu'au quart. Elle reste en dessous de 1 pour que la photo
-     continue de se lire dessous, mais elle ne mange plus la trame. */
-  opacity: .94;
+  opacity: .80;
 }
 
 /* Les lumières.
@@ -1177,9 +1210,15 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      fait passer une lueur le long d'une ligne plutôt qu'un halo posé sur
      tout le quartier. */
   position: absolute; width: 230px; height: 230px; border-radius: 50%;
+  /* Le cœur est plus serré qu'avant et la chute plus raide. Un halo large
+     et mou éclaire le vide entre les entrelacs autant que les entrelacs
+     eux-mêmes, et le masque n'en laisse passer qu'une bouillie ; un cœur
+     franc allume trois ou quatre étoiles à la fois, et l'on voit alors la
+     lumière SE DÉPLACER sur le réseau. C'est ce déplacement lisible qui
+     accroche l'œil, pas la quantité de lumière. */
   background: radial-gradient(circle,
-    #FFFFFF 0%, rgba(255,254,248,.88) 18%, rgba(255,248,224,.62) 32%,
-    rgba(250,226,164,.30) 50%, rgba(212,175,55,.09) 68%, transparent 80%);
+    #FFFFFF 0%, rgba(255,255,252,.95) 12%, rgba(255,250,230,.72) 26%,
+    rgba(252,232,178,.34) 44%, rgba(212,175,55,.10) 62%, transparent 76%);
   will-change: transform, opacity;
   animation: derive 26s cubic-bezier(.5,.08,.5,.92) infinite alternate;
 }
@@ -1187,37 +1226,46 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
    recroisent jamais au même endroit, et aucune ne repasse assez vite pour
    qu'on la guette. C'est ce qui fait la différence entre une bannière qui
    respire et une guirlande. */
-/* Les quatre lueurs sont repérées depuis le HAUT, et c'est une
-   correction, pas un détail de style. Elles étaient calées sur `bottom`
-   du temps où le réseau était dense en bas du cadre. Depuis que le
-   dosage a été retourné — franc en haut, effacé sur les toits — trois des
-   quatre dérivaient dans une zone où le masque est à 0,09 : elles étaient
-   calculées, animées, et invisibles. Elles reviennent là où le zellige se
-   voit. */
-/* Les quatre lueurs vivent entre 18 % et 46 % du cadre, et ce n'est pas
-   un choix d'esthète : c'est là que le voile est à 0,86-0,92, donc là
-   qu'une lumière ajoutée se voit. Plus haut, le ciel est clair et
-   `screen` n'y change presque rien — deux des lueurs y étaient, et elles
-   ne servaient à rien. */
-.reseau .flux i:nth-child(1) { inset-inline-start: -10%; top: 20%;
-  animation-duration: 23s; animation-delay: -3s; }
-.reseau .flux i:nth-child(2) { inset-inline-start: 24%; top: 34%;
-  animation-duration: 31s; animation-delay: -14s; width: 195px; height: 195px; }
-.reseau .flux i:nth-child(3) { inset-inline-start: 56%; top: 24%;
-  animation-duration: 19s; animation-delay: -7s; width: 215px; height: 215px; }
-.reseau .flux i:nth-child(4) { inset-inline-start: 6%; top: 42%;
-  animation-duration: 37s; animation-delay: -25s; width: 280px; height: 280px; }
+/* Les lueurs sont repérées depuis le HAUT, et c'est une correction, pas
+   un détail de style. Elles étaient calées sur `bottom` du temps où le
+   réseau était dense en bas du cadre. Depuis que le dosage a été retourné
+   — franc en haut, effacé sur les toits — elles dérivaient dans une zone
+   où le masque est à 0,09 : calculées, animées, et invisibles. Elles
+   reviennent là où le zellige se voit. */
+/* Elles vivent entre 18 % et 46 % du cadre, et ce n'est pas un choix
+   d'esthète : c'est là que le voile est à 0,86-0,92, donc là qu'une
+   lumière ajoutée se voit. Plus haut, le ciel est clair et `screen` n'y
+   change presque rien. */
+/* ELLES SONT TROIS, et c'était quatre. On voulait la lumière plus
+   présente : la seule façon honnête est celle qu'indique le budget
+   ci-dessous — retirer une source pour pouvoir monter les autres. Quatre
+   lueurs à 0,54 donnaient une clarté continue et molle, où rien ne
+   bougeait vraiment ; trois lueurs qui montent à 0,72 et retombent à
+   0,05 donnent un passage. La somme au pire cas n'a pas augmenté, la
+   moyenne a baissé, et pourtant on la voit enfin.
+   Les durées sont 13, 19 et 23 secondes — premières entre elles et avec
+   les 34 du balai : les quatre sources ne se recroisent jamais deux fois
+   au même endroit. Elles sont plus courtes qu'avant, parce qu'une lueur
+   qui met une demi-minute à traverser ne se lit pas comme un mouvement. */
+.reseau .flux i:nth-child(1) { inset-inline-start: -10%; top: 21%;
+  animation-duration: 19s; animation-delay: -3s; }
+.reseau .flux i:nth-child(2) { inset-inline-start: 22%; top: 36%;
+  animation-duration: 23s; animation-delay: -14s; width: 205px; height: 205px; }
+.reseau .flux i:nth-child(3) { inset-inline-start: 54%; top: 26%;
+  animation-duration: 13s; animation-delay: -7s; width: 225px; height: 225px; }
 
 /* Le balai. Une barre verticale très douce, qui traverse tout le cadre
    —
-   Sur le budget lumière : le balai et les quatre lueurs s'additionnent
-   (`plus-lighter`). Leurs périodes sont 34, 19, 23, 31 et 37 secondes,
-   donc premières entre elles — mais rien n'empêche qu'elles culminent
-   ensemble une fois de temps en temps. En forçant ce pire cas, le titre
-   devenait illisible. Les intensités sont donc réglées pour que la SOMME
-   reste tenable, pas chacune prise à part : 0,58 pour le balai, 0,54 au
-   pic d'une lueur. Si l'on veut plus de lumière, c'est le nombre de
-   sources qu'il faut baisser, pas leur plafond qu'il faut lever.
+   Sur le budget lumière : le balai et les trois lueurs s'additionnent
+   (`plus-lighter`). Leurs périodes sont 34, 13, 19 et 23 secondes, donc
+   premières entre elles — mais rien n'empêche qu'elles culminent ensemble
+   une fois de temps en temps. En forçant ce pire cas, le titre devenait
+   illisible. Les intensités sont donc réglées pour que la SOMME reste
+   tenable, pas chacune prise à part : 0,58 pour le balai, 0,72 au pic
+   d'une lueur. Si l'on veut plus de lumière, c'est le nombre de sources
+   qu'il faut baisser, pas leur plafond qu'il faut lever — c'est ce qui a
+   été fait ici : quatre lueurs à 0,54 sont devenues trois à 0,72, et le
+   pire cas est resté au même niveau (4 × 0,54 = 2,16 ; 3 × 0,72 = 2,16).
    puis laisse un long silence : quatorze secondes de passage pour vingt
    de repos. C'est ce rythme qui fait la différence entre une lumière
    qu'on remarque et un clignotant. Comme il partage le masque de `.flux`,
@@ -1241,19 +1289,25 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   100% { transform: translate3d(295%, 0, 0);  opacity: 0; }
 }
 
-/* La lumière dérive et s'allume, mais en douceur : les montées et les
-   descentes sont étalées, et le maximum reste sous 0,8. On avait d'abord
-   des pics à 1 tous les deux temps — c'était net, et c'était fatigant. Ici
-   la lueur enfle et s'éteint comme une respiration. */
+/* La lumière dérive et s'allume. Le maximum reste sous 0,8 : on avait
+   d'abord des pics à 1 tous les deux temps, c'était net et c'était
+   fatigant.
+   Ce qui a changé, c'est l'ÉCART, pas le plafond. Les creux descendent à
+   0,04-0,06 quand ils étaient à 0,11-0,15 : entre deux passages, la lueur
+   s'éteint vraiment. C'est cet écart qui fait qu'on la voit arriver.
+   Avant, elle ne descendait jamais assez bas pour qu'on remarque qu'elle
+   remontait — une clarté à peu près constante qui se lisait comme un
+   fond, pas comme un mouvement. La moyenne a baissé, la présence a
+   monté. */
 @keyframes derive {
-  0%   { transform: translate3d(-30%, 12%, 0) scale(.62);  opacity: .05; }
-  14%  { transform: translate3d(28%, -6%, 0) scale(.92);   opacity: .42; }
-  27%  { transform: translate3d(78%, 14%, 0) scale(.74);   opacity: .11; }
-  44%  { transform: translate3d(140%, -10%, 0) scale(1);   opacity: .54; }
-  58%  { transform: translate3d(190%, 16%, 0) scale(.78);  opacity: .13; }
-  76%  { transform: translate3d(258%, -8%, 0) scale(.98);  opacity: .48; }
-  90%  { transform: translate3d(312%, 10%, 0) scale(.76);  opacity: .15; }
-  100% { transform: translate3d(346%, 4%, 0) scale(.66);   opacity: .06; }
+  0%   { transform: translate3d(-30%, 12%, 0) scale(.58);   opacity: .04; }
+  14%  { transform: translate3d(28%, -6%, 0) scale(.96);    opacity: .58; }
+  27%  { transform: translate3d(78%, 14%, 0) scale(.70);    opacity: .05; }
+  44%  { transform: translate3d(140%, -10%, 0) scale(1.06); opacity: .72; }
+  58%  { transform: translate3d(190%, 16%, 0) scale(.74);   opacity: .06; }
+  76%  { transform: translate3d(258%, -8%, 0) scale(1.02);  opacity: .66; }
+  90%  { transform: translate3d(312%, 10%, 0) scale(.72);   opacity: .06; }
+  100% { transform: translate3d(346%, 4%, 0) scale(.60);    opacity: .04; }
 }
 
 @media (prefers-reduced-motion: reduce) {

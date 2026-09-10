@@ -47,7 +47,7 @@ const PLANS = [
      curseur — ce qui n'est pas un effet, c'est un défaut : le sol d'une
      image ne bouge pas. Le zellige, lui, est censé flotter devant elle,
      et c'est de son décalage seul que vient le relief. */
-  { classe: "reseau", z: 120, etincelles: 4, incline: true }
+  { classe: "reseau", z: 120, etincelles: 3, incline: true }
 ];
 
 function facteur(z) {
