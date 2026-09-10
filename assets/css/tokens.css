@@ -6,11 +6,19 @@
    zelliges de la médina, l'or des dinandiers de Seffarine, la chaux
    crème du tadelakt.
 
-       #0F3B2E   vert andalou      #D4AF37   or        #E8E1D4   crème
+       #143625   vert profond      #C99D52   or        #FCF9F1   ivoire
 
-   L'or de marque tient 5,9:1 sur le vert : il est fait pour les plaques
-   et les arches, pas pour du texte sur fond clair. Pour cet usage,
-   --gold est une version plus profonde, vérifiée à 4,8:1.
+   Ces trois valeurs ne sont pas choisies : elles sont RELEVÉES dans le
+   fichier du logo fourni par le client — médiane des pixels verts, des
+   pixels dorés, du fond. Le site portait auparavant un vert plus froid
+   (#0F3B2E) et un or plus jaune (#D4AF37) : à côté du logo, l'écart se
+   voyait. Pour reprendre la mesure après un nouveau logo :
+   `bin/logo.py` documente le prélèvement.
+
+   L'or de marque est fait pour les plaques et les arches, pas pour du
+   texte sur fond clair : sur l'ivoire il ne tient pas le seuil AA. Pour
+   cet usage, --gold est une version plus profonde. `bin/verifier.py`
+   contrôle les treize paires à 4,5:1 — c'est lui qui a le dernier mot.
 
    Trois états de thème : clair par défaut, sombre automatique sous
    prefers-color-scheme, et le choix explicite qui l'emporte.
@@ -18,7 +26,7 @@
 
 :root {
   /* --- fonds : chaux et tadelakt --- */
-  --ground:      #FAF6EC;
+  --ground:      #FCF9F1;   /* l'ivoire du logo */
   --surface:     #FFFDF7;
   --surface-2:   #F2EADA;
   --surface-3:   #E8E1D4;   /* crème de marque */
@@ -33,17 +41,17 @@
   --line-soft:   #EDE5D5;
 
   /* --- vert andalou : la couleur des portes --- */
-  --accent:      #0F3B2E;
-  --accent-2:    #1A5A45;
-  --accent-wash: #E4EDE8;
+  --accent:      #143625;   /* relevé dans le logo */
+  --accent-2:    #1E5038;
+  --accent-wash: #E6EDE7;
   --on-accent:   #FDFBF5;
 
   /* --- or : plaques et ornements sur fond sombre, texte sur fond clair --- */
-  --gold:        #826A1C;   /* texte et petites capitales sur crème */
-  --gold-2:      #D4AF37;   /* or de marque — sur vert et fonds sombres */
-  --gold-hover:  #6A5616;
+  --gold:        #7C6222;   /* texte et petites capitales sur ivoire */
+  --gold-2:      #C99D52;   /* or de marque, relevé dans le logo */
+  --gold-hover:  #634E1A;
   --on-gold:     #FFFFFF;
-  --gold-wash:   #F7EFDA;
+  --gold-wash:   #F6EEDD;
 
   /* --- matières de la médina --- */
   --cuivre:      #9F632C;   /* Seffarine */
@@ -97,8 +105,8 @@
     --accent-2:    #7AD3B3;
     --accent-wash: #14302A;
     --on-accent:   #07211A;
-    --gold:        #D4AF37;
-    --gold-2:      #E3C766;
+    --gold:        #D8B570;
+    --gold-2:      #E9BC6B;   /* l'or clair du logo */
     --gold-hover:  #E3C766;
     --on-gold:     #1A1405;
     --gold-wash:   #2C2412;

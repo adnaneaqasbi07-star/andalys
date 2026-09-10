@@ -1,8 +1,9 @@
 {
- "version": "20260910-df34e35b",
- "publie_le": "2026-09-10T17:38:01.331135+00:00",
+ "version": "20260910-d91a1853",
+ "publie_le": "2026-09-10T18:07:45.462575+00:00",
  "fichiers": [
   ".nojekyll",
+  "404.html",
   "README.md",
   "admin.html",
   "assets/css/admin.css",
@@ -18,6 +19,7 @@
   "assets/img/journal/fes-le-khlii.svg",
   "assets/img/journal/fes-les-portes-de-la-medina.svg",
   "assets/img/journal/fes-seffarine-le-cuivre.svg",
+  "assets/img/logo-favicon.svg",
   "assets/img/logo-symbole.svg",
   "assets/img/motifs/nuages-2.svg",
   "assets/img/motifs/nuages.svg",
@@ -187,6 +189,7 @@
   "assets/js/i18n/index.js",
   "assets/js/ui/carte.js",
   "assets/js/ui/coque.js",
+  "assets/js/ui/logo-formes.js",
   "assets/js/ui/logo.js",
   "assets/js/ui/scene.js",
   "assets/js/views/accueil.js",

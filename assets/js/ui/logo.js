@@ -1,76 +1,95 @@
 /* =====================================================================
    ANDALYS — marque
    ---------------------------------------------------------------------
-   L'arche outrepassée des portes de Fès, la rosette à huit branches des
-   zelliges, et le « A » de la maison. Dessiné en SVG plutôt qu'en image :
-   il suit les couleurs du thème et reste net à toute taille.
+   Le symbole du logo, dessiné au trait : l'arche en accolade des portes
+   de Fès, le khatem à huit pétales des zelliges, le A à empattements, et
+   — c'est le cœur de la marque — le croissant et les étoiles.
+
+   La géométrie n'est pas ici : elle est dans `logo-formes.js`, produit
+   par `bin/logo.py`. Ce module ne fait que l'habiller, pour que la marque
+   suive le thème clair ou sombre. Le favicon sort du même tracé : les
+   deux ne peuvent plus diverger.
    ===================================================================== */
+
+import { VUE, ARCHE, ROSETTE, ETOILE_CENTRE, A, CROISSANT, ETINCELLES }
+  from "./logo-formes.js";
 
 const NS = "http://www.w3.org/2000/svg";
 
-/** Rosette à huit branches — le motif des zelliges fassis. */
-function rosette(cx, cy, r) {
-  const pts = [];
-  for (let i = 0; i < 16; i++) {
-    const rayon = i % 2 === 0 ? r : r * 0.42;
-    const a = (i * Math.PI) / 8;
-    pts.push((cx + rayon * Math.sin(a)).toFixed(2) + "," + (cy - rayon * Math.cos(a)).toFixed(2));
-  }
-  return pts.join(" ");
+function svgVide(largeur, hauteur, vue) {
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", vue);
+  svg.setAttribute("width", largeur);
+  svg.setAttribute("height", hauteur);
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("fill", "none");
+  return svg;
+}
+
+function plein(d, couleur, extra) {
+  return '<path d="' + d + '" fill="' + couleur + '"' + (extra || "") + "/>";
 }
 
 /**
- * @param {number} taille   côté en pixels
- * @param {object} options  { monochrome: true } pour un tracé d'une seule couleur
+ * Le symbole complet.
+ *
+ * @param {number} taille   largeur en pixels ; la hauteur suit la proportion
+ * @param {object} options  { or, vert } pour poser d'autres couleurs —
+ *                          le hero, par exemple, pose un vert ivoire parce
+ *                          que la marque y est sur fond sombre
  */
 export function marque(taille, options) {
   options = options || {};
-  const s = taille || 34;
-  const or   = options.or   || "var(--gold-2)";
+  const l = taille || 34;
+  const h = Math.round(l * VUE.hauteur / VUE.largeur);
+  const or = options.or || "var(--gold-2)";
   const vert = options.vert || "var(--accent)";
 
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", "0 0 64 78");
-  svg.setAttribute("width", s);
-  svg.setAttribute("height", Math.round(s * 78 / 64));
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("fill", "none");
+  const svg = svgVide(l, h, "0 0 " + VUE.largeur + " " + VUE.hauteur);
+  const m = [];
 
-  /* L'arche : montants droits, épaulement outrepassé, pointe brisée. */
-  const arche = "M6 74 L6 30 C6 13 17 3 32 3 C47 3 58 13 58 30 L58 74";
+  m.push('<path d="' + ARCHE + '" fill="none" stroke="' + or + '" ' +
+         'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>');
+  /* La rosette est en filets et non en aplat : c'est ainsi qu'elle est
+     posée sur les murs, et c'est ce qui la distingue d'une étoile pleine. */
+  ROSETTE.forEach(function (petale) {
+    m.push('<path d="' + petale + '" fill="none" stroke="' + or + '" ' +
+           'stroke-width="1.82" stroke-linejoin="round"/>');
+  });
+  m.push(plein(ETOILE_CENTRE, or));
 
-  svg.innerHTML =
-    '<path d="' + arche + '" stroke="' + or + '" stroke-width="3" ' +
-      'stroke-linecap="round" stroke-linejoin="round"/>' +
-    '<polygon points="' + rosette(32, 20, 8.5) + '" fill="' + or + '"/>' +
-    '<text x="32" y="63" text-anchor="middle" fill="' + vert + '" ' +
-      'font-family="Cormorant Garamond, Marcellus, Georgia, serif" ' +
-      'font-size="36" font-weight="600" letter-spacing="0">A</text>' +
-    '<path d="M45 44 l1.6 4.4 4.4 1.6 -4.4 1.6 -1.6 4.4 -1.6 -4.4 -4.4 -1.6 4.4 -1.6Z" ' +
-      'fill="' + or + '"/>';
-  return svg;
-}
+  [A.panse, A.fut, A.drapeau, A.barre, A.piedG, A.piedD].forEach(function (d) {
+    m.push(plein(d, vert));
+  });
 
-/** Version en pastille pleine, pour les favicons et les petites surfaces. */
-export function pastille(taille) {
-  const s = taille || 40;
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", "0 0 64 64");
-  svg.setAttribute("width", s); svg.setAttribute("height", s);
-  svg.setAttribute("aria-hidden", "true");
-  svg.innerHTML =
-    '<circle cx="32" cy="32" r="31" fill="var(--accent)"/>' +
-    '<path d="M18 52 L18 28 C18 18 24 12 32 12 C40 12 46 18 46 28 L46 52" ' +
-      'stroke="var(--gold-2)" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
-    '<polygon points="' + rosette(32, 24, 5.5) + '" fill="var(--gold-2)"/>' +
-    '<text x="32" y="50" text-anchor="middle" fill="var(--gold-2)" ' +
-      'font-family="Cormorant Garamond, Georgia, serif" font-size="22" font-weight="600">A</text>';
+  /* Le croissant et les deux étoiles passent APRÈS le A : ils se lisent
+     en travers de la panse, comme sur le logo. */
+  m.push(plein(CROISSANT.chemin, or, ' transform="' + CROISSANT.transforme + '"'));
+  ETINCELLES.forEach(function (e) { m.push(plein(e, or)); });
+
+  svg.innerHTML = m.join("");
   return svg;
 }
 
 /**
- * L'arche décorative qui encadre une porte de la médina sur l'accueil.
- * Renvoie une chaîne de chemin SVG, à poser dans un viewBox 0 0 100 120.
+ * La marque en pastille pleine, pour les petites surfaces.
+ * La rosette en est retirée : sous 40 px, ses huit pétales ne font plus
+ * qu'une tache. Restent l'arche, le A et une étoile.
  */
-export const CHEMIN_ARCHE =
-  "M8 118 L8 46 C8 20 18 4 50 4 C82 4 92 20 92 46 L92 118";
+export function pastille(taille) {
+  const s = taille || 40;
+  const svg = svgVide(s, s, "0 0 140 140");
+  const m = ['<circle cx="70" cy="70" r="69" fill="var(--accent)"/>',
+             '<g transform="translate(10 6) scale(1)">'];
+  m.push('<path d="' + ARCHE + '" fill="none" stroke="var(--gold-2)" ' +
+         'stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>');
+  [A.panse, A.fut, A.barre, A.piedG, A.piedD].forEach(function (d) {
+    m.push(plein(d, "var(--gold-2)"));
+  });
+  m.push("</g>");
+  svg.innerHTML = m.join("");
+  return svg;
+}
+
+/** L'arche seule, pour les décors qui l'encadrent ailleurs dans le site. */
+export const CHEMIN_ARCHE = ARCHE;

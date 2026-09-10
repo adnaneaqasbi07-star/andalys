@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Andalys — redirection</title>
+<script>
+/* GitHub Pages sert ce fichier pour toute adresse qui ne correspond à
+   aucun fichier. Le routeur du site, lui, travaille au dièse : une URL
+   comme /andalys/produits?tri=prix_decroissant&page=2 n'existe donc pas
+   sur le disque, et l'on tombait ici sans rien afficher.
+
+   On rejoue le chemin demandé dans la route à dièse. Une adresse propre,
+   copiée ou partagée, mène ainsi à la bonne page.
+
+   La base n'est pas écrite en dur : sur github.io le site vit dans un
+   sous-dossier au nom du dépôt, alors qu'avec un domaine à vous il vivra
+   à la racine. On la déduit de l'hôte, pour que le fichier survive au
+   jour où vous poserez votre propre nom de domaine. */
+(function () {
+  var base = /(^|\.)github\.io$/.test(location.hostname)
+    ? "/" + location.pathname.split("/").filter(Boolean)[0] + "/"
+    : "/";
+  var reste = location.pathname.indexOf(base) === 0
+    ? location.pathname.slice(base.length)
+    : location.pathname.replace(/^\/+/, "");
+  /* `replace` et non `href` : la page d'erreur ne doit pas s'installer
+     dans l'historique, sinon le bouton Retour y ramène en boucle. */
+  location.replace(base + "#/" + reste + location.search);
+})();
+</script>
+</head>
+<body>
+  <p style="font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+            margin:40px auto;max-width:32em;text-align:center;color:#45544C">
+    Redirection vers la boutique…
+    <br><a href="/andalys/" style="color:#0F3B2E">Andalys — Trésor de Fès</a>
+  </p>
+</body>
+</html>
