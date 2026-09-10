@@ -18,6 +18,12 @@ import { stockage } from "../core/supa.js";
    la même résolution d'URL. */
 const ornement = function (chemin) { return stockage.urlPublique(chemin); };
 
+/* L'emoji d'une porte, tel qu'il est en base, avec un repli. */
+function sceau(slug, repli) {
+  const c = catalogue.racines().filter(function (x) { return x.slug === slug; })[0];
+  return (c && c.icone) || repli;
+}
+
 /* ------------------------------------------------------------------ */
 function hero() {
   const b = etat.parametres.boutique || {};
@@ -38,10 +44,24 @@ function hero() {
           h("div.eyebrow", {}, t("hero_eyebrow")),
           h("h1", {}, L(b.baseline) || t("hero_titre")),
           h("p.lede", {}, t("hero_lede")),
+          /* Chaque bouton porte l'icône de l'endroit où il mène, et il va
+             la chercher dans la catégorie elle-même : si vous changez
+             l'emoji d'une porte depuis le back-office, le bouton suit. Le
+             repli sert au premier chargement, avant que le catalogue soit
+             revenu — et à la porte « tous les produits », qui n'en est pas
+             une. `aria-hidden` : l'icône double le libellé, une synthèse
+             vocale qui lirait « mosquée » avant « Découvrir nos parfums »
+             n'apporterait rien. */
           h("div.hero-cta",
-            h("a.btn.btn-gold.btn-lg", { href: lien("/produits") }, t("cta_produits")),
-            h("a.btn.btn-ghost.btn-lg", { href: lien("/c/bab-moulay-driss") }, t("cta_parfums")),
-            h("a.btn.btn-ghost.btn-lg", { href: lien("/c/seffarine") }, t("cta_artisanat")))),
+            h("a.btn.btn-gold.btn-lg", { href: lien("/produits") },
+              h("span.em", { "aria-hidden": "true" }, "\u2726"),
+              t("cta_produits")),
+            h("a.btn.btn-ghost.btn-lg", { href: lien("/c/bab-moulay-driss") },
+              h("span.em", { "aria-hidden": "true" }, sceau("bab-moulay-driss", "\uD83D\uDD4C")),
+              t("cta_parfums")),
+            h("a.btn.btn-ghost.btn-lg", { href: lien("/c/seffarine") },
+              h("span.em", { "aria-hidden": "true" }, sceau("seffarine", "\uD83E\uDED6")),
+              t("cta_artisanat")))),
 
         /* L'arche du fond de boutique, telle qu'on la voit en entrant. */
         h("div.hero-arche",

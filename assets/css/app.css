@@ -420,6 +420,11 @@ h3 { font-size: 22.5px; }
 .hero .lede { font-size: clamp(16px, 1.7vw, 19.5px); color: #EDE6D6; max-width: 52ch; margin: 0 0 32px; }
 .hero .eyebrow { color: var(--gold-2); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+/* `.btn` est déjà en inline-flex avec un gap : l'icône se pose sans rien
+   changer à la mise en page. Elle est un peu plus grande que le texte —
+   un emoji au corps du texte paraît toujours plus petit que lui — et le
+   `line-height: 1` l'empêche de rehausser la ligne du bouton. */
+.hero-cta .em { font-size: 18px; line-height: 1; }
 /* Les boutons fantômes posent le même problème que le blason, en pire :
    leur fond était entièrement transparent, si bien que « Découvrir nos
    parfums » se lisait sur ce qui passait derrière — une arête de zellige,
