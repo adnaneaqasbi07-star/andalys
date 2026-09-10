@@ -991,8 +991,8 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
      franc n'arrivait qu'à demi. Un masque n'atténue pas seulement le
      motif — il atténue tout ce qui le traverse. */
   --reseau-dose: linear-gradient(
-    rgba(0,0,0,.80) 0%,  #000 12%,             #000 44%,
-    rgba(0,0,0,.46) 58%, rgba(0,0,0,.12) 76%,  transparent 92%);
+    rgba(0,0,0,.92) 0%,  #000 10%,             #000 52%,
+    rgba(0,0,0,.62) 66%, rgba(0,0,0,.24) 82%,  transparent 96%);
 }
 @media (max-width: 720px) { .scene { --zel-pas: 84px; } }
 
@@ -1143,7 +1143,11 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
 .reseau .zel {
   background: linear-gradient(168deg,
     #6E9C84 0%, #A5842F 24%, #D8B23C 50%, #F2D89C 74%, #FFF6DC 100%);
-  opacity: .80;
+  /* Trois atténuations se multipliaient avant d'arriver à l'œil : la
+     tuile-masque, le dosage vertical, et cette opacité. Le zellige n'en
+     ressortait qu'au quart. Elle reste en dessous de 1 pour que la photo
+     continue de se lire dessous, mais elle ne mange plus la trame. */
+  opacity: .94;
 }
 
 /* Les lumières.
