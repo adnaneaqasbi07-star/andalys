@@ -11,7 +11,7 @@
    deux ne peuvent plus diverger.
    ===================================================================== */
 
-import { VUE, ARCHE, ROSETTE, ETOILE_CENTRE, A, CROISSANT, ETINCELLES }
+import { VUE, ARCHE, ROSETTE, ETOILE_CENTRE, LETTRE_A, CROISSANT, ETINCELLES }
   from "./logo-formes.js";
 
 const NS = "http://www.w3.org/2000/svg";
@@ -58,9 +58,9 @@ export function marque(taille, options) {
   });
   m.push(plein(ETOILE_CENTRE, or));
 
-  [A.panse, A.fut, A.drapeau, A.barre, A.piedG, A.piedD].forEach(function (d) {
-    m.push(plein(d, vert));
-  });
+  /* Le A est d'un seul tenant, et il n'a pas de barre : c'est le
+     croissant qui passe là où on l'attendrait. */
+  m.push(plein(LETTRE_A, vert));
 
   /* Le croissant et les deux étoiles passent APRÈS le A : ils se lisent
      en travers de la panse, comme sur le logo. */
@@ -83,9 +83,7 @@ export function pastille(taille) {
              '<g transform="translate(10 6) scale(1)">'];
   m.push('<path d="' + ARCHE + '" fill="none" stroke="var(--gold-2)" ' +
          'stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>');
-  [A.panse, A.fut, A.barre, A.piedG, A.piedD].forEach(function (d) {
-    m.push(plein(d, "var(--gold-2)"));
-  });
+  m.push(plein(LETTRE_A, "var(--gold-2)"));
   m.push("</g>");
   svg.innerHTML = m.join("");
   return svg;
