@@ -1,6 +1,6 @@
 {
- "version": "20260911-474020f9",
- "publie_le": "2026-09-11T00:31:57.620913+00:00",
+ "version": "20260911-b24ce243",
+ "publie_le": "2026-09-11T00:39:48.752991+00:00",
  "fichiers": [
   ".nojekyll",
   "404.html",
@@ -28,6 +28,9 @@
   "assets/img/photos/bab-moulay-driss.webp",
   "assets/img/photos/bab-palais.webp",
   "assets/img/photos/bab-rcif.webp",
+  "assets/img/photos/boutique-coffrets.webp",
+  "assets/img/photos/boutique-flacons.webp",
+  "assets/img/photos/coffret-fes-aoud.webp",
   "assets/img/photos/cuivre-seffarine.webp",
   "assets/img/photos/fes-medina.webp",
   "assets/img/photos/seffarine.webp",

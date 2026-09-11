@@ -121,6 +121,31 @@ function portes() {
 }
 
 /* ------------------------------------------------------------------ */
+/* La vitrine : une photographie de la boutique, en bandeau pleine
+   largeur, qui dérive lentement d'un bord à l'autre.
+
+   Pourquoi un défilement plutôt qu'une image posée : le cliché est plus
+   large que haut, et sur un écran de téléphone il faudrait soit le
+   rogner jusqu'à ne plus rien montrer, soit l'écraser. En le laissant
+   passer devant la fenêtre, on montre toute l'étagère, de gauche à
+   droite, sans rien couper.
+
+   Le mouvement est une simple translation, animée par le compositeur ;
+   il s'arrête de lui-même si le visiteur a demandé moins d'animations
+   (voir `prefers-reduced-motion` dans app.css). */
+function vitrine() {
+  return h("section.vitrine",
+    h("div.vitrine-cadre",
+      h("img.vitrine-image", {
+        src: "assets/img/photos/boutique-coffrets.webp",
+        alt: t("vitrine_titre"), loading: "lazy", decoding: "async"
+      })),
+    h("div.vitrine-texte",
+      h("p.sur-titre", t("boutique")),
+      h("h2", t("vitrine_titre")),
+      h("p", t("vitrine_texte"))));
+}
+
 function bande(titre, surTitre, lienVoirTout) {
   const contenu = h("div", {}, squelettes(4));
   const sec = h("section.section",
@@ -170,6 +195,7 @@ export default function accueil(hote) {
     hero(),
     assurances(),
     portes(),
+    vitrine(),
     vedettes.section,
     promos.section,
     nouveaux.section,

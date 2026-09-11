@@ -1315,8 +1315,71 @@ details.bloc .corps { padding: 0 2px 18px; color: var(--ink-soft); font-size: 14
   100% { transform: translate3d(346%, 4%, 0) scale(.60);    opacity: .04; }
 }
 
+
+/* ---------------------------------------------------------------------
+   La vitrine — la photographie de la boutique, en bandeau qui dérive
+   ---------------------------------------------------------------------
+   Le cliché est trois fois plus large que haut ; sur un téléphone, le
+   poser tel quel reviendrait à n'en montrer qu'un dixième. On le laisse
+   donc passer devant une fenêtre : l'image fait 190 % de la largeur du
+   cadre et va d'un bord à l'autre, lentement, en aller-retour.
+
+   C'est un `transform` qui est animé, jamais `left` ni `background-position` :
+   le compositeur s'en charge seul, sans repeindre à chaque image. */
+.vitrine {
+  position: relative;
+  margin: 28px 0;
+  overflow: hidden;
+  border-block: 1px solid var(--line-soft);
+  background: var(--surface-2);
+}
+
+.vitrine-cadre { overflow: hidden; height: clamp(170px, 26vw, 300px); }
+
+.vitrine-image {
+  display: block;
+  height: 100%;
+  width: 190%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+  animation: vitrine-derive 38s ease-in-out infinite alternate;
+}
+
+@keyframes vitrine-derive {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-47.4%, 0, 0); }   /* 190% − 100%, /2 */
+}
+
+/* Le texte est posé DANS le bandeau, sur un voile qui part du bas : sans
+   lui, les légendes blanches des étagères et le texte se disputeraient le
+   même gris. Le voile ne couvre que le tiers bas, pour laisser voir les
+   coffrets. */
+.vitrine::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 62%;
+  background: linear-gradient(to top,
+    rgba(20, 54, 37, .90) 0%, rgba(20, 54, 37, .58) 45%, transparent 100%);
+  pointer-events: none;
+}
+
+.vitrine-texte {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  padding: 14px clamp(16px, 5vw, 48px) clamp(14px, 3vw, 26px);
+  color: #FDFBF5;
+}
+.vitrine-texte .sur-titre { color: var(--gold-2); margin: 0 0 2px; }
+.vitrine-texte h2 { margin: 0 0 4px; font-size: clamp(19px, 3.4vw, 30px); }
+.vitrine-texte p:last-child {
+  margin: 0; max-width: 54ch; color: #E6E0D0;
+  font-size: clamp(13px, 1.5vw, 15px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scene-monde { transition: none; }
+  /* La vitrine s'arrête au milieu de sa course : c'est là que l'étagère
+     est la mieux cadrée, coffrets compris. */
+  .vitrine-image { animation: none; transform: translate3d(-23.7%, 0, 0); }
   /* Le ciel s'immobilise, et les lumières se posent là où elles éclairent
      le mieux : le zellige garde son relief, plus rien ne bouge. */
   .nuages .derive { animation: none; }
