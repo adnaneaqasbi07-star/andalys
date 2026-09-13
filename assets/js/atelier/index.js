@@ -1,50 +1,59 @@
 /* =====================================================================
-   Back-office — amorçage, contrôle d'accès, navigation.
+   L'atelier — amorçage, contrôle d'accès, navigation.
    ---------------------------------------------------------------------
-   Le contrôle d'accès affiché ici n'est qu'une politesse : la vraie
-   serrure est dans Postgres. Un visiteur qui ouvrirait cette page sans
-   être administrateur verrait une interface vide, la base refusant
-   toutes ses écritures (boutique.est_admin()).
+   Même serrure que le back-office : celle qui compte est dans Postgres.
+   Les tables `ia_*` ne rendent pas une ligne à qui n'est pas
+   administrateur, et `decider_validation()` refuse tout le reste.
+
+   Cette page est séparée du back-office à dessein. On n'y vient pas pour
+   la même chose : là-bas on gère une boutique, ici on pilote des agents.
+   Les deux se tiennent par un lien dans leur volet gauche.
    ===================================================================== */
 
-import { h, $, remplir, vider, notice } from "../core/dom.js";
-import { t, detecterLangue, definirLangue, LANGUES, ETIQUETTES, langue } from "../i18n/index.js";
+import { h, $, remplir } from "../core/dom.js";
+import { t, detecterLangue, definirLangue } from "../i18n/index.js";
 import * as routeur from "../core/routeur.js";
 import { etat } from "../core/etat.js";
-import { demarrerSession, deconnexion, auth } from "../data/compte.js";
-import * as catalogue from "../data/catalogue.js";
+import { demarrerSession, deconnexion } from "../data/compte.js";
 import { rpc, messageErreur } from "../core/supa.js";
 import { marque } from "../ui/logo.js";
-import { appliquerTheme, themeMemorise } from "../ui/coque.js";
 import { portail } from "../ui/portail.js";
+import { appliquerTheme, themeMemorise } from "../ui/coque.js";
 
 const SECTIONS = [
-  ["/",            "◧", "Tableau de bord"],
-  ["/produits",    "✦", "Produits"],
-  ["/commandes",   "📦", "Commandes"],
-  ["/clients",     "👥", "Clients"],
-  ["/journal",     "📖", "Journal"],
-  ["/categories",  "🗂", "Catégories"],
-  ["/marques",     "🏷", "Marques"],
-  ["/promos",      "％", "Promotions"],
-  ["/livraison",   "🚚", "Livraison"],
-  ["/reglages",    "⚙", "Réglages"]
+  ["/",            "◧", "Accueil"],
+  ["/validations", "⚖", "Validations"],
+  ["/taches",      "✓", "Tâches"],
+  ["/agents",      "✺", "Agents"],
+  ["/veille",      "🔎", "Veille"],
+  ["/cadence",     "⏱", "Planification"],
+  ["/journal",     "📜", "Journal"],
+  ["/cles",        "🔑", "Clés"]
 ];
 
 let corps = null;
+let pastille = null;
 
 /* ------------------------------------------------------------------ */
 function flanc() {
   const nav = h("nav.adm-flanc",
     h("div.titre", marque(30),
-      h("span", {}, h("div.nm", {}, "ANDALYS"), h("div.sub", {}, "Back-office"))));
+      h("span", {}, h("div.nm", {}, "ANDALYS"), h("div.sub", {}, "Atelier IA"))));
 
   SECTIONS.forEach(function (s) {
-    nav.appendChild(h("a", { href: "#" + s[0], "data-chemin": s[0] },
-      h("span", { "aria-hidden": "true" }, s[1]), s[2]));
+    const lien = h("a", { href: "#" + s[0], "data-chemin": s[0] },
+      h("span", { "aria-hidden": "true" }, s[1]), h("span.grow", {}, s[2]));
+    /* Le nombre de validations en attente est la seule information que
+       l'on veut voir sans ouvrir l'écran : c'est ce qui bloque le reste. */
+    if (s[0] === "/validations") {
+      pastille = h("span.badge.badge-new", { hidden: true });
+      lien.appendChild(pastille);
+    }
+    nav.appendChild(lien);
   });
 
   nav.appendChild(h("div.sep",
+    h("a", { href: "admin.html" }, "◧", "Back-office"),
     h("a", { href: "index.html", target: "_blank", rel: "noopener" }, "🛍", "Voir la boutique"),
     h("a", { href: "#", onclick: function (e) {
       e.preventDefault();
@@ -63,6 +72,13 @@ function majFlanc() {
   });
 }
 
+document.addEventListener("atelier:attente", function (e) {
+  if (!pastille) return;
+  const n = Number(e.detail) || 0;
+  pastille.textContent = String(n);
+  pastille.hidden = n === 0;
+});
+
 /* ------------------------------------------------------------------ */
 const cache = {};
 function section(fichier) {
@@ -78,17 +94,16 @@ function section(fichier) {
   };
 }
 
-routeur.definir("/",              section("tableau"));
-routeur.definir("/produits",      section("produits"));
-routeur.definir("/commandes",     section("commandes"));
-routeur.definir("/commandes/:id", section("commandes"));
-routeur.definir("/clients",       section("clients"));
-routeur.definir("/journal",       section("articles"));
-routeur.definir("/categories",    section("referentiels"));
-routeur.definir("/marques",       section("referentiels"));
-routeur.definir("/promos",        section("referentiels"));
-routeur.definir("/livraison",     section("referentiels"));
-routeur.definir("/reglages",      section("reglages"));
+routeur.definir("/",                 section("accueil"));
+routeur.definir("/validations",      section("validations"));
+routeur.definir("/validations/:id",  section("validations"));
+routeur.definir("/taches",           section("taches"));
+routeur.definir("/agents",           section("agents"));
+routeur.definir("/agents/:code",     section("agents"));
+routeur.definir("/veille",           section("rapports"));
+routeur.definir("/cadence",          section("planifications"));
+routeur.definir("/journal",          section("journal"));
+routeur.definir("/cles",             section("cles"));
 
 function rendre(route) {
   majFlanc();
@@ -100,7 +115,7 @@ function rendre(route) {
 /* ------------------------------------------------------------------ */
 /* Ne jamais rester sur un écran vide                                  */
 /* ------------------------------------------------------------------ */
-/* Le gabarit de `admin.html` affiche « ANDALYS » en attendant que le
+/* Le gabarit de `atelier.html` affiche « ANDALYS » en attendant que le
    JavaScript prenne la main. Si quoi que ce soit échoue avant — un
    module absent, une réponse illisible, un réseau coupé — ce gabarit
    reste à l'écran pour toujours, et seule la console le dit. Pour qui
@@ -110,14 +125,14 @@ function rendre(route) {
    et les promesses non tenues. Mieux vaut un message laid qu'un écran
    muet. */
 function panne(raison) {
-  const cible = $("#adm");
+  const cible = $("#atl");
   if (!cible || cible.dataset.enPanne) return;
   cible.dataset.enPanne = "1";
   remplir(cible, h("div", {
     style: { minHeight: "100vh", display: "grid", placeItems: "center", padding: "24px" }
   },
     h("div.card.card-pad", { style: { maxWidth: "560px" } },
-      h("h1", { style: { fontSize: "20px", marginTop: 0 } }, "Le back-office n'a pas pu démarrer"),
+      h("h1", { style: { fontSize: "20px", marginTop: 0 } }, "L'atelier n'a pas pu démarrer"),
       h("p", {}, String((raison && (raison.message || raison)) || "raison inconnue")),
       h("p.faint", { style: { fontSize: "13px" } },
         "Le plus souvent : un fichier servi depuis le cache du navigateur. "),
@@ -142,39 +157,38 @@ async function demarrer() {
   const retour = await demarrerSession();
 
   if (!etat.utilisateur) {
-    portail($("#adm"), "Back-office", retour && retour.erreur ? retour.erreur : null);
+    portail($("#atl"), "Atelier", retour && retour.erreur ? retour.erreur : null);
     return;
   }
 
-  /* boutique.statistiques() répond { ok:false } à qui n'est pas
-     administrateur : un aller-retour suffit à trancher. */
-  let autorise = false;
+  /* `ia_resume()` répond { ok:false } à qui n'est pas administrateur :
+     un aller-retour suffit à trancher, et il sert aussi à savoir si la
+     migration de l'atelier est bien poussée. */
+  let resume = null;
   try {
-    const s = await rpc("statistiques", { p_jours: 1 });
-    autorise = !!(s && s.ok);
+    resume = await rpc("ia_resume", { p_jours: 1 });
   } catch (e) {
-    if (e.schemaNonExpose) {
-      remplir($("#adm"), h("div.wrap.section", h("div.vide-etat",
-        h("div.em", {}, "⚙"),
-        h("h3", {}, t("schema_absent")),
-        h("p", {}, messageErreur(e)),
-        e.indice ? h("p.faint", {}, e.indice) : null,
-        h("p.faint", {}, "Puis pousser les migrations : supabase db push"))));
-      return;
-    }
-    autorise = false;
+    /* Tant que `supabase db push` n'est pas passé, la fonction n'existe
+       pas : le dire, plutôt que d'afficher un écran vide. */
+    remplir($("#atl"), h("div.wrap.section", h("div.vide-etat",
+      h("div.em", { "aria-hidden": "true" }, "⚙"),
+      h("h3", {}, e.schemaNonExpose ? t("schema_absent") : "L'atelier n'est pas encore en base"),
+      h("p", {}, messageErreur(e)),
+      e.indice ? h("p.faint", {}, e.indice) : null,
+      h("p.faint", {}, "Pousser les migrations :  supabase db push"))));
+    return;
   }
 
-  if (!autorise) {
-    portail($("#adm"), "Back-office", "Ce compte n'est pas administrateur de la boutique.");
+  if (!resume || !resume.ok) {
+    portail($("#atl"), "Atelier", "Ce compte n'est pas administrateur de la boutique.");
     return;
   }
 
   corps = h("div.adm-corps");
-  remplir($("#adm"), h("div.adm", flanc(), corps));
+  remplir($("#atl"), h("div.adm", flanc(), corps));
 
-  try { await catalogue.chargerReferentiels(); }
-  catch (e) { notice(e.message || t("erreur_reseau"), true); }
+  const n = Number(resume.validations_en_attente) || 0;
+  if (pastille) { pastille.textContent = String(n); pastille.hidden = n === 0; }
 
   routeur.demarrer(rendre);
 }

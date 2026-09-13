@@ -8,7 +8,7 @@
    depuis le cache des recettes.
    ===================================================================== */
 
-const CACHE = "andalys-20260911-b24ce243";
+const CACHE = "andalys-20260913-e3f99e26";
 
 const SOCLE = [
   "index.html",
@@ -56,9 +56,14 @@ self.addEventListener("fetch", function (e) {
      frais. Une boutique qui affiche un stock périmé vend ce qu'elle n'a plus. */
   if (url.hostname.endsWith(".supabase.co")) return;
 
-  /* Le back-office non plus : l'administrateur doit voir l'état réel. */
+  /* Le back-office non plus : l'administrateur doit voir l'état réel.
+     L'atelier des agents obéit à la même règle, et pour une raison plus
+     forte encore : une file de validations servie depuis le cache ferait
+     approuver une action déjà décidée. */
   if (url.pathname.indexOf("/admin.html") >= 0 ||
-      url.pathname.indexOf("/assets/js/admin/") >= 0) return;
+      url.pathname.indexOf("/atelier.html") >= 0 ||
+      url.pathname.indexOf("/assets/js/admin/") >= 0 ||
+      url.pathname.indexOf("/assets/js/atelier/") >= 0) return;
 
   /* La page : réseau d'abord, cache en repli hors connexion. */
   if (req.mode === "navigate") {

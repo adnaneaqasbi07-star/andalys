@@ -27,8 +27,8 @@ Livraison à domicile partout au Maroc.
 ## Démarrer
 
 ```bash
-python3 -m http.server 4321
-# http://localhost:4321/
+python3 bin/servir.py
+# http://127.0.0.1:4321/
 ```
 
 Rien à installer, rien à compiler. Les fichiers du dossier sont ceux qui
@@ -56,6 +56,7 @@ python3 bin/deploie.py --pousser
 |---|---|
 | Boutique | `https://adnaneaqasbi07-star.github.io/andalys/` |
 | Back-office | `https://adnaneaqasbi07-star.github.io/andalys/admin.html` |
+| Atelier IA | `https://adnaneaqasbi07-star.github.io/andalys/atelier.html` |
 | Recettes (inchangée) | `https://adnaneaqasbi07-star.github.io/SihamDelicesFes/` |
 
 ---
@@ -134,7 +135,7 @@ Puis, pour éprouver la base elle-même :
 ```
 
 Monte un PostgreSQL jetable, y rejoue les trois migrations et le catalogue,
-lance les **63 contrôles** de `supabase/tests.sql`, puis démolit tout. Sans
+lance les **158 contrôles** de `supabase/tests.sql`, puis démolit tout. Sans
 Docker : seulement `brew install postgresql@17`.
 
 Ce que ces tests garantissent, entre autres :
@@ -155,6 +156,10 @@ Ce que ces tests garantissent, entre autres :
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — structure du projet, base de
   données, pages, design system
+- [docs/ATELIER-IA.md](docs/ATELIER-IA.md) — l'atelier : agents IA, niveaux de
+  risque, validations humaines, feuille de route
+- [CLAUDE.md](CLAUDE.md) — instructions permanentes, à lire avant toute
+  modification
 - [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) — mise en service, publication,
   sauvegarde
 

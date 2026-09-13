@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier · Andalys AI</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAF6EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1512" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="assets/img/logo-favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Amiri:wght@400;700&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/atelier.css">
+
+<script>
+(function () {
+  "use strict";
+  try {
+    var th = localStorage.getItem("andalys.theme");
+    if (th && th !== "auto") document.documentElement.setAttribute("data-theme", th);
+  } catch (e) { /* navigation privée */ }
+})();
+</script>
+</head>
+<body>
+
+<div id="atl">
+  <div style="min-height:70vh;display:grid;place-items:center;color:#8B8471">
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;letter-spacing:.12em;color:#0F3B2E">ANDALYS</p>
+  </div>
+</div>
+
+<noscript><div style="padding:40px;text-align:center;font-family:system-ui">JavaScript est nécessaire.</div></noscript>
+
+<script type="module" src="assets/js/atelier/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* =====================================================================
+   ANDALYS — l'atelier des agents.
+   Réutilise tout le back-office (.adm, .stat, table.t, .panneau) et
+   n'ajoute que ce qu'il n'a pas : les pastilles de niveau de risque et
+   la file des validations.
+   ===================================================================== */
+
+/* --- niveaux de risque ------------------------------------------------ */
+/* Les trois couleurs du manuel. Jamais seules : chaque pastille porte
+   aussi son mot, sinon un daltonien lit « approuver » sur du rouge. */
+.niveau {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .04em;
+  padding: 3px 9px; border-radius: 999px; border: 1px solid transparent;
+}
+.niveau i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+/* Mêmes couples couleur/lavis que les badges de la boutique : ce sont
+   ceux dont `verifier.py` mesure le contraste dans les deux thèmes. */
+.niveau-vert   { color: var(--ok);     background: color-mix(in srgb, var(--ok) 14%, transparent);
+                 border-color: color-mix(in srgb, var(--ok) 34%, transparent); }
+.niveau-orange { color: var(--gold);   background: var(--gold-wash);
+                 border-color: color-mix(in srgb, var(--gold) 36%, transparent); }
+.niveau-rouge  { color: var(--danger); background: var(--danger-wash);
+                 border-color: color-mix(in srgb, var(--danger) 34%, transparent); }
+
+/* --- statuts d'exécution et de validation ----------------------------- */
+.puce { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; }
+.puce i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+.p-en_cours i, .p-a_faire i     { background: var(--accent); }
+.p-reussi i, .p-approuvee i,
+.p-appliquee i, .p-faite i      { background: var(--ok); }
+.p-echoue i, .p-refusee i       { background: var(--danger); }
+.p-annule i, .p-expiree i,
+.p-abandonnee i                 { background: var(--ink-faint); }
+.p-en_attente i                 { background: var(--gold); }
+
+/* --- la file des validations ------------------------------------------ */
+.file { display: grid; gap: 12px; }
+.dossier {
+  background: var(--surface); border: 1px solid var(--line-soft);
+  border-radius: var(--r); padding: 15px 17px;
+  display: grid; gap: 9px;
+  border-inline-start: 3px solid var(--line);
+}
+.dossier.n-orange { border-inline-start-color: var(--gold); }
+.dossier.n-rouge  { border-inline-start-color: var(--danger); }
+.dossier .haut { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dossier .resume { font-size: 15px; line-height: 1.45; margin: 0; }
+.dossier .bas { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.dossier .quand { font-size: 12.5px; color: var(--ink-faint); }
+
+/* L'action, en petites capitales : c'est un identifiant technique, pas
+   une phrase. On le montre tel quel, sans le déguiser. */
+.code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px; background: var(--surface-2); color: var(--ink-soft);
+  padding: 2px 7px; border-radius: var(--r-s); white-space: nowrap;
+}
+
+/* La charge utile : ce qui sera rejoué mot pour mot après approbation.
+   Elle se lit, donc elle se montre — repliée par défaut. */
+.charge {
+  margin: 0; padding: 12px 14px; overflow-x: auto;
+  background: var(--surface-2); border: 1px solid var(--line-soft);
+  border-radius: var(--r-s);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px; line-height: 1.55; white-space: pre; color: var(--ink-soft);
+}
+details.repli > summary {
+  cursor: pointer; font-size: 13px; color: var(--ink-faint);
+  padding: 4px 0; user-select: none;
+}
+details.repli > summary:hover { color: var(--accent); }
+details.repli[open] > summary { margin-bottom: 8px; }
+
+/* --- le journal --------------------------------------------------------- */
+table.t td .code { font-size: 11.5px; }
+.j-echec   { color: var(--danger); }
+.j-refuse  { color: var(--gold); }
+
+/* --- grille de l'accueil -------------------------------------------------- */
+.duo { display: grid; gap: 16px; margin-top: 22px;
+       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.liste-fine { margin-top: 10px; display: grid; gap: 8px; font-size: 14px; }
+.liste-fine .rangee { display: flex; align-items: center; gap: 10px; }
+.liste-fine .rangee .grow { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Une carte de chiffre qui appelle à l'action, quand il y a quelque chose
+   à décider. Sobre : un liseré, pas un gyrophare. */
+.stat.urgent { border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+               background: color-mix(in srgb, var(--gold) 7%, var(--surface)); }
+.stat.urgent .v { color: var(--gold); }
+.stat a.v { display: block; color: inherit; }
+.stat a.v:hover { color: var(--accent); }
