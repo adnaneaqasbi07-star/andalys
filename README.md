@@ -135,7 +135,7 @@ Puis, pour éprouver la base elle-même :
 ```
 
 Monte un PostgreSQL jetable, y rejoue les trois migrations et le catalogue,
-lance les **158 contrôles** de `supabase/tests.sql`, puis démolit tout. Sans
+lance les **167 contrôles** de `supabase/tests.sql`, puis démolit tout. Sans
 Docker : seulement `brew install postgresql@17`.
 
 Ce que ces tests garantissent, entre autres :

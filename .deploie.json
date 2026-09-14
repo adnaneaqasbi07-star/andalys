@@ -1,6 +1,6 @@
 {
- "version": "20260913-e3f99e26",
- "publie_le": "2026-09-13T23:26:32.744219+00:00",
+ "version": "20260914-0d557948",
+ "publie_le": "2026-09-14T19:16:23.833899+00:00",
  "fichiers": [
   ".nojekyll",
   "404.html",
@@ -181,6 +181,7 @@
   "assets/js/atelier/agents.js",
   "assets/js/atelier/cles.js",
   "assets/js/atelier/commun.js",
+  "assets/js/atelier/courrier.js",
   "assets/js/atelier/index.js",
   "assets/js/atelier/journal.js",
   "assets/js/atelier/planifications.js",

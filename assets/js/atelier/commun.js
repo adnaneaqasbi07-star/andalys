@@ -150,3 +150,96 @@ export function ecranErreur(hote, e) {
     h("p", {}, messageErreur(e)),
     e && e.indice ? h("p.faint", {}, e.indice) : null));
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Les fournisseurs : où obtenir la clé                                */
+/* ------------------------------------------------------------------ */
+/* Une seule table pour les deux écrans qui s'en servent — « Clés » et le
+   panneau « Régler » des agents. Deux copies auraient divergé au premier
+   lien qui change. */
+export const SERVICES = {
+  anthropic: {
+    nom: "Anthropic — Claude",
+    variable: "ANTHROPIC_API_KEY",
+    role: "Le texte : fiches produits, veille, analyses, brouillons d'e-mails.",
+    lien: "https://console.anthropic.com/settings/keys",
+    chemin: "Console Anthropic › Settings › API keys › Create Key",
+    note: "Pensez à créditer le compte dans Billing : sans crédit, la clé est valide "
+        + "mais chaque appel échoue."
+  },
+  google: {
+    nom: "Google — Gemini (Nano Banana)",
+    variable: "GEMINI_API_KEY",
+    role: "Les images : retouche de vos photographies, visuels marketing.",
+    lien: "https://aistudio.google.com/apikey",
+    chemin: "Google AI Studio › Get API key › Create API key",
+    note: "C'est la clé de l'API Gemini (AI Studio), pas un identifiant de Google Cloud."
+  },
+  openai: {
+    nom: "OpenAI",
+    variable: "OPENAI_API_KEY",
+    role: "Aucun agent ne l'utilise aujourd'hui.",
+    lien: "https://platform.openai.com/api-keys",
+    chemin: "Platform OpenAI › API keys › Create new secret key",
+    note: "L'adaptateur n'est pas écrit : déclarer un agent ici le ferait refuser de partir."
+  },
+  mistral: {
+    nom: "Mistral",
+    variable: "MISTRAL_API_KEY",
+    role: "Aucun agent ne l'utilise aujourd'hui.",
+    lien: "https://console.mistral.ai/api-keys",
+    chemin: "Console Mistral › API Keys › Create new key",
+    note: "L'adaptateur n'est pas écrit : déclarer un agent ici le ferait refuser de partir."
+  }
+};
+
+/* ------------------------------------------------------------------ */
+/* Le fournisseur conseillé, agent par agent                           */
+/* ------------------------------------------------------------------ */
+/* La règle qui gouverne ce tableau : on paie cher là où l'erreur coûte
+   cher, et peu là où le travail est répétitif et vérifiable. Une fiche
+   produit fausse se retrouve devant un client ; un e-mail mal classé se
+   reclasse en trois secondes.
+
+   Écrit ici plutôt que dans un document : un conseil qu'il faut aller
+   chercher ailleurs n'est pas suivi. Le panneau « Régler » l'affiche, et
+   propose de l'appliquer d'un clic. */
+export const CONSEIL = {
+  produits: { fournisseur: "anthropic", modele: "claude-opus-5",
+    pourquoi: "Rédaction trilingue : l'arabe soigné est là où les modèles se "
+            + "départagent le plus. Une fiche à refaire coûte plus cher que les "
+            + "jetons économisés." },
+  recherche: { fournisseur: "anthropic", modele: "claude-opus-5",
+    pourquoi: "Recherche web officielle, sources et dates récupérées proprement. "
+            + "Si la veille rend peu de sources marocaines, Google et son index "
+            + "sont le premier essai à faire." },
+  creatif: { fournisseur: "google", modele: "gemini-2.5-flash-image",
+    pourquoi: "Aucun modèle de texte ne fabrique d'image. Nano Banana est surtout "
+            + "fort en édition — harmoniser vos vraies photographies." },
+  analytics: { fournisseur: "anthropic", modele: "claude-opus-5",
+    pourquoi: "Il raisonne sur des chiffres et recommande des actions : une "
+            + "analyse bancale se paie en décisions." },
+  directeur: { fournisseur: "anthropic", modele: "claude-opus-5",
+    pourquoi: "Il arbitre entre les autres agents. C'est du raisonnement, pas de "
+            + "la rédaction." },
+  email: { fournisseur: "anthropic", modele: "claude-haiku-4-5",
+    pourquoi: "Classer et résumer en volume : cinq fois moins cher qu'Opus, et "
+            + "c'est exactement son métier." },
+  social: { fournisseur: "anthropic", modele: "claude-sonnet-5",
+    pourquoi: "Légendes et hashtags : travail cadré, relu par une validation "
+            + "orange de toute façon." },
+  clients: { fournisseur: "anthropic", modele: "claude-sonnet-5",
+    pourquoi: "Réponses selon des règles validées, jamais envoyées sans accord." },
+  fournisseurs: { fournisseur: "anthropic", modele: "claude-sonnet-5",
+    pourquoi: "Comparer des prix et des délais ne demande pas le modèle le plus cher." },
+  site: { fournisseur: "anthropic", modele: "claude-sonnet-5",
+    pourquoi: "Surveiller des pages et proposer des correctifs : travail répétitif "
+            + "et vérifiable." }
+};
+
+/** Le conseil pour cet agent, ou celui d'Anthropic à défaut. */
+export function conseilPour(code) {
+  return CONSEIL[code] || { fournisseur: "anthropic", modele: "claude-sonnet-5",
+                            pourquoi: "Agent non répertorié : Sonnet est le choix sûr." };
+}

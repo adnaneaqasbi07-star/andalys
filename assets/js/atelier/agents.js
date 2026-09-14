@@ -10,7 +10,8 @@
 import { h, remplir, notice } from "../core/dom.js";
 import { lire, modifier, messageErreur } from "../core/supa.js";
 import { table, vide, panneau, fermerPanneau } from "../admin/commun.js";
-import { niveau, puce, mono, quand, duree, cout, ecranErreur, DECLENCHEURS } from "./commun.js";
+import { niveau, puce, mono, quand, duree, cout, ecranErreur, DECLENCHEURS,
+         SERVICES, conseilPour } from "./commun.js";
 
 /* ------------------------------------------------------------------ */
 /* Qui répond, et avec quel modèle                                      */
@@ -32,11 +33,12 @@ const MODELES = {
   mistral: [["mistral-large-latest", "à confirmer avant usage"]]
 };
 
-/* La variable d'environnement attendue quand l'agent n'en nomme pas une. */
-const CLE_PAR_DEFAUT = {
-  anthropic: "ANTHROPIC_API_KEY", google: "GEMINI_API_KEY",
-  openai: "OPENAI_API_KEY", mistral: "MISTRAL_API_KEY"
-};
+/* La variable d'environnement attendue par défaut, dérivée de la table
+   partagée : une seconde liste écrite à la main aurait divergé au premier
+   fournisseur ajouté — c'est d'ailleurs en supprimant la copie locale que
+   cette constante avait disparu. */
+const CLE_PAR_DEFAUT = {};
+Object.keys(SERVICES).forEach(function (f) { CLE_PAR_DEFAUT[f] = SERVICES[f].variable; });
 
 function reglages(a, recharger) {
   const fournisseur = h("select.select", {},
@@ -54,8 +56,15 @@ function reglages(a, recharger) {
   });
   const rappel = h("div.hint");
 
+  /* Le lien direct vers la page où l'on obtient la clé du fournisseur
+     choisi. Il suit le menu déroulant : changer de fournisseur change le
+     lien, et l'on n'a jamais à chercher où aller. */
+  const obtenir = h("a.btn.btn-quiet.btn-sm", { target: "_blank", rel: "noopener noreferrer" });
+  const chemin = h("div.hint");
+
   function majFournisseur() {
     const f = fournisseur.value;
+    const service = SERVICES[f] || SERVICES.anthropic;
     remplir(liste, (MODELES[f] || []).map(function (m) {
       return h("option", { value: m[0] }, m[1]);
     }));
@@ -64,6 +73,9 @@ function reglages(a, recharger) {
         return h("span", {}, i ? " · " : "", h("code", {}, m[0]));
       }));
     cleEnv.placeholder = CLE_PAR_DEFAUT[f] || "";
+    obtenir.href = service.lien;
+    remplir(obtenir, "Obtenir la clé " + service.nom.split(" —")[0] + " ↗");
+    remplir(chemin, service.chemin + (service.note ? " — " + service.note : ""));
     remplir(rappel,
       "Le NOM de la variable, jamais la clé elle-même — la base refuse une clé ici. ",
       "Vide : « " + (CLE_PAR_DEFAUT[f] || "—") + " ». ",
@@ -99,9 +111,33 @@ function reglages(a, recharger) {
     }
   });
 
+  const c = conseilPour(a.code);
+  const suitLeConseil = function () {
+    return (a.fournisseur || "anthropic") === c.fournisseur && a.modele === c.modele;
+  };
+  const appliquer = h("button.btn.btn-quiet.btn-sm", { type: "button", onclick: function () {
+    fournisseur.value = c.fournisseur;
+    majFournisseur();
+    modele.value = c.modele;
+    notice("Réglage conseillé posé — reste à enregistrer.");
+  } }, "Appliquer ce réglage");
+
   panneau("Régler « " + a.nom + " »", h("div", {},
     h("p.faint", { style: { marginTop: 0 } }, a.mission),
-    h("div.field", h("label", {}, "Fournisseur"), fournisseur),
+
+    /* Le conseil est ici, pas dans un document qu'il faudrait aller
+       chercher : un conseil qu'on ne voit pas au moment de décider n'est
+       pas suivi. */
+    h("div.fieldset", h("legend", {}, "Conseillé pour cet agent"),
+      h("div.row", { style: { gap: "8px", flexWrap: "wrap", alignItems: "center" } },
+        h("strong", {}, c.fournisseur), h("span.faint", {}, "·"), mono(c.modele),
+        suitLeConseil() ? h("span.badge.badge-ok", {}, "c'est le réglage actuel") : appliquer),
+      h("p.faint", { style: { margin: "8px 0 0", fontSize: "13px", lineHeight: "1.5" } },
+        c.pourquoi)),
+
+    h("div.field", h("label", {}, "Fournisseur"), fournisseur,
+      h("div.row", { style: { gap: "8px", marginTop: "6px", flexWrap: "wrap" } }, obtenir),
+      chemin),
     h("div.field", h("label", {}, "Modèle"), modele, liste, aide),
     h("div.field", h("label", {}, "Variable d'environnement de la clé"), cleEnv, rappel),
     h("div.fieldset", h("legend", {}, "Pour vérifier"),
@@ -172,7 +208,16 @@ export default async function agents(hote) {
               h("div", {}, h("span.faint", { style: { fontSize: "12.5px", whiteSpace: "nowrap" } },
                 a.modele || "—")),
               h("span.faint", { style: { fontSize: "11.5px" } },
-                (a.fournisseur || "anthropic") + (a.cle_env ? " · " + a.cle_env : ""))),
+                (a.fournisseur || "anthropic") + (a.cle_env ? " · " + a.cle_env : "")),
+              (function () {
+                const c = conseilPour(a.code);
+                if ((a.fournisseur || "anthropic") === c.fournisseur && a.modele === c.modele) {
+                  return null;
+                }
+                return h("div", {}, h("span.badge", {
+                  title: "Conseillé : " + c.fournisseur + " · " + c.modele + " — " + c.pourquoi
+                }, "≠ conseillé"));
+              })()),
             h("td", {}, derniere[a.code]
               ? h("span", {}, quand(derniere[a.code].debut), " ", puce(derniere[a.code].statut))
               : h("span.faint", {}, "jamais")),
