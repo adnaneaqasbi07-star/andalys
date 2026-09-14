@@ -16,33 +16,7 @@
 import { h, remplir, notice } from "../core/dom.js";
 import { lire } from "../core/supa.js";
 import { SUPA } from "../core/config.js";
-import { mono, ecranErreur, SERVICES } from "./commun.js";
-
-/* ------------------------------------------------------------------ */
-/* La porte locale                                                     */
-/* ------------------------------------------------------------------ */
-/* Servie par `bin/servir.py`, sur cette machine et elle seule. Quand elle
-   répond, cet écran peut recevoir une clé et l'écrire dans `.env` : la
-   valeur va du navigateur au serveur qui tourne sur le même ordinateur,
-   elle n'en sort pas. Publiée sur GitHub Pages, la même page n'obtient
-   rien et affiche la commande du terminal à la place.
-
-   Cet appel-ci ne passe pas par `core/supa.js`, et c'est volontaire : ce
-   n'est pas l'API de la boutique, c'est l'outil local. Y mêler le jeton
-   Supabase n'aurait aucun sens. */
-const PORTE = "/-/cle";
-const ENTETE = { "X-Andalys": "atelier" };
-
-async function porteLocale() {
-  try {
-    const r = await fetch(PORTE, { headers: ENTETE });
-    if (!r.ok) return null;
-    const d = await r.json();
-    return d && d.local ? d : null;
-  } catch (e) {
-    return null;                       /* page publiée : pas de porte */
-  }
-}
+import { mono, ecranErreur, SERVICES, PORTE, ENTETE, porteLocale } from "./commun.js";
 
 async function deposer(nom, valeur) {
   const r = await fetch(PORTE, {

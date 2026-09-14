@@ -243,3 +243,33 @@ export function conseilPour(code) {
   return CONSEIL[code] || { fournisseur: "anthropic", modele: "claude-sonnet-5",
                             pourquoi: "Agent non répertorié : Sonnet est le choix sûr." };
 }
+
+
+/* ------------------------------------------------------------------ */
+/* La porte locale                                                     */
+/* ------------------------------------------------------------------ */
+/* Servie par `bin/servir.py`, sur cette machine et elle seule. Elle dit
+   quelles clés sont posées dans `.env` — jamais leur valeur, seulement
+   leur longueur. Publiée sur GitHub Pages, elle ne répond pas : les
+   écrans s'en passent et affichent la commande du terminal.
+
+   Cet appel ne passe pas par `core/supa.js`, et c'est voulu : ce n'est
+   pas l'API de la boutique, c'est l'outil local. */
+export const PORTE = "/-/cle";
+export const ENTETE = { "X-Andalys": "atelier" };
+
+export async function porteLocale() {
+  try {
+    const r = await fetch(PORTE, { headers: ENTETE });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return d && d.local ? d : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function cleParNom(local, nom) {
+  if (!local) return null;
+  return (local.cles || []).filter(function (c) { return c.nom === nom; })[0] || null;
+}

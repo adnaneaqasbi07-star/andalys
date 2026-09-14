@@ -200,7 +200,11 @@ export default async function agents(hote) {
           interrupteur.addEventListener("change", function () { basculer(a, interrupteur); });
 
           return h("tr",
-            h("td", {}, h("div", {}, h("strong", {}, a.nom)), mono(a.code)),
+            h("td", {},
+              h("div", {}, h("a", { href: "#/agents/" + a.code,
+                                    style: { color: "inherit" } },
+                  h("strong", {}, a.nom))),
+              mono(a.code)),
             h("td", { style: { maxWidth: "420px" } },
               h("span.faint", { style: { fontSize: "13px" } }, a.mission)),
             h("td", {}, niveau(a.niveau_max)),

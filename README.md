@@ -158,6 +158,9 @@ Ce que ces tests garantissent, entre autres :
   données, pages, design system
 - [docs/ATELIER-IA.md](docs/ATELIER-IA.md) — l'atelier : agents IA, niveaux de
   risque, validations humaines, feuille de route
+- [docs/Obtenir-les-cles-API.pdf](docs/Obtenir-les-cles-API.pdf) — guide
+  administratif : où obtenir chaque clé, les prérequis, les pièges
+  (produit par `bin/guide_cles.py`)
 - [CLAUDE.md](CLAUDE.md) — instructions permanentes, à lire avant toute
   modification
 - [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) — mise en service, publication,

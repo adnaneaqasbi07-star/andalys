@@ -100,7 +100,7 @@ routeur.definir("/validations",      section("validations"));
 routeur.definir("/validations/:id",  section("validations"));
 routeur.definir("/taches",           section("taches"));
 routeur.definir("/agents",           section("agents"));
-routeur.definir("/agents/:code",     section("agents"));
+routeur.definir("/agents/:code",     section("agent"));
 routeur.definir("/courrier",         section("courrier"));
 routeur.definir("/veille",           section("rapports"));
 routeur.definir("/cadence",          section("planifications"));
